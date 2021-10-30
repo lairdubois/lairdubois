@@ -52,7 +52,7 @@ EOT
 		$verbose = $input->getOption('verbose');
 
 		$om = $this->getDoctrine()->getManager();
-		$spotlightRepository = $om->getRepository(Spotlight::CLASS_NAME);
+		$spotlightRepository = $om->getRepository(Spotlight::class);
 		$typableUtils = $this->get(TypableUtils::class);
 
 		// Retrieve current spotlight
@@ -257,7 +257,7 @@ EOT
 				if ($forced) {
 					if ($entity->getUser()->getIsTeam()) {
 
-						$memberRepository = $om->getRepository(Member::CLASS_NAME);
+						$memberRepository = $om->getRepository(Member::class);
 						$members = $memberRepository->findPaginedByTeam($entity->getUser());
 
 						foreach ($members as $member) {

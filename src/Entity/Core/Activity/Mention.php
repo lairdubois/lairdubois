@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Mention extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Mention';
 	const STRIPPED_NAME = 'mention';
 
 	/**

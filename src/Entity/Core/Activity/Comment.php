@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Comment extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Comment';
 	const STRIPPED_NAME = 'comment';
 
 	/**

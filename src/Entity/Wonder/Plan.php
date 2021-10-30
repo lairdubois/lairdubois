@@ -22,7 +22,6 @@ class Plan extends AbstractWonder implements HtmlBodiedInterface, InspirableInte
 	use HtmlBodiedTrait;
 	use InspirableTrait;
 
-	const CLASS_NAME = 'App\Entity\Wonder\Plan';
 	const STRIPPED_NAME = 'plan';
 	const TYPE = 105;
 

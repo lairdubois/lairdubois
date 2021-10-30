@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Run {
 
-	const CLASS_NAME = 'App\Entity\Workflow\Run';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

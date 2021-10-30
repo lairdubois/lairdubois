@@ -13,7 +13,7 @@ class FundingManager extends AbstractManager {
 
 	public function getOrCreateCurrent() {
 		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+		$fundingRepository = $om->getRepository(Funding::class);
 
 		$now = new \DateTime();
 		$nowMonth = $now->format('m');
@@ -87,7 +87,7 @@ class FundingManager extends AbstractManager {
 
 	public function updateCarriedForwardBalancesFrom($startFunding, $flush = false) {
 		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+		$fundingRepository = $om->getRepository(Funding::class);
 
 		$now = new \DateTime();
 		$nowMonth = $now->format('m');

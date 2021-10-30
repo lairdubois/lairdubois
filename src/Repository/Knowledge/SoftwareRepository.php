@@ -11,7 +11,7 @@ class SoftwareRepository extends AbstractKnowledgeRepository {
 	/////
 
 	public function findUserIdsById($id) {
-		return $this->getEntityManager()->getRepository(BaseValue::CLASS_NAME)->findUserIdsByParentEntityTypeAndParentEntityId(Software::TYPE, $id);
+		return $this->getEntityManager()->getRepository(BaseValue::class)->findUserIdsByParentEntityTypeAndParentEntityId(Software::TYPE, $id);
 	}
 
 	//////

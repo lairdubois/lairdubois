@@ -39,7 +39,6 @@ class Collection extends AbstractAuthoredPublication implements IndexableInterfa
 	use TitledTrait, SluggedTrait, PicturedTrait, HtmlBodiedTrait;
 	use IndexableTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, CollectionnableTrait;
 
-	const CLASS_NAME = 'App\Entity\Collection\Collection';
 	const TYPE = 120;
 
 	/**

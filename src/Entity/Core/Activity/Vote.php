@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Vote extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Vote';
 	const STRIPPED_NAME = 'vote';
 
 	/**

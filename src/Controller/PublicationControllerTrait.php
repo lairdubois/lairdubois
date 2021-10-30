@@ -215,7 +215,7 @@ trait PublicationControllerTrait {
 
 			if ($includeTeamsPrivates && $this->getUser()->getMeta()->getTeamCount() > 0) {
 
-				$memberRepository = $this->getDoctrine()->getRepository(Member::CLASS_NAME);
+				$memberRepository = $this->getDoctrine()->getRepository(Member::class);
 				$members = $memberRepository->findPaginedByUser($this->getUser(), 0, 20);
 
 				foreach ($members as $member) {

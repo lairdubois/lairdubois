@@ -21,8 +21,6 @@ class Like implements AuthoredInterface {
 
 	use AuthoredTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\Like';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

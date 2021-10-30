@@ -24,7 +24,7 @@ class RefererController extends AbstractController {
 	 */
 	public function referralDelete($id) {
 		$om = $this->getDoctrine()->getManager();
-		$referralRepository = $om->getRepository(Referral::CLASS_NAME);
+		$referralRepository = $om->getRepository(Referral::class);
 		$typableUtils = $this->get(TypableUtils::class);
 
 		$referral = $referralRepository->findOneById($id);

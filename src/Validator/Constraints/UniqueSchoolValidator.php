@@ -28,7 +28,7 @@ class UniqueSchoolValidator extends ConstraintValidator {
 		if (!is_null($value)) {
 			if ($value instanceof Text) {
 				$data = $value->getData();
-				$schoolRepository = $this->om->getRepository(School::CLASS_NAME);
+				$schoolRepository = $this->om->getRepository(School::class);
 				if (!is_null($data) && $schoolRepository->existsByName($data, $constraint->excludedId)) {
 					$this->context->buildViolation($constraint->message)
 						->atPath('name')

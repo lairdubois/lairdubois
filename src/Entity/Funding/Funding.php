@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Funding {
 
-	const CLASS_NAME = 'App\Entity\Funding\Funding';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

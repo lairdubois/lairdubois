@@ -68,7 +68,7 @@ class LikeController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 
 		if (!$likeRepository->existsByEntityTypeAndEntityIdAndUser($entityType, $entityId, $this->getUser())) {
 
@@ -145,7 +145,7 @@ class LikeController extends AbstractController {
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 
 		$like = $likeRepository->findOneById($id);
 		if (is_null($like)) {
@@ -210,7 +210,7 @@ class LikeController extends AbstractController {
 	 */
 	public function listByEntity(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		// Retrieve related entity

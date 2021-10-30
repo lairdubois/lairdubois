@@ -75,7 +75,7 @@ class LabelController extends AbstractWorkflowBasedController {
 	 */
 	public function edit(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$labelRepository = $om->getRepository(Label::CLASS_NAME);
+		$labelRepository = $om->getRepository(Label::class);
 
 		$label = $labelRepository->findOneById($id);
 		if (is_null($label)) {
@@ -97,7 +97,7 @@ class LabelController extends AbstractWorkflowBasedController {
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$labelRepository = $om->getRepository(Label::CLASS_NAME);
+		$labelRepository = $om->getRepository(Label::class);
 
 		$label = $labelRepository->findOneById($id);
 		if (is_null($label)) {
@@ -113,7 +113,7 @@ class LabelController extends AbstractWorkflowBasedController {
 			$om->flush();
 
 			// Retrieve updated tasks
-			$taskRepository = $om->getRepository(Task::CLASS_NAME);
+			$taskRepository = $om->getRepository(Task::class);
 			$tasks = $taskRepository->findByLabel($label);
 
 			// Push changes
@@ -140,7 +140,7 @@ class LabelController extends AbstractWorkflowBasedController {
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$labelRepository = $om->getRepository(Label::CLASS_NAME);
+		$labelRepository = $om->getRepository(Label::class);
 
 		$label = $labelRepository->findOneById($id);
 		if (is_null($label)) {
@@ -153,7 +153,7 @@ class LabelController extends AbstractWorkflowBasedController {
 		$workflow->removeLabel($label);
 
 		// Retrieve updated tasks
-		$taskRepository = $om->getRepository(Task::CLASS_NAME);
+		$taskRepository = $om->getRepository(Task::class);
 		$tasks = $taskRepository->findByLabel($label);
 
 		$om->remove($label);

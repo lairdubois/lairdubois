@@ -73,7 +73,7 @@ class JoinController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+		$joinRepository = $om->getRepository(Join::class);
 
 		if (!$joinRepository->existsByEntityTypeAndEntityIdAndUser($entityType, $entityId, $this->getUser())) {
 
@@ -137,7 +137,7 @@ class JoinController extends AbstractController {
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+		$joinRepository = $om->getRepository(Join::class);
 
 		$join = $joinRepository->findOneById($id);
 		if (is_null($join)) {
@@ -193,7 +193,7 @@ class JoinController extends AbstractController {
 	 */
 	public function listByEntity(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+		$joinRepository = $om->getRepository(Join::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		// Retrieve related entity

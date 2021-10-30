@@ -159,7 +159,7 @@ EOT
 
 	private function _generateTagUsages(TaggableInterface $taggable) {
 		$om = $this->getDoctrine()->getManager();
-		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
+		$tagUsageRepository = $om->getRepository(TagUsage::class);
 		foreach ($taggable->getTags() as $tag) {
 			$tagUsage = $tagUsageRepository->findOneByTagAndEntityType($tag, $taggable->getType());
 			if (is_null($tagUsage)) {

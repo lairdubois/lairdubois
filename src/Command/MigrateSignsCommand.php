@@ -28,7 +28,7 @@ EOT
 		$forced = $input->getOption('force');
 
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 
 		// Retrieve Signs
 

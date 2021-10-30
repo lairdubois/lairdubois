@@ -41,7 +41,7 @@ class UserManager extends AbstractManager {
 
     public function createFromEntity(User $user, array $roles = null) {
         $om = $this->getDoctrine()->getManager();
-        $userRepository = $om->getRepository(User::CLASS_NAME);
+        $userRepository = $om->getRepository(User::class);
         $stringUtils = $this->get(StringUtils::class);
         $userUtils = $this->get(UserUtils::class);
         $passwordHasher = $this->get(UserPasswordHasherInterface::class);

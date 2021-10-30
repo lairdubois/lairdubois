@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Review extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Review';
 	const STRIPPED_NAME = 'review';
 
 	/**

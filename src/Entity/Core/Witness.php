@@ -13,8 +13,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Witness {
 
-	const CLASS_NAME = 'App\Entity\Core\Witness';
-
 	const KIND_NONE = 0;
 	const KIND_UNPUBLISHED = 1;
 	const KIND_CONVERTED = 2;

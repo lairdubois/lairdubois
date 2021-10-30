@@ -14,7 +14,6 @@ use App\Validator\Constraints as LadbAssert;
  */
 class BookIdentity extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\BookIdentity';
 	const TYPE = 25;
 
 	const TYPE_STRIPPED_NAME = 'book-identity';

@@ -28,7 +28,7 @@ class UniqueWoodValidator extends ConstraintValidator {
 		if (!is_null($value)) {
 			if ($value instanceof Text) {
 				$data = $value->getData();
-				$woodRepository = $this->om->getRepository(Wood::CLASS_NAME);
+				$woodRepository = $this->om->getRepository(Wood::class);
 				if (!is_null($data) && $woodRepository->existsByName($data, $constraint->excludedId)) {
 					$this->context->buildViolation($constraint->message)
 						->atPath('nameValue')

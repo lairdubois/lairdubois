@@ -28,7 +28,6 @@ class Software extends AbstractKnowledge implements ReviewableInterface {
 
 	use ReviewableTrait;
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Software';
 	const TYPE = 121;
 
 	const STRIPPED_NAME = 'software';

@@ -97,7 +97,7 @@ class ReviewController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 
 		if ($reviewRepository->existsByEntityTypeAndEntityIdAndUser($entityType, $entityId, $this->getUser())) {
 			throw $this->createNotFoundException('Only one review is allowed by user.');
@@ -164,7 +164,7 @@ class ReviewController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 
 		$review = $reviewRepository->findOneById($id);
 		if (is_null($review)) {
@@ -193,7 +193,7 @@ class ReviewController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 
 		$review = $reviewRepository->findOneById($id);
 		if (is_null($review)) {
@@ -245,7 +245,7 @@ class ReviewController extends AbstractController {
 	 */
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 		$reviewableUtils = $this->get(ReviewableUtils::class);
 		$typableUtils = $this->get(TypableUtils::class);
@@ -289,7 +289,7 @@ class ReviewController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 		$typableUtils = $this->get(TypableUtils::class);
 
 		$review = $reviewRepository->findOneById($id);

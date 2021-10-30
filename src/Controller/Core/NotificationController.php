@@ -32,7 +32,7 @@ class NotificationController extends AbstractController {
 	 */
 	public function list(Request $request, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
+		$notificationRepository = $om->getRepository(Notification::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 9, 5);
@@ -86,7 +86,7 @@ class NotificationController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
+		$notificationRepository = $om->getRepository(Notification::class);
 
 		$notification = $notificationRepository->findOneByIdJoinedOnActivity($id);
 		if (is_null($notification)) {

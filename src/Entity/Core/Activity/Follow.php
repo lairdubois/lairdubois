@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Follow extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Follow';
 	const STRIPPED_NAME = 'follow';
 
 	/**

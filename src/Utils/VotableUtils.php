@@ -18,7 +18,7 @@ class VotableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteVotes(VotableInterface $votable, VotableParentInterface $votableParent, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$votes = $voteRepository->findByEntityTypeAndEntityId($votable->getType(), $votable->getId());
@@ -42,7 +42,7 @@ class VotableUtils extends AbstractContainerAwareUtils {
 
 	public function incrementUsersVoteCount(VotableInterface $votable, $by = 1, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 
 		$votes = $voteRepository->findByEntityTypeAndEntityId($votable->getType(), $votable->getId());
 		foreach ($votes as $vote) {
@@ -69,7 +69,7 @@ class VotableUtils extends AbstractContainerAwareUtils {
 
 	public function getVoteContext(VotableInterface $votable, User $user = null) {
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 
 		$vote = null;
 		if (!is_null($user)) {
@@ -96,7 +96,7 @@ class VotableUtils extends AbstractContainerAwareUtils {
 
 	public function transferVotes(VotableInterface $votableSrc, VotableInterface $votableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 
 		// Retrieve votes
 		$votes = $voteRepository->findByEntityTypeAndEntityId($votableSrc->getType(), $votableSrc->getId());

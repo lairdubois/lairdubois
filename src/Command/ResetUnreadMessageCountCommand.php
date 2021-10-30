@@ -29,7 +29,7 @@ EOT
 		$forced = $input->getOption('force');
 
 		$om = $this->getDoctrine()->getManager();
-		$messageMetaRepository = $om->getRepository(MessageMeta::CLASS_NAME);
+		$messageMetaRepository = $om->getRepository(MessageMeta::class);
 
 		// Count users /////
 

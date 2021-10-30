@@ -158,7 +158,7 @@ class CreationController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertLockUnlockable($creation, $lock);
 
 		// Lock or Unlock
@@ -180,7 +180,7 @@ class CreationController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertPublishable($creation);
 
 		// Publish
@@ -198,7 +198,7 @@ class CreationController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertUnpublishable($creation);
 
 		// Unpublish
@@ -223,7 +223,7 @@ class CreationController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertEditabable($creation);
 
 		$form = $this->createForm(CreationType::class, $creation);
@@ -245,7 +245,7 @@ class CreationController extends AbstractController {
 
 		$doUp = $request->get('ladb_do_up', false) && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertEditabable($creation);
 
 		$originalBodyBlocks = $creation->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -318,7 +318,7 @@ class CreationController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertDeletable($creation);
 
 		// Delete
@@ -336,7 +336,7 @@ class CreationController extends AbstractController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertChownable($creation);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -360,12 +360,12 @@ class CreationController extends AbstractController {
 	public function questions(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation);
 
 		// Questions
 
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$questionRepository = $om->getRepository(Question::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -398,12 +398,12 @@ class CreationController extends AbstractController {
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation);
 
 		// Plans
 
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -443,12 +443,12 @@ class CreationController extends AbstractController {
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation);
 
 		// Howtos
 
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -481,12 +481,12 @@ class CreationController extends AbstractController {
 	public function workflows(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation);
 
 		// Workflows
 
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$workflowRepository = $om->getRepository(Workflow::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -519,12 +519,12 @@ class CreationController extends AbstractController {
 	public function providers(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation);
 
 		// Providers
 
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+		$providerRepository = $om->getRepository(Provider::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -557,12 +557,12 @@ class CreationController extends AbstractController {
 	public function schools(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation);
 
 		// Schools
 
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -594,9 +594,9 @@ class CreationController extends AbstractController {
 	 */
 	public function inspirations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation);
 
 		// Inspirations
@@ -632,9 +632,9 @@ class CreationController extends AbstractController {
 	 */
 	public function rebounds(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation);
 
 		// Rebounds
@@ -675,7 +675,7 @@ class CreationController extends AbstractController {
 	public function sticker(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation, true);
 
 		$sticker = $creation->getSticker();
@@ -706,7 +706,7 @@ class CreationController extends AbstractController {
 	public function strip(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation, true);
 
 		$strip = $creation->getStrip();
@@ -737,7 +737,7 @@ class CreationController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$creation = $this->retrievePublication($id, Creation::CLASS_NAME);
+		$creation = $this->retrievePublication($id, Creation::class);
 		$this->assertShowable($creation, true);
 
 		return array(
@@ -782,7 +782,7 @@ class CreationController extends AbstractController {
 			if ($homepage) {
 
 				// Spotlight
-				$spotlightRepository = $om->getRepository(Spotlight::CLASS_NAME);
+				$spotlightRepository = $om->getRepository(Spotlight::class);
 				$spotlight = $spotlightRepository->findOneLast();
 
 				if (!is_null($spotlight) && $page == 0) {
@@ -801,12 +801,12 @@ class CreationController extends AbstractController {
 				}
 
 				// Collection highlight
-				//$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+				//$collectionRepository = $om->getRepository(Collection::class);
 				$highlightedCollection = null; //$collectionRepository->findOneByIdAndUser(2465, $this->getUser());
 
 				// RunningEvents
 				if (is_null($highlightedCollection)) {
-					$eventRepository = $om->getRepository(Event::CLASS_NAME);
+					$eventRepository = $om->getRepository(Event::class);
 					$runningEvents = $eventRepository->findByRunningNowByUser($this->getUser());
 				}
 
@@ -817,22 +817,22 @@ class CreationController extends AbstractController {
 
 				$maybeUtils = $this->get(MaybeUtils::class);
 				if ($maybeUtils->canDoIt(0, 10, 'tip')) {
-					$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+					$tipRepository = $om->getRepository(Tip::class);
 					$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
 				} else if ($maybeUtils->canDoIt(0, 5, 'offer')) {
-					$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+					$offerRepository = $om->getRepository(Offer::class);
 					$highlightedOffer = $offerRepository->findOneRandomByCategoryAndUser(Offer::CATEGORY_JOB, $this->getUser());
 				}
 
 			}
 
 			// PostHighlight
-			$postRepository = $om->getRepository(Post::CLASS_NAME);
+			$postRepository = $om->getRepository(Post::class);
 			$highlightedPost = $postRepository->findOneLastOnHighlightLevel($this->get('security.authorization_checker')->isGranted('ROLE_USER') ? Post::HIGHLIGHT_LEVEL_USER_ONLY : Post::HIGHLIGHT_LEVEL_ALL);
 
 			// Check if post is already viewed
 			if (!is_null($highlightedPost) && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-				$viewRepository = $om->getRepository(View::CLASS_NAME);
+				$viewRepository = $om->getRepository(View::class);
 				if ($viewRepository->existsByEntityTypeAndEntityIdAndUserAndKind($highlightedPost->getType(), $highlightedPost->getId(), $this->getUser(), View::KIND_SHOWN)) {
 					$highlightedPost = null;
 				}
@@ -1068,7 +1068,7 @@ class CreationController extends AbstractController {
 
 			},
 			'wonder_creation',
-			\App\Entity\Wonder\Creation::CLASS_NAME,
+			\App\Entity\Wonder\Creation::class,
 			'core_creation_list_page',
 			$routeParameters,
 			isset($excludedIds) ? $excludedIds : null
@@ -1125,7 +1125,7 @@ class CreationController extends AbstractController {
 	 */
 	public function feed() {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$translator = $this->get('translator');
 
 		$feed = new \Suin\RSSWriter\Feed();
@@ -1177,7 +1177,7 @@ class CreationController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -1200,7 +1200,7 @@ class CreationController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userCreations = $explorableUtils->getPreviousAndNextPublishedUserExplorables($creation, $creationRepository, $creation->getUser()->getMeta()->getPublicCreationCount());
-		$similarCreations = $explorableUtils->getSimilarExplorables($creation, 'wonder_creation', Creation::CLASS_NAME, $userCreations);
+		$similarCreations = $explorableUtils->getSimilarExplorables($creation, 'wonder_creation', Creation::class, $userCreations);
 
 		$woodsLabels = array();
 		foreach ($creation->getWoods() as $wood) {
@@ -1242,7 +1242,7 @@ class CreationController extends AbstractController {
 	 */
 	public function adminConvertToWorkshop($id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 
 		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
@@ -1265,7 +1265,7 @@ class CreationController extends AbstractController {
 	 */
 	public function adminConvertToHowto($id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 
 		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
@@ -1288,7 +1288,7 @@ class CreationController extends AbstractController {
 	 */
 	public function adminConvertToFind($id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 
 		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
@@ -1311,7 +1311,7 @@ class CreationController extends AbstractController {
 	 */
 	public function adminConvertToQuestion($id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 
 		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {
@@ -1334,7 +1334,7 @@ class CreationController extends AbstractController {
 	 */
 	public function adminConvertToOffer($id) {
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 
 		$creation = $creationRepository->findOneById($id);
 		if (is_null($creation)) {

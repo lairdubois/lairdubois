@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Testify extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Testify';
 	const STRIPPED_NAME = 'testify';
 
 	/**

@@ -40,7 +40,7 @@ class MemberController extends AbstractController {
 
     private function _retrieveTeam($teamId) {
 		$om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$userRepository = $om->getRepository(User::class);
 
 		$team = $userRepository->findOneById($teamId);
 		if (is_null($team)) {
@@ -64,7 +64,7 @@ class MemberController extends AbstractController {
 		$team = $this->_retrieveTeam($teamId);
 
 		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 
 		if (!$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
 			throw $this->createNotFoundException('Not allowed (core_member_invitation_new)');
@@ -85,10 +85,10 @@ class MemberController extends AbstractController {
 		$this->createLock('core_member_invitation_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
-		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
-		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$userRepository = $om->getRepository(User::class);
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::class);
+		$memberRequestRepository = $om->getRepository(MemberRequest::class);
+		$memberRepository = $om->getRepository(Member::class);
 
 		if (!$memberRepository->existsByTeamAndUser($team, $this->getUser())) {
 			throw $this->createNotFoundException('Not allowed (core_member_invitation_create)');
@@ -149,7 +149,7 @@ class MemberController extends AbstractController {
 	 */
 	public function acceptInvitation($id) {
 		$om = $this->getDoctrine()->getManager();
-		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::class);
 
 		$memberInvitation = $memberInvitationRepository->findOneById($id);
 		if (is_null($memberInvitation)) {
@@ -171,8 +171,8 @@ class MemberController extends AbstractController {
 	 */
 	public function deleteInvitation(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::class);
+		$memberRepository = $om->getRepository(Member::class);
 
 		$memberInvitation = $memberInvitationRepository->findOneById($id);
 		if (is_null($memberInvitation)) {
@@ -215,7 +215,7 @@ class MemberController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 
 		if ($memberRepository->existsByTeamAndUser($team, $this->getUser())) {
 			throw $this->createNotFoundException('Already member (core_member_request_new)');
@@ -239,9 +239,9 @@ class MemberController extends AbstractController {
 		$this->createLock('core_member_request_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
-		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::class);
+		$memberRequestRepository = $om->getRepository(MemberRequest::class);
+		$memberRepository = $om->getRepository(Member::class);
 
 		if ($memberRepository->existsByTeamAndUser($team, $this->getUser())) {
 			throw $this->createNotFoundException('Not allowed - Already member (core_member_request_create)');
@@ -267,8 +267,8 @@ class MemberController extends AbstractController {
 	 */
 	public function acceptRequest($id) {
 		$om = $this->getDoctrine()->getManager();
-		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRequestRepository = $om->getRepository(MemberRequest::class);
+		$memberRepository = $om->getRepository(Member::class);
 
 		$memberRequest = $memberRequestRepository->findOneById($id);
 		if (is_null($memberRequest)) {
@@ -290,8 +290,8 @@ class MemberController extends AbstractController {
 	 */
 	public function deleteRequest(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRequestRepository = $om->getRepository(MemberRequest::class);
+		$memberRepository = $om->getRepository(Member::class);
 
 		$memberRequest = $memberRequestRepository->findOneById($id);
 		if (is_null($memberRequest)) {
@@ -362,7 +362,7 @@ class MemberController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 
 		$member = $memberRepository->findOneByTeamAndUser($team, $this->getUser());
 		if (!is_null($member)) {

@@ -2,42 +2,42 @@
 
 namespace App\Event;
 
+use App\Entity\AbstractPublication;
+use App\Entity\Core\View;
+use App\Model\AuthoredInterface;
+use App\Model\CommentableInterface;
 use App\Model\FeedbackableInterface;
+use App\Model\IndexableInterface;
+use App\Model\LikableInterface;
 use App\Model\LinkedToInterface;
 use App\Model\MentionSourceInterface;
+use App\Model\MultiPicturedInterface;
+use App\Model\PicturedInterface;
+use App\Model\PublicationInterface;
 use App\Model\RepublishableInterface;
+use App\Model\ScrapableInterface;
+use App\Model\TaggableInterface;
+use App\Model\ViewableInterface;
+use App\Model\WatchableInterface;
+use App\Utils\ActivityUtils;
+use App\Utils\CommentableUtils;
 use App\Utils\FeedbackableUtils;
+use App\Utils\GlobalUtils;
+use App\Utils\LikableUtils;
 use App\Utils\MentionUtils;
+use App\Utils\OpenGraphUtils;
+use App\Utils\SearchUtils;
+use App\Utils\TagUtils;
+use App\Utils\TypableUtils;
+use App\Utils\UserUtils;
+use App\Utils\ViewableUtils;
+use App\Utils\WatchableUtils;
 use Doctrine\Persistence\ManagerRegistry;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use App\Utils\UserUtils;
-use App\Utils\OpenGraphUtils;
-use App\Utils\SearchUtils;
-use App\Utils\TagUtils;
-use App\Utils\WatchableUtils;
-use App\Utils\ViewableUtils;
-use App\Utils\GlobalUtils;
-use App\Utils\TypableUtils;
-use App\Utils\ActivityUtils;
-use App\Utils\CommentableUtils;
-use App\Utils\LikableUtils;
-use App\Model\ScrapableInterface;
-use App\Model\PublicationInterface;
-use App\Model\IndexableInterface;
-use App\Model\ViewableInterface;
-use App\Model\TaggableInterface;
-use App\Model\WatchableInterface;
-use App\Model\AuthoredInterface;
-use App\Model\CommentableInterface;
-use App\Model\LikableInterface;
-use App\Model\PicturedInterface;
-use App\Model\MultiPicturedInterface;
-use App\Entity\Core\View;
-use App\Entity\AbstractPublication;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 class PublicationListener implements EventSubscriberInterface, ServiceSubscriberInterface {
@@ -500,7 +500,7 @@ class PublicationListener implements EventSubscriberInterface, ServiceSubscriber
 			}
 
 			$om = $this->container->get('doctrine')->getManager();
-			$viewRepository = $om->getRepository(View::CLASS_NAME);
+			$viewRepository = $om->getRepository(View::class);
 			$views = $viewRepository->findByEntityTypeAndEntityIdsAndUserAndKind($entityType, $entityIds, $user, View::KIND_SHOWN);
 			if (!is_null($views) && count($views) > 0) {
 				foreach ($publications as $publication) {

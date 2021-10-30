@@ -22,7 +22,7 @@ class FeedbackableUtils extends AbstractContainerAwareUtils {
 
     public function deleteFeedbacks(FeedbackableInterface $feedbackable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$feedbackRepository = $om->getRepository(Feedback::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$feedbacks = $feedbackRepository->findByEntityTypeAndEntityId($feedbackable->getType(), $feedbackable->getId());
@@ -58,7 +58,7 @@ class FeedbackableUtils extends AbstractContainerAwareUtils {
 
 	public function incrementUsersFeedbackCount(FeedbackableInterface $feedbackable, $by = 1, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$feedbackRepository = $om->getRepository(Feedback::class);
 
 		$feedbacks = $feedbackRepository->findByEntityTypeAndEntityId($feedbackable->getType(), $feedbackable->getId());
 		foreach ($feedbacks as $feedback) {
@@ -81,7 +81,7 @@ class FeedbackableUtils extends AbstractContainerAwareUtils {
 		}
 		if ($feedbackable instanceof JoinableInterface && !is_null($user)) {
 			$om = $this->getDoctrine()->getManager();
-			$joinRepository = $om->getRepository(Join::CLASS_NAME);
+			$joinRepository = $om->getRepository(Join::class);
 			return $joinRepository->existsByEntityTypeAndEntityIdAndUser($feedbackable->getType(), $feedbackable->getId(), $user);
 		}
 
@@ -96,7 +96,7 @@ class FeedbackableUtils extends AbstractContainerAwareUtils {
 		if ($withFeedbacks) {
 
 			// Retrieve feedbacks
-			$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+			$feedbackRepository = $om->getRepository(Feedback::class);
 			$feedbacks = $feedbackRepository->findByEntityTypeAndEntityId($feedbackable->getType(), $feedbackable->getId());
 
 		}
@@ -116,7 +116,7 @@ class FeedbackableUtils extends AbstractContainerAwareUtils {
 
 	public function transferFeedbacks(FeedbackableInterface $feedbackableSrc, FeedbackableInterface $feedbackableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$feedbackRepository = $om->getRepository(Feedback::class);
 
 		// Retrieve feedbacks
 		$feedbacks = $feedbackRepository->findByEntityTypeAndEntityId($feedbackableSrc->getType(), $feedbackableSrc->getId(), false);

@@ -122,7 +122,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertLockUnlockable($howto, $lock);
 
 		// Lock or Unlock
@@ -144,7 +144,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 */
 	public function publish($id) {
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertPublishable($howto);
 
 		// Publish
@@ -162,7 +162,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertUnpublishable($howto);
 
 		// Unpublish
@@ -187,7 +187,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 */
 	public function edit($id) {
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertEditabable($howto);
 
 		$form = $this->createForm(HowtoType::class, $howto);
@@ -207,7 +207,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 */
 	public function update(Request $request, $id) {
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertEditabable($howto);
 
 		$howto->resetArticles();	// Reset articles array to consider form articles order
@@ -263,7 +263,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 */
 	public function delete($id) {
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertDeletable($howto);
 
 		// Delete
@@ -281,7 +281,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertChownable($howto);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -305,7 +305,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 		$id = intval($id);
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto, true);
 
 		$sticker = $howto->getSticker();
@@ -338,7 +338,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 		$id = intval($id);
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto, true);
 
 		$strip = $howto->getStrip();
@@ -371,7 +371,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 		$id = intval($id);
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto, true);
 
 		return array(
@@ -599,7 +599,7 @@ class HowtoController extends AbstractHowtoBasedController {
 
 			},
 			'howto_howto',
-			\App\Entity\Howto\Howto::CLASS_NAME,
+			\App\Entity\Howto\Howto::class,
 			'core_howto_list_page',
 			$routeParameters
 		);
@@ -648,12 +648,12 @@ class HowtoController extends AbstractHowtoBasedController {
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto);
 
 		// Creations
 
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -686,12 +686,12 @@ class HowtoController extends AbstractHowtoBasedController {
 	public function workshops(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto);
 
 		// Workshops
 
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$workshopRepository = $om->getRepository(Workshop::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -724,12 +724,12 @@ class HowtoController extends AbstractHowtoBasedController {
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto);
 
 		// Plans
 
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -762,12 +762,12 @@ class HowtoController extends AbstractHowtoBasedController {
 	public function questions(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto);
 
 		// Plans
 
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$questionRepository = $om->getRepository(Question::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -800,12 +800,12 @@ class HowtoController extends AbstractHowtoBasedController {
 	public function workflows(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto);
 
 		// Workflows
 
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$workflowRepository = $om->getRepository(Workflow::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -838,12 +838,12 @@ class HowtoController extends AbstractHowtoBasedController {
 	public function providers(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto);
 
 		// Providers
 
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+		$providerRepository = $om->getRepository(Provider::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -876,12 +876,12 @@ class HowtoController extends AbstractHowtoBasedController {
 	public function schools(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertShowable($howto);
 
 		// Schools
 
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -911,7 +911,7 @@ class HowtoController extends AbstractHowtoBasedController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

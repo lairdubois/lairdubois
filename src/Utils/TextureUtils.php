@@ -24,7 +24,7 @@ class TextureUtils extends AbstractContainerAwareUtils {
 			}
 
 			// Check if texture already exists
-			$textureRepository = $om->getRepository(Texture::CLASS_NAME);
+			$textureRepository = $om->getRepository(Texture::class);
 			if ($textureRepository->existsByWoodAndValue($wood, $value)) {
 				return;
 			}
@@ -115,7 +115,7 @@ class TextureUtils extends AbstractContainerAwareUtils {
 	public function updateTexture(Wood $wood, Picture $value, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
-		$textureRepository = $om->getRepository(Texture::CLASS_NAME);
+		$textureRepository = $om->getRepository(Texture::class);
 		$texture = $textureRepository->findOneByWoodAndValue($wood, $value);
 		if (!is_null($texture)) {
 
@@ -152,7 +152,7 @@ class TextureUtils extends AbstractContainerAwareUtils {
 	public function deleteTexture(Wood $wood, Picture $value, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
 
-		$textureRepository = $om->getRepository(Texture::CLASS_NAME);
+		$textureRepository = $om->getRepository(Texture::class);
 		$texture = $textureRepository->findOneByWoodAndValue($wood, $value);
 		if (!is_null($texture)) {
 

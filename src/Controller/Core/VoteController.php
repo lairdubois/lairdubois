@@ -211,7 +211,7 @@ class VoteController extends AbstractController {
 		// Process vote
 
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 
 		$vote = $voteRepository->findOneByEntityTypeAndEntityIdAndUser($entity->getType(), $entity->getId(), $this->getUser());
 		if (is_null($vote)) {
@@ -351,7 +351,7 @@ class VoteController extends AbstractController {
 		$orientation = $request->get('orientation', 'auto');
 
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 
 		$vote = $voteRepository->findOneById($id);
 		if (is_null($vote)) {
@@ -440,7 +440,7 @@ class VoteController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);

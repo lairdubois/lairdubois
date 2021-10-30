@@ -27,7 +27,7 @@ EOT
 		$forced = $input->getOption('force');
 
 		$om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$userRepository = $om->getRepository(User::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$sql = '

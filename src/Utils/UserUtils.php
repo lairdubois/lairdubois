@@ -124,7 +124,7 @@ class UserUtils extends AbstractContainerAwareUtils {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$viewRepository = $om->getRepository(View::CLASS_NAME);
+		$viewRepository = $om->getRepository(View::class);
 		$lastView = $viewRepository->findLastCreatedByEntityTypeAndUserAndKindGreaterOrEquals($entityType, $user, View::KIND_LISTED);
 		if (is_null($lastView)) {
 			$lastViewDate = max(new \DateTime('2014-11-22'), $user->getCreatedAt());

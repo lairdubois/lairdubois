@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Publish extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Publish';
 	const STRIPPED_NAME = 'publish';
 
 	/**

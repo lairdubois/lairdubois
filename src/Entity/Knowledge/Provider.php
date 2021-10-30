@@ -29,7 +29,6 @@ class Provider extends AbstractKnowledge implements LocalisableInterface, Review
 
 	use LocalisableTrait, ReviewableTrait;
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Provider';
 	const TYPE = 111;
 
 	const STRIPPED_NAME = 'provider';

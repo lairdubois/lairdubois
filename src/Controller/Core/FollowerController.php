@@ -32,8 +32,8 @@ class FollowerController extends AbstractController {
 		$this->createLock('core_follower_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$followerRepository = $om->getRepository(Follower::class);
+		$userRepository = $om->getRepository(User::class);
 
 		// Check related user
 
@@ -91,7 +91,7 @@ class FollowerController extends AbstractController {
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
+		$followerRepository = $om->getRepository(Follower::class);
 
 		$follower = $followerRepository->findOneById($id);
 		if (is_null($follower)) {

@@ -13,8 +13,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Report {
 
-	const CLASS_NAME = 'App\Entity\Core\Report';
-
 	const REASON_NUDITY = 1;
 	const REASON_VIOLENCE = 2;
 	const REASON_HATEFUL = 3;

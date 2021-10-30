@@ -39,7 +39,7 @@ class PicturesToIdsTransformer implements DataTransformerInterface {
 
 		$pictures = array();
 		$idsStrings = preg_split("/[,]+/", $idsString);
-		$repository = $this->om->getRepository(Picture::CLASS_NAME);
+		$repository = $this->om->getRepository(Picture::class);
 		$sortIndex = 0;
 		foreach ($idsStrings as $idString) {
 			$id = intval($idString);

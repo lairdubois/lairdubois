@@ -133,7 +133,7 @@ class OpencutlistController extends AbstractController {
 		$locale = $request->get('locale', null);
 
 		$om = $this->getDoctrine()->getManager();
-		$accessRepository = $om->getRepository(Access::CLASS_NAME);
+		$accessRepository = $om->getRepository(Access::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);

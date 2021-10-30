@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Write extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Write';
 	const STRIPPED_NAME = 'write';
 
 	/**

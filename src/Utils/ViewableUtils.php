@@ -26,7 +26,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 	/////
 
 	public function deleteViews(ViewableInterface $viewable, $kind = View::KIND_NONE, $flush = true) {
-		$viewRepository = $this->om->getRepository(View::CLASS_NAME);
+		$viewRepository = $this->om->getRepository(View::class);
 		if ($kind == View::KIND_NONE) {
 			$viewRepository->deleteByEntityTypeAndEntityId($viewable->getType(), $viewable->getId());
 		} else {
@@ -125,7 +125,7 @@ class ViewableUtils extends AbstractContainerAwareUtils {
 
 	public function transferViews(ViewableInterface $viewableSrc, ViewableInterface $viewableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$viewRepository = $this->om->getRepository(View::CLASS_NAME);
+		$viewRepository = $this->om->getRepository(View::class);
 
 		// Retrieve views
 		$views = $viewRepository->findByEntityTypeAndEntityId($viewableSrc->getType(), $viewableSrc->getId());

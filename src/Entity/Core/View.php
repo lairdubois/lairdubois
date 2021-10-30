@@ -13,8 +13,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class View {
 
-	const CLASS_NAME = 'App\Entity\Core\View';
-
 	const KIND_NONE = 0;
 	const KIND_LISTED = 1;
 	const KIND_SHOWN = 2;

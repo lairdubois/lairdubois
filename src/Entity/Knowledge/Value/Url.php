@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Url extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Url';
 	const TYPE = 13;
 
 	const TYPE_STRIPPED_NAME = 'url';

@@ -60,7 +60,7 @@ class EntryController extends AbstractCollectionBasedController {
 	 */
 	public function delete($id, $entityType, $entityId) {
 		$om = $this->getDoctrine()->getManager();
-		$entryRepository = $om->getRepository(Entry::CLASS_NAME);
+		$entryRepository = $om->getRepository(Entry::class);
 
 		// Retrieve collection
 		$collection = $this->_retrieveCollection($id);

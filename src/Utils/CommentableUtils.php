@@ -92,7 +92,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteComments(CommentableInterface $commentable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		foreach ($comments as $comment) {
@@ -152,7 +152,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	public function incrementUsersCommentCount(CommentableInterface $commentable, $by = 1, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		foreach ($comments as $comment) {
@@ -167,7 +167,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	public function getMentionStrategy(CommentableInterface $commentable) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		$mentionStrategy = $this->_getMentionStrategyFromComments($comments);
@@ -210,7 +210,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	public function getCommentContext(CommentableInterface $commentable, $includeTimelineActivities = true) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		// Retrieve comments
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
@@ -218,7 +218,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		// Retrieve related activities
 		$activities = null;
 		if ($includeTimelineActivities && $commentable instanceof AbstractPublication) {
-			$activityRepository = $om->getRepository(AbstractActivity::CLASS_NAME);
+			$activityRepository = $om->getRepository(AbstractActivity::class);
 			$activities = $activityRepository->findByPublication($commentable);
 		}
 
@@ -236,7 +236,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	public function transferComments(CommentableInterface $commentableSrc, CommentableInterface $commentableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		// Retrieve comments
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentableSrc->getType(), $commentableSrc->getId(), false);

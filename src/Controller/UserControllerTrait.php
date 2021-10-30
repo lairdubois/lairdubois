@@ -9,7 +9,7 @@ trait UserControllerTrait {
 
 	protected function retrieveUserByUsername($username) {
         $om = $this->getDoctrine()->getManager();
-        $userRepository = $om->getRepository(User::CLASS_NAME);
+        $userRepository = $om->getRepository(User::class);
 
 		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {

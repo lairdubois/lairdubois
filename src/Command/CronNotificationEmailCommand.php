@@ -44,7 +44,7 @@ EOT
 		$verbose = $input->getOption('verbose');
 
 		$om = $this->getDoctrine()->getManager();
-		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
+		$notificationRepository = $om->getRepository(Notification::class);
 
 		$this->_processActivityByActivityStrippedName(\App\Entity\Core\Activity\Comment::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);
 		$this->_processActivityByActivityStrippedName(\App\Entity\Core\Activity\Contribute::STRIPPED_NAME, $output, $forced, $verbose, $om, $notificationRepository);

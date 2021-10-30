@@ -31,7 +31,6 @@ class Feedback implements TypableInterface, BasicTimestampableInterface, Authore
 	use BasicTimestampableTrait;
 	use AuthoredTrait, TitledTrait, BlockBodiedTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\Feedback';
 	const TYPE = 6;
 
 	/**

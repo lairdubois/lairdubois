@@ -97,7 +97,7 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
 	}
 
 	public function markdownFilter($str) {
-		$parser = new LadbMarkdown($this->container->get('doctrine')->getManager()->getRepository(User::CLASS_NAME), $this->container->get('router'), $this->container->get(UrlUtils::class));
+		$parser = new LadbMarkdown($this->container->get('doctrine')->getManager()->getRepository(User::class), $this->container->get('router'), $this->container->get(UrlUtils::class));
 		return $parser->parse($str);
 	}
 

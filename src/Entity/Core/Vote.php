@@ -23,8 +23,6 @@ class Vote implements AuthoredInterface {
 
 	use AuthoredTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\Vote';
-
 	const TYPE = 2;
 
 	/**

@@ -18,8 +18,6 @@ use App\Model\IdentifiableInterface;
  */
 class Entry implements IdentifiableInterface {
 
-	const CLASS_NAME = 'App\Entity\Collection\Entry';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

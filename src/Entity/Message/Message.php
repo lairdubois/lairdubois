@@ -21,7 +21,6 @@ class Message implements TypableInterface, MultiPicturedInterface, HtmlBodiedInt
 	use BasicTimestampableTrait;
 	use MultiPicturedTrait, HtmlBodiedTrait;
 
-	const CLASS_NAME = 'App\Entity\Message\Message';
 	const TYPE = 3;
 
 	/**

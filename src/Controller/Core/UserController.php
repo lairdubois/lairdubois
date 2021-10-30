@@ -84,7 +84,7 @@ class UserController extends AbstractController {
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
 			$om = $this->getDoctrine()->getManager();
-			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			$memberRepository = $om->getRepository(Member::class);
 			return $memberRepository->existsByTeamAndUser($user, $this->getUser());
 
 		}
@@ -95,7 +95,7 @@ class UserController extends AbstractController {
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
 			$om = $this->getDoctrine()->getManager();
-			$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+			$memberInvitationRepository = $om->getRepository(MemberInvitation::class);
 			return $memberInvitationRepository->findOneByTeamAndRecipient($user, $this->getUser());
 
 		}
@@ -106,7 +106,7 @@ class UserController extends AbstractController {
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
 			$om = $this->getDoctrine()->getManager();
-			$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
+			$memberRequestRepository = $om->getRepository(MemberRequest::class);
 			return $memberRequestRepository->findOneByTeamAndSender($user, $this->getUser());
 
 		}
@@ -183,7 +183,7 @@ class UserController extends AbstractController {
 	 */
 	public function emailConfirm($token) {
 	    $om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$userRepository = $om->getRepository(User::class);
 
 		$invalidToken = false;
 		$invalidUser = false;
@@ -220,7 +220,7 @@ class UserController extends AbstractController {
 	 */
 	public function emailUnsubscribe($list, $encryptedEmail) {
         $om = $this->getDoctrine()->getManager();
-        $userRepository = $om->getRepository(User::CLASS_NAME);
+        $userRepository = $om->getRepository(User::class);
 
 		$invalidEmail = false;
 
@@ -392,7 +392,7 @@ class UserController extends AbstractController {
 				}
 			},
 			'core_user',
-			\App\Entity\Core\User::CLASS_NAME,
+			\App\Entity\Core\User::class,
             $family == 'team' ? 'core_user_team_list_page' : 'core_user_list_page'
 		);
 
@@ -661,7 +661,7 @@ class UserController extends AbstractController {
 
 		$om = $this->getDoctrine()->getManager();
 
-		$testimonialRepository = $om->getRepository(Testimonial::CLASS_NAME);
+		$testimonialRepository = $om->getRepository(Testimonial::class);
 		$testimonials = $testimonialRepository->findByUser($user);
 
 		return $this->_fillCommonShowParameters($user, array(
@@ -691,7 +691,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -734,7 +734,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -777,7 +777,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$voteRepository = $om->getRepository(Vote::CLASS_NAME);
+		$voteRepository = $om->getRepository(Vote::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -821,7 +821,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -865,7 +865,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$feedbackRepository = $om->getRepository(Feedback::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -925,7 +925,7 @@ class UserController extends AbstractController {
 		// Creations
 
 		$om = $this->getDoctrine()->getManager();
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -983,7 +983,7 @@ class UserController extends AbstractController {
 		// Workshops
 
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$workshopRepository = $om->getRepository(Workshop::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1043,7 +1043,7 @@ class UserController extends AbstractController {
 		// Plans
 
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1101,7 +1101,7 @@ class UserController extends AbstractController {
 		// Howtos
 
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1159,7 +1159,7 @@ class UserController extends AbstractController {
 		// Finds
 
 		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
+		$findRepository = $om->getRepository(Find::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1217,7 +1217,7 @@ class UserController extends AbstractController {
 		// Questions
 
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$questionRepository = $om->getRepository(Question::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1261,7 +1261,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$answerRepository = $om->getRepository(Answer::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1321,7 +1321,7 @@ class UserController extends AbstractController {
 		// Graphics
 
 		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+		$graphicRepository = $om->getRepository(Graphic::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1379,7 +1379,7 @@ class UserController extends AbstractController {
 		// Workflows
 
 		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$workflowRepository = $om->getRepository(Workflow::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1439,7 +1439,7 @@ class UserController extends AbstractController {
 		// Offers
 
 		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+		$offerRepository = $om->getRepository(Offer::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1485,7 +1485,7 @@ class UserController extends AbstractController {
 		// Following
 
 		$om = $this->getDoctrine()->getManager();
-		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
+		$followerRepository = $om->getRepository(Follower::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1533,7 +1533,7 @@ class UserController extends AbstractController {
 		// Followers
 
 		$om = $this->getDoctrine()->getManager();
-		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
+		$followerRepository = $om->getRepository(Follower::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1575,7 +1575,7 @@ class UserController extends AbstractController {
 		// Member
 
 		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1619,7 +1619,7 @@ class UserController extends AbstractController {
 		// Member
 
 		$om = $this->getDoctrine()->getManager();
-		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1667,7 +1667,7 @@ class UserController extends AbstractController {
 		// Member
 
 		$om = $this->getDoctrine()->getManager();
-		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
+		$memberRequestRepository = $om->getRepository(MemberRequest::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1710,7 +1710,7 @@ class UserController extends AbstractController {
 		// Teams
 
 		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -1774,7 +1774,7 @@ class UserController extends AbstractController {
 		if ($user->getIsTeam() && $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
 			$om = $this->getDoctrine()->getManager();
-			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			$memberRepository = $om->getRepository(Member::class);
 			$isMember = $memberRepository->existsByTeamAndUser($user, $this->getUser());
 
 		} else {
@@ -1885,7 +1885,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$userRepository = $om->getRepository(User::class);
 
 		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
@@ -1893,7 +1893,7 @@ class UserController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$registrationRepository = $om->getRepository(Registration::CLASS_NAME);
+		$registrationRepository = $om->getRepository(Registration::class);
 		$registration = $registrationRepository->findOneByUser($user);
 
 		return $this->_fillCommonShowParameters($user, array(
@@ -1911,7 +1911,7 @@ class UserController extends AbstractController {
 		}
 
         $om = $this->getDoctrine()->getManager();
-        $userRepository = $om->getRepository(User::CLASS_NAME);
+        $userRepository = $om->getRepository(User::class);
 
 		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
@@ -1920,7 +1920,7 @@ class UserController extends AbstractController {
 
 		// Remove all pending invitations
 		$memberInvitationManager = $this->get(MemberInvitationManager::class);
-		$memberInvitationRepository = $om->getRepository(MemberInvitation::CLASS_NAME);
+		$memberInvitationRepository = $om->getRepository(MemberInvitation::class);
 		$memberInvitations = $memberInvitationRepository->findPaginedByRecipient($user);
 		foreach ($memberInvitations as $memberInvitation) {
 			$memberInvitationManager->delete($memberInvitation);
@@ -1928,7 +1928,7 @@ class UserController extends AbstractController {
 
 		// Remove all pending requests
 		$memberRequestManager = $this->get(MemberRequestManager::class);
-		$memberRequestRepository = $om->getRepository(MemberRequest::CLASS_NAME);
+		$memberRequestRepository = $om->getRepository(MemberRequest::class);
 		$memberRequests = $memberRequestRepository->findPaginedBySender($user);
 		foreach ($memberRequests as $memberRequest) {
 			$memberRequestManager->delete($memberRequest);
@@ -1936,7 +1936,7 @@ class UserController extends AbstractController {
 
 		// Remove all members
 		$memberManager = $this->get(MemberManager::class);
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 		$members = $memberRepository->findPaginedByUser($user);
 		foreach ($members as $member) {
 			$memberManager->delete($member);
@@ -1971,7 +1971,7 @@ class UserController extends AbstractController {
 		}
 
         $om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$userRepository = $om->getRepository(User::class);
 		$manipulator = $this->get('fos_user.util.user_manipulator');
 
 		$user = $userRepository->findOneByUsername($username);
@@ -2000,7 +2000,7 @@ class UserController extends AbstractController {
 		}
 
         $om = $this->getDoctrine()->getManager();
-        $userRepository = $om->getRepository(User::CLASS_NAME);
+        $userRepository = $om->getRepository(User::class);
 		$manipulator = $this->get('fos_user.util.user_manipulator');
 
 		$user = $userRepository->findOneByUsername($username);
@@ -2029,7 +2029,7 @@ class UserController extends AbstractController {
 		}
 
         $om = $this->getDoctrine()->getManager();
-        $userRepository = $om->getRepository(User::CLASS_NAME);
+        $userRepository = $om->getRepository(User::class);
 
 		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {
@@ -2068,7 +2068,7 @@ class UserController extends AbstractController {
 		}
 
         $om = $this->getDoctrine()->getManager();
-        $userRepository = $om->getRepository(User::CLASS_NAME);
+        $userRepository = $om->getRepository(User::class);
 
 		$user = $userRepository->findOneByUsername($username);
 		if (is_null($user)) {

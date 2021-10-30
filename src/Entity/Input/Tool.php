@@ -10,6 +10,4 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Tool extends AbstractInput {
 
-	const CLASS_NAME = 'App\Entity\Input\Tool';
-
 }

@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Notification {
 
-	const CLASS_NAME = 'App\Entity\Core\Notification';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

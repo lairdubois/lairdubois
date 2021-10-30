@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class FileExtension extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\FileExtension';
 	const TYPE = 22;
 
 	const TYPE_STRIPPED_NAME = 'file-extension';

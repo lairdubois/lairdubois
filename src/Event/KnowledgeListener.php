@@ -2,10 +2,10 @@
 
 namespace App\Event;
 
+use App\Utils\KnowledgeUtils;
+use App\Utils\TextureUtils;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use App\Utils\TextureUtils;
-use App\Utils\KnowledgeUtils;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 class KnowledgeListener implements EventSubscriberInterface, ServiceSubscriberInterface {

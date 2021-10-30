@@ -41,7 +41,7 @@ class ThreadController extends AbstractThreadController {
 
 		if (!is_null($recipientUsername)) {
 		    $om = $this->getDoctrine()->getManager();
-		    $userRepository = $om->getRepository(User::CLASS_NAME);
+		    $userRepository = $om->getRepository(User::class);
 			$recipient = $userRepository->findOneByUsername($recipientUsername);
 			if (is_null($recipient)) {
 				throw $this->createNotFoundException('User not found (core_message_thread_new_recipientusername)');
@@ -87,7 +87,7 @@ class ThreadController extends AbstractThreadController {
 
 			// Exclude "SPAM" threads
 			$om = $this->getDoctrine()->getManager();
-			$threadRepository = $om->getRepository(Thread::CLASS_NAME);
+			$threadRepository = $om->getRepository(Thread::class);
 			if ($threadRepository->existsBySenderAndSubjectAndBody($sender, $newThreadMessage->getSubject(), $newThreadMessage->getBody())) {
 
 				// Email notification
@@ -132,7 +132,7 @@ class ThreadController extends AbstractThreadController {
 	 */
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
-		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
+		$threadRepository = $om->getRepository(Thread::class);
 
 		$thread = $this->retrieveThread($id);
 		$this->assertDeletable($thread);
@@ -168,7 +168,7 @@ class ThreadController extends AbstractThreadController {
 		$this->createLock('core_message_thread_show', true, 3, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$messageMetaRepository = $om->getRepository(MessageMeta::CLASS_NAME);
+		$messageMetaRepository = $om->getRepository(MessageMeta::class);
 
 		$thread = $this->retrieveThread($id);
 		$this->assertShowable($thread);
@@ -224,13 +224,13 @@ class ThreadController extends AbstractThreadController {
 	 */
 	public function mailbox(Request $request, $filter = 'all', $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
+		$threadRepository = $om->getRepository(Thread::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		// Compute allowed user list by adding user's teams
 		$users = array( $this->getUser() );
 		if ($this->getUser()->getMeta()->getTeamCount() > 0) {
-			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			$memberRepository = $om->getRepository(Member::class);
 			$members = $memberRepository->findPaginedByUser($this->getUser());
 			foreach ($members as $member) {
 				$users[] = $member->getTeam();

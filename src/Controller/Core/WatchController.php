@@ -83,7 +83,7 @@ class WatchController extends AbstractController {
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
+		$watchRepository = $om->getRepository(Watch::class);
 
 		$watch = $watchRepository->findOneById($id);
 		if (is_null($watch)) {
@@ -126,7 +126,7 @@ class WatchController extends AbstractController {
 	 */
 	public function listByEntity(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
+		$watchRepository = $om->getRepository(Watch::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		// Retrieve related entity

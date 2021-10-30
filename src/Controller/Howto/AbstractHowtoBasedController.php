@@ -33,11 +33,11 @@ abstract class AbstractHowtoBasedController extends AbstractController {
 
 	protected function computeShowParameters(Howto $howto, $request) {
 		$om = $this->getDoctrine()->getManager();
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userHowtos = $explorableUtils->getPreviousAndNextPublishedUserExplorables($howto, $howtoRepository, $howto->getUser()->getMeta()->getPublicHowtoCount());
-		$similarHowtos = $explorableUtils->getSimilarExplorables($howto, 'howto_howto', Howto::CLASS_NAME, $userHowtos);
+		$similarHowtos = $explorableUtils->getSimilarExplorables($howto, 'howto_howto', Howto::class, $userHowtos);
 
 		$globalUtils = $this->get(GlobalUtils::class);
 		$likableUtils = $this->get(LikableUtils::class);

@@ -29,7 +29,6 @@ class Took extends AbstractAuthoredPublication implements TitledInterface, Slugg
 	use TitledTrait, SluggedTrait, PicturedTrait, HtmlBodiedTrait;
 	use ScrapableTrait;
 
-	const CLASS_NAME = 'App\Entity\Youtook\Took';
 	const TYPE = 112;
 
 	/**

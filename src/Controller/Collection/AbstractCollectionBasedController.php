@@ -17,7 +17,7 @@ abstract class AbstractCollectionBasedController extends AbstractController {
 
     protected function _retrieveCollection($id) {
 		$om = $this->getDoctrine()->getManager();
-		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+		$collectionRepository = $om->getRepository(Collection::class);
 
 		$id = intval($id);
 

@@ -15,7 +15,6 @@ use App\Utils\VideoHostingUtils;
  */
 class Video extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Video';
 	const TYPE = 24;
 
 	const TYPE_STRIPPED_NAME = 'video';

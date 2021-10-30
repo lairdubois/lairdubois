@@ -16,8 +16,6 @@ use App\Model\IdentifiableInterface;
  */
 class MemberRequest implements IdentifiableInterface {
 
-	const CLASS_NAME = 'App\Entity\Core\MemberRequest';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

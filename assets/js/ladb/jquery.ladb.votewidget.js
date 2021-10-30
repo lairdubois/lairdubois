@@ -102,7 +102,7 @@
         $('textarea', this.$newModal)
             .markdown({ autofocus:true })
             .ladbTextcompletify({ maxCount: 5, mentionQueryPath: this.options.mentionQueryPath });
-        autosize($('textarea', this.$newModal));
+        LADBCommon.setupTextareas();
 
         // Bind button
         $validateBtn.on('click', function(e) {

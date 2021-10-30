@@ -14,7 +14,6 @@ use App\Validator\Constraints as LadbAssert;
  */
 class Phone extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Phone';
 	const TYPE = 15;
 
 	const TYPE_STRIPPED_NAME = 'phone';

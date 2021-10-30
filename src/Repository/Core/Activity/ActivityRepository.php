@@ -41,7 +41,7 @@ class ActivityRepository extends AbstractEntityRepository {
 
 			// Publish activities /////
 
-			$publishRepository = $this->getEntityManager()->getRepository(Publish::CLASS_NAME);
+			$publishRepository = $this->getEntityManager()->getRepository(Publish::class);
 
 			$activities = array_merge($activities, $publishRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
 			if (!is_null($publication->getSubPublications())) {
@@ -64,7 +64,7 @@ class ActivityRepository extends AbstractEntityRepository {
 
 			// Join activities /////
 
-			$joinRepository = $this->getEntityManager()->getRepository(Join::CLASS_NAME);
+			$joinRepository = $this->getEntityManager()->getRepository(Join::class);
 
 			$activities = array_merge($activities, $joinRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
 			if (!is_null($publication->getSubPublications())) {
@@ -87,7 +87,7 @@ class ActivityRepository extends AbstractEntityRepository {
 
 			// Feedback activities /////
 
-			$feedbackRepository = $this->getEntityManager()->getRepository(Feedback::CLASS_NAME);
+			$feedbackRepository = $this->getEntityManager()->getRepository(Feedback::class);
 
 			$activities = array_merge($activities, $feedbackRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
 			if (!is_null($publication->getSubPublications())) {
@@ -108,7 +108,7 @@ class ActivityRepository extends AbstractEntityRepository {
 
 		// Contribute activities /////
 
-		$contributeRepository = $this->getEntityManager()->getRepository(Contribute::CLASS_NAME);
+		$contributeRepository = $this->getEntityManager()->getRepository(Contribute::class);
 
 		$activities = array_merge($activities, $contributeRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId()));
 		if (!is_null($publication->getSubPublications())) {

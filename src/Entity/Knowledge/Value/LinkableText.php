@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class LinkableText extends Text {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\LinkableText';
 	const TYPE = 23;
 
 	const TYPE_STRIPPED_NAME = 'linkable-text';

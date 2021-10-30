@@ -66,7 +66,7 @@ class SearchController extends AbstractController {
 			null,
 			null,
 			'core_user',
-			\App\Entity\Core\User::CLASS_NAME,
+			\App\Entity\Core\User::class,
 			null
 		);
 
@@ -92,7 +92,7 @@ class SearchController extends AbstractController {
 			null,
 			null,
 			'core_tag',
-			\App\Entity\Core\Tag::CLASS_NAME,
+			\App\Entity\Core\Tag::class,
 			null
 		);
 
@@ -118,7 +118,7 @@ class SearchController extends AbstractController {
 			null,
 			null,
 			'input_skill',
-			\App\Entity\Input\Skill::CLASS_NAME,
+			\App\Entity\Input\Skill::class,
 			null
 		);
 
@@ -144,7 +144,7 @@ class SearchController extends AbstractController {
 			null,
 			null,
 			'input_wood',
-			\App\Entity\Input\Wood::CLASS_NAME,
+			\App\Entity\Input\Wood::class,
 			null
 		);
 
@@ -170,7 +170,7 @@ class SearchController extends AbstractController {
 			null,
 			null,
 			'input_tool',
-			\App\Entity\Input\Tool::CLASS_NAME,
+			\App\Entity\Input\Tool::class,
 			null
 		);
 
@@ -196,7 +196,7 @@ class SearchController extends AbstractController {
 			null,
 			null,
 			'input_finish',
-			\App\Entity\Input\Finish::CLASS_NAME,
+			\App\Entity\Input\Finish::class,
 			null
 		);
 
@@ -222,7 +222,7 @@ class SearchController extends AbstractController {
 			null,
 			null,
 			'input_hardware',
-			\App\Entity\Input\Hardware::CLASS_NAME,
+			\App\Entity\Input\Hardware::class,
 			null
 		);
 
@@ -255,7 +255,7 @@ class SearchController extends AbstractController {
 			null,
 			null,
 			'knowledge_software',
-			\App\Entity\Knowledge\Software::CLASS_NAME,
+			\App\Entity\Knowledge\Software::class,
 			null
 		);
 

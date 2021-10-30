@@ -32,8 +32,6 @@ abstract class BaseValue implements AuthoredInterface, WatchableChildInterface, 
 	use AuthoredTrait;
 	use CommentableTrait, VotableTrait;
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\BaseValue';
-
 	const SOURCE_TYPE_PERSONAL = 1;
 	const SOURCE_TYPE_WEBSITE = 2;
 	const SOURCE_TYPE_OTHER = 3;

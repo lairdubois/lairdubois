@@ -14,7 +14,6 @@ use App\Validator\Constraints as LadbAssert;
  */
 class SoftwareIdentity extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\SoftwareIdentity';
 	const TYPE = 21;
 
 	const TYPE_STRIPPED_NAME = 'software-identity';

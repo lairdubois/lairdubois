@@ -17,8 +17,6 @@ class Access implements LocalisableInterface {
 
 	use LocalisableTrait;
 
-	const CLASS_NAME = 'App\Entity\Opencutlist\Access';
-
 	const KIND_UNKNOW = 0;
 	const KIND_MANIFEST = 1;
 	const KIND_DOWNLOAD = 2;

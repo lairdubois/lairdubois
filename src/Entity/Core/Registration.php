@@ -12,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Registration {
 
-	const CLASS_NAME = 'App\Entity\Core\Registration';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

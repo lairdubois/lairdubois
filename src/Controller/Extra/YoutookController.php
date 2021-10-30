@@ -44,7 +44,7 @@ class YoutookController extends AbstractController {
 		if ($form->isValid()) {
 
 			// Check if took exists
-			$tookRepository = $om->getRepository(Took::CLASS_NAME);
+			$tookRepository = $om->getRepository(Took::class);
 			if ($tookRepository->existsByEmbedIdentifierAndUser($took->getEmbedIdentifier(), $this->getUser())) {
 
 				$took = $tookRepository->findOneByEmbedIdentifierAndUser($took->getEmbedIdentifier(), $this->getUser());
@@ -87,7 +87,7 @@ class YoutookController extends AbstractController {
 	 */
 	public function edit($id) {
 		$om = $this->getDoctrine()->getManager();
-		$tookRepository = $om->getRepository(Took::CLASS_NAME);
+		$tookRepository = $om->getRepository(Took::class);
 
 		$took = $tookRepository->findOneById($id);
 		if (is_null($took)) {
@@ -111,7 +111,7 @@ class YoutookController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$tookRepository = $om->getRepository(Took::CLASS_NAME);
+		$tookRepository = $om->getRepository(Took::class);
 
 		$took = $tookRepository->findOneById($id);
 		if (is_null($took)) {
@@ -163,7 +163,7 @@ class YoutookController extends AbstractController {
 	 */
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
-		$tookRepository = $om->getRepository(Took::CLASS_NAME);
+		$tookRepository = $om->getRepository(Took::class);
 
 		$took = $tookRepository->findOneById($id);
 		if (is_null($took)) {
@@ -195,7 +195,7 @@ class YoutookController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$tookRepository = $om->getRepository(Took::CLASS_NAME);
+		$tookRepository = $om->getRepository(Took::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
@@ -229,7 +229,7 @@ class YoutookController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$tookRepository = $om->getRepository(Took::CLASS_NAME);
+		$tookRepository = $om->getRepository(Took::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
@@ -261,7 +261,7 @@ class YoutookController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$tookRepository = $om->getRepository(Took::CLASS_NAME);
+		$tookRepository = $om->getRepository(Took::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

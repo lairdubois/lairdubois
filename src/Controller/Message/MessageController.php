@@ -128,7 +128,7 @@ class MessageController extends AbstractThreadController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$messageRepository = $om->getRepository(Message::CLASS_NAME);
+		$messageRepository = $om->getRepository(Message::class);
 
 		$message = $messageRepository->findOneById($id);
 		if (is_null($message)) {
@@ -156,7 +156,7 @@ class MessageController extends AbstractThreadController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$messageRepository = $om->getRepository(Message::CLASS_NAME);
+		$messageRepository = $om->getRepository(Message::class);
 
 		$message = $messageRepository->findOneById($id);
 		if (is_null($message)) {

@@ -31,7 +31,6 @@ class Review implements TypableInterface, BasicTimestampableInterface, AuthoredI
 	use BasicTimestampableTrait;
 	use AuthoredTrait, TitledTrait, HtmlBodiedTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\Review';
 	const TYPE = 4;
 
 	/**

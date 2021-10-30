@@ -37,7 +37,7 @@ EOT
 		$queryBuilder = $om->createQueryBuilder();
 		$queryBuilder
 			->select(array( 'a' ))
-			->from(Access::CLASS_NAME, 'a')
+			->from(Access::class, 'a')
 			->where('a.analyzed = false')
 			->setMaxResults(40)		// ip-api.com endpoint is limited to 45 requests per minute from an IP address.
 		;

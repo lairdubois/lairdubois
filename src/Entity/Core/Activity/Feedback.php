@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Feedback extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Feedback';
 	const STRIPPED_NAME = 'feedback';
 
 	/**

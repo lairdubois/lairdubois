@@ -54,7 +54,6 @@ class Howto extends AbstractDraftableAuthoredPublication implements TitledInterf
 	use TitledTrait, SluggedTrait, PicturedTrait, HtmlBodiedTrait, LicensedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, EmbeddableTrait, StripableTrait, SpotlightableTrait;
 
-	const CLASS_NAME = 'App\Entity\Howto\Howto';
 	const TYPE = 106;
 
 	const KIND_NONE = 0;

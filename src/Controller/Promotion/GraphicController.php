@@ -133,7 +133,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertLockUnlockable($graphic, $lock);
 
 		// Lock or Unlock
@@ -155,7 +155,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertPublishable($graphic);
 
 		// Publish
@@ -173,7 +173,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertUnpublishable($graphic);
 
 		// Unpublish
@@ -198,7 +198,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertEditabable($graphic);
 
 		$form = $this->createForm(GraphicType::class, $graphic);
@@ -218,7 +218,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertEditabable($graphic);
 
 		$picturedUtils = $this->get(PicturedUtils::class);
@@ -276,7 +276,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertDeletable($graphic);
 
 		// Delete
@@ -294,7 +294,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertChownable($graphic);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -315,7 +315,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertShowable($graphic, true);
 
 		return array(
@@ -329,7 +329,7 @@ class GraphicController extends AbstractController {
 	public function download($id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$graphic = $this->retrievePublication($id, Graphic::CLASS_NAME);
+		$graphic = $this->retrievePublication($id, Graphic::class);
 		$this->assertShowable($graphic);
 
 		$graphicUtils = $this->get(GraphicUtils::class);
@@ -504,7 +504,7 @@ class GraphicController extends AbstractController {
 
 			},
 			'promotion_graphic',
-			\App\Entity\Promotion\Graphic::CLASS_NAME,
+			\App\Entity\Promotion\Graphic::class,
 			'core_promotion_graphic_list_page',
 			$routeParameters
 		);
@@ -542,7 +542,7 @@ class GraphicController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$graphicRepository = $om->getRepository(Graphic::CLASS_NAME);
+		$graphicRepository = $om->getRepository(Graphic::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -562,7 +562,7 @@ class GraphicController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userGraphics = $explorableUtils->getPreviousAndNextPublishedUserExplorables($graphic, $graphicRepository, $graphic->getUser()->getMeta()->getPublicGraphicCount());
-		$similarGraphics = $explorableUtils->getSimilarExplorables($graphic, 'promotion_graphic', Graphic::CLASS_NAME, $userGraphics);
+		$similarGraphics = $explorableUtils->getSimilarExplorables($graphic, 'promotion_graphic', Graphic::class, $userGraphics);
 
 		$likableUtils = $this->get(LikableUtils::class);
 		$watchableUtils = $this->get(WatchableUtils::class);

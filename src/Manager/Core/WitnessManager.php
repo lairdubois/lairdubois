@@ -14,7 +14,7 @@ class WitnessManager extends AbstractManager {
 
 	public function deleteByPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$witnessRepository = $om->getRepository(Witness::CLASS_NAME);
+		$witnessRepository = $om->getRepository(Witness::class);
 
 		$witness = $witnessRepository->findOneByEntityTypeAndEntityId($publication->getType(), $publication->getId());
 		if (!is_null($witness)) {
@@ -47,7 +47,7 @@ class WitnessManager extends AbstractManager {
 
 	public function createByPublication(AbstractPublication $publication, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$witnessRepository = $om->getRepository(Witness::CLASS_NAME);
+		$witnessRepository = $om->getRepository(Witness::class);
 
 		// Remove if it exists
 		$witness = $witnessRepository->findOneByEntityTypeAndEntityId($publication->getType(), $publication->getId());
@@ -100,7 +100,7 @@ class WitnessManager extends AbstractManager {
 
 	public function checkResponse($entityType, $entityId) {
 		$om = $this->getDoctrine()->getManager();
-		$witnessRepository = $om->getRepository(Witness::CLASS_NAME);
+		$witnessRepository = $om->getRepository(Witness::class);
 
 		$witness = $witnessRepository->findOneByEntityTypeAndEntityId($entityType, $entityId);
 		if (!is_null($witness)) {

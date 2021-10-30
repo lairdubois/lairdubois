@@ -18,7 +18,6 @@ use App\Entity\Knowledge\Value\Picture;
  */
 class Wood extends AbstractKnowledge {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Wood';
 	const TYPE = 109;
 
 	const STRIPPED_NAME = 'wood';

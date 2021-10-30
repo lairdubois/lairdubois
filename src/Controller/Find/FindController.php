@@ -138,7 +138,7 @@ class FindController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertLockUnlockable($find, $lock);
 
 		// Lock or Unlock
@@ -160,7 +160,7 @@ class FindController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertPublishable($find);
 
 		// Publish
@@ -178,7 +178,7 @@ class FindController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertUnpublishable($find);
 
 		// Unpublish
@@ -203,7 +203,7 @@ class FindController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertEditabable($find);
 
 		$form = $this->createForm(FindType::class, $find);
@@ -225,7 +225,7 @@ class FindController extends AbstractController {
 
 		$doUp = $request->get('ladb_do_up', false) && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertEditabable($find);
 
 		if ($find->getContent() instanceof Gallery) {
@@ -294,7 +294,7 @@ class FindController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertDeletable($find);
 
 		// Delete
@@ -312,7 +312,7 @@ class FindController extends AbstractController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertChownable($find);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -333,7 +333,7 @@ class FindController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertShowable($find, true);
 
 		return array(
@@ -347,7 +347,7 @@ class FindController extends AbstractController {
 	 */
 	public function location($id) {
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertShowable($find);
 
 		$features = array();
@@ -377,7 +377,7 @@ class FindController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_find_card-');
 		}
 
-		$find = $this->retrievePublication($id, Find::CLASS_NAME);
+		$find = $this->retrievePublication($id, Find::class);
 		$this->assertShowable($find);
 
 		return array(
@@ -558,7 +558,7 @@ class FindController extends AbstractController {
 
 			},
 			'find_find',
-			\App\Entity\Find\Find::CLASS_NAME,
+			\App\Entity\Find\Find::class,
 			'core_find_list_page'
 		);
 
@@ -618,7 +618,7 @@ class FindController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$findRepository = $om->getRepository(Find::CLASS_NAME);
+		$findRepository = $om->getRepository(Find::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -638,7 +638,7 @@ class FindController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userFinds = $explorableUtils->getPreviousAndNextPublishedUserExplorables($find, $findRepository, $find->getUser()->getMeta()->getPublicFindCount());
-		$similarFinds = $explorableUtils->getSimilarExplorables($find, 'find_find', Find::CLASS_NAME, $userFinds);
+		$similarFinds = $explorableUtils->getSimilarExplorables($find, 'find_find', Find::class, $userFinds);
 
 		$likableUtils = $this->get(LikableUtils::class);
 		$watchableUtils = $this->get(WatchableUtils::class);

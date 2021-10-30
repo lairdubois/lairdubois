@@ -58,7 +58,6 @@ class Event extends AbstractDraftableAuthoredPublication implements TitledInterf
 		getIsJoinable as getIsJoinableTrait;
 	}
 
-	const CLASS_NAME = 'App\Entity\Event\Event';
 	const TYPE = 123;
 
 	const STATUS_UNKONW = 0;

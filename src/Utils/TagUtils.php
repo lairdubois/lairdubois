@@ -32,7 +32,7 @@ class TagUtils extends AbstractContainerAwareUtils {
 		}
 		$entityType = $taggable->getType();
 
-		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
+		$tagUsageRepository = $om->getRepository(TagUsage::class);
 		foreach ($newUsedTags as $tag) {
 
 			$tagUsage = $tagUsageRepository->findOneByTagAndEntityType($tag, $entityType);
@@ -57,7 +57,7 @@ class TagUtils extends AbstractContainerAwareUtils {
 
 		$proposals = array();
 
-		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
+		$tagUsageRepository = $om->getRepository(TagUsage::class);
 		$tagUsages = $tagUsageRepository->findByEntityType($taggable->getType(), $maxResults);
 		if (!is_null($tagUsages)) {
 			foreach ($tagUsages as $tagUsage) {

@@ -26,7 +26,6 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 
 	use ReviewableTrait;
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Book';
 	const TYPE = 119;
 
 	const STRIPPED_NAME = 'book';

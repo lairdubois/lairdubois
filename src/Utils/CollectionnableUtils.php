@@ -69,7 +69,7 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteEntries(CollectionnableInterface $collectionnable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$entryRepository = $om->getRepository(Entry::CLASS_NAME);
+		$entryRepository = $om->getRepository(Entry::class);
 
 		$entries = $entryRepository->findByEntityTypeAndEntityId($collectionnable->getType(), $collectionnable->getId());
 		foreach ($entries as $entry) {
@@ -117,7 +117,7 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 
 	public function getEntryContext(Collection $collection, CollectionnableInterface $collectionnable) {
 		$om = $this->getDoctrine()->getManager();
-		$entryRepository = $om->getRepository(Entry::CLASS_NAME);
+		$entryRepository = $om->getRepository(Entry::class);
 
 		return array(
 			'collection'      => $collection,
@@ -131,7 +131,7 @@ class CollectionnableUtils extends AbstractContainerAwareUtils {
 
 	public function transferCollections(CollectionnableInterface $collectionnableSrc, CollectionnableInterface $collectionnableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$entryRepository = $om->getRepository(Entry::CLASS_NAME);
+		$entryRepository = $om->getRepository(Entry::class);
 
 		// Retrieve entries
 		$entries = $entryRepository->findByEntityTypeAndEntityId($collectionnableSrc->getType(), $collectionnableSrc->getId(), false);

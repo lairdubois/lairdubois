@@ -35,7 +35,6 @@ class Article extends AbstractPublication implements AuthoredInterface, TitledIn
 	use AuthoredTrait, TitledTrait, SluggedTrait, BlockBodiedTrait;
 	use DraftableTrait, BasicEmbeddableTrait;
 
-	const CLASS_NAME = 'App\Entity\Howto\Article';
 	const TYPE = 107;
 
 	/**

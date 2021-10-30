@@ -31,7 +31,6 @@ class Answer implements TypableInterface, AuthoredInterface, BlockBodiedInterfac
 	use BasicTimestampableTrait, AuthoredTrait, BlockBodiedTrait;
 	use CommentableTrait, VotableTrait;
 
-	const CLASS_NAME = 'App\Entity\Qa\Answer';
 	const TYPE = 114;
 
 	/**

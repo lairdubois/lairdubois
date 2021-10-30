@@ -143,7 +143,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertLockUnlockable($workshop, $lock);
 
 		// Lock or Unlock
@@ -165,7 +165,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertPublishable($workshop);
 
 		// Publish
@@ -183,7 +183,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertUnpublishable($workshop);
 
 		// Unpublish
@@ -208,7 +208,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertEditabable($workshop);
 
 		$form = $this->createForm(WorkshopType::class, $workshop);
@@ -228,7 +228,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertEditabable($workshop);
 
 		$originalBodyBlocks = $workshop->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -295,7 +295,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertDeletable($workshop);
 
 		// Delete
@@ -313,7 +313,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertChownable($workshop);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -337,12 +337,12 @@ class WorkshopController extends AbstractController {
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertShowable($workshop);
 
 		// Plans
 
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -382,12 +382,12 @@ class WorkshopController extends AbstractController {
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertShowable($workshop);
 
 		// Howtos
 
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -420,12 +420,12 @@ class WorkshopController extends AbstractController {
 	public function workflows(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertShowable($workshop);
 
 		// Howtos
 
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$workflowRepository = $om->getRepository(Workflow::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -462,7 +462,7 @@ class WorkshopController extends AbstractController {
 	public function sticker(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertShowable($workshop, true);
 
 		$sticker = $workshop->getSticker();
@@ -493,7 +493,7 @@ class WorkshopController extends AbstractController {
 	public function strip(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertShowable($workshop, true);
 
 		$strip = $workshop->getStrip();
@@ -524,7 +524,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertShowable($workshop, true);
 
 		return array(
@@ -538,7 +538,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function location($id) {
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertShowable($workshop);
 
 		$features = array();
@@ -568,7 +568,7 @@ class WorkshopController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_workshop_card)');
 		}
 
-		$workshop = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workshop = $this->retrievePublication($id, Workshop::class);
 		$this->assertShowable($workshop);
 
 		return array(
@@ -802,7 +802,7 @@ class WorkshopController extends AbstractController {
 
 			},
 			'wonder_workshop',
-			\App\Entity\Wonder\Workshop::CLASS_NAME,
+			\App\Entity\Wonder\Workshop::class,
 			'core_workshop_list_page'
 		);
 
@@ -862,7 +862,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$workshopRepository = $om->getRepository(Workshop::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -885,7 +885,7 @@ class WorkshopController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userWorkshops = $explorableUtils->getPreviousAndNextPublishedUserExplorables($workshop, $workshopRepository, $workshop->getUser()->getMeta()->getPublicWorkshopCount());
-		$similarWorkshops = $explorableUtils->getSimilarExplorables($workshop, 'wonder_workshop', Workshop::CLASS_NAME, $userWorkshops);
+		$similarWorkshops = $explorableUtils->getSimilarExplorables($workshop, 'wonder_workshop', Workshop::class, $userWorkshops);
 
 		$likableUtils = $this->get(LikableUtils::class);
 		$watchableUtils = $this->get(WatchableUtils::class);
@@ -916,7 +916,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function adminConvertToCreation($id) {
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$workshopRepository = $om->getRepository(Workshop::class);
 
 		$workshop = $workshopRepository->findOneById($id);
 		if (is_null($workshop)) {
@@ -939,7 +939,7 @@ class WorkshopController extends AbstractController {
 	 */
 	public function adminConvertToHowto($id) {
 		$om = $this->getDoctrine()->getManager();
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$workshopRepository = $om->getRepository(Workshop::class);
 
 		$workshop = $workshopRepository->findOneById($id);
 		if (is_null($workshop)) {

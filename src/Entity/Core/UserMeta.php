@@ -12,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class UserMeta {
 
-	const CLASS_NAME = 'App\Entity\Core\UserMeta';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

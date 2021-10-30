@@ -11,7 +11,7 @@ class ReviewableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteReviews(ReviewableInterface $reviewable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$reviews = $reviewRepository->findByEntityTypeAndEntityId($reviewable->getType(), $reviewable->getId());
@@ -49,7 +49,7 @@ class ReviewableUtils extends AbstractContainerAwareUtils {
 
 	public function computeAverageRating(ReviewableInterface $reviewable) {
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 
 		$ratingSum = 0;
 		$reviewCount = 0;
@@ -70,7 +70,7 @@ class ReviewableUtils extends AbstractContainerAwareUtils {
 
 	public function getReviewContext(ReviewableInterface $reviewable) {
 		$om = $this->getDoctrine()->getManager();
-		$reviewRepository = $om->getRepository(Review::CLASS_NAME);
+		$reviewRepository = $om->getRepository(Review::class);
 		$globalUtils = $this->get(GlobalUtils::class);
 
 		// Retrieve reviews

@@ -46,7 +46,6 @@ class Question extends AbstractDraftableAuthoredPublication implements TitledInt
 	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait;
 
-	const CLASS_NAME = 'App\Entity\Faq\Question';
 	const TYPE = 110;
 
 	/**

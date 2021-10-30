@@ -164,7 +164,7 @@ class FeedbackController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$feedbackRepository = $om->getRepository(Feedback::class);
 
 		$feedback = $feedbackRepository->findOneById($id);
 		if (is_null($feedback)) {
@@ -192,7 +192,7 @@ class FeedbackController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$feedbackRepository = $om->getRepository(Feedback::class);
 
 		$feedback = $feedbackRepository->findOneById($id);
 		if (is_null($feedback)) {
@@ -250,7 +250,7 @@ class FeedbackController extends AbstractController {
 	 */
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$feedbackRepository = $om->getRepository(Feedback::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 		$feedbackableUtils = $this->get(FeedbackableUtils::class);
 		$typableUtils = $this->get(TypableUtils::class);
@@ -288,7 +288,7 @@ class FeedbackController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$feedbackRepository = $om->getRepository(Feedback::CLASS_NAME);
+		$feedbackRepository = $om->getRepository(Feedback::class);
 		$typableUtils = $this->get(TypableUtils::class);
 
 		$feedback = $feedbackRepository->findOneById($id);

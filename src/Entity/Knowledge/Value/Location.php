@@ -19,7 +19,6 @@ class Location extends BaseValue implements LocalisableExtendedInterface {
 
 	use LocalisableTrait, LocalisableExtendedTrait;
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Location';
 	const TYPE = 14;
 
 	const TYPE_STRIPPED_NAME = 'location';

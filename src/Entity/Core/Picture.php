@@ -13,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Picture {
 
-	const CLASS_NAME = 'App\Entity\Core\Picture';
-
 	const ACCEPTED_FILE_TYPE = '/\.(jpe?g|png)$/i';
 	const LOAD_MAX_FILE_SIZE = 8388608; // 8Mo
 	const MAX_FILE_SIZE = 8388608; // 8Mo

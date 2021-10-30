@@ -25,8 +25,8 @@ class ViewConsumer implements ConsumerInterface {
 		$this->logger = $container->get('logger');
 
 		$this->om = $container->get('doctrine')->getManager();
-		$this->userRepository = $this->om->getRepository(User::CLASS_NAME);
-		$this->viewRepository = $this->om->getRepository(View::CLASS_NAME);
+		$this->userRepository = $this->om->getRepository(User::class);
+		$this->viewRepository = $this->om->getRepository(View::class);
 
 		$this->typableUtils = $container->get(TypableUtils::class);
 		$this->searchUtils = $container->get(SearchUtils::class);
@@ -42,7 +42,7 @@ class ViewConsumer implements ConsumerInterface {
 			$user = $this->userRepository->findOneById($userId);
 			if (!is_null($user)) {
 
-				$viewRepository = $this->om->getRepository(View::CLASS_NAME);
+				$viewRepository = $this->om->getRepository(View::class);
 				$viewedCount = $viewRepository->countByEntityTypeAndEntityIdsAndUserAndKind($entityType, $entityIds, $user, View::KIND_LISTED);
 				if ($viewedCount < count($entityIds)) {
 

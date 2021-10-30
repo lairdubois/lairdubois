@@ -20,7 +20,6 @@ class Testimonial implements TypableInterface, HtmlBodiedInterface {
 
 	use AuthoredTrait, HtmlBodiedTrait;
 
-	const CLASS_NAME = 'App\Entity\Knowledge\School\Testimonial';
 	const TYPE = 116;
 
 	/**

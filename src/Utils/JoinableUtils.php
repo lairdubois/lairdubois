@@ -13,7 +13,7 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteJoins(JoinableInterface $joinable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+		$joinRepository = $om->getRepository(Join::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$joins = $joinRepository->findByEntityTypeAndEntityId($joinable->getType(), $joinable->getId());
@@ -28,7 +28,7 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteJoinsByUser(User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+		$joinRepository = $om->getRepository(Join::class);
 		$typableUtils = $this->get(TypableUtils::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
@@ -48,7 +48,7 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 
 	public function incrementUsersJoinCount(JoinableInterface $joinable, $by = 1, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+		$joinRepository = $om->getRepository(Join::class);
 
 		$joins = $joinRepository->findByEntityTypeAndEntityId($joinable->getType(), $joinable->getId());
 		foreach ($joins as $join) {
@@ -63,7 +63,7 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 
 	public function getJoinContext(JoinableInterface $joinable, User $user = null) {
 		$om = $this->getDoctrine()->getManager();
-		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+		$joinRepository = $om->getRepository(Join::class);
 
 		$join = null;
 		if (!is_null($user)) {
@@ -82,7 +82,7 @@ class JoinableUtils extends AbstractContainerAwareUtils {
 
 	public function transferJoins(JoinableInterface $joinableSrc, JoinableInterface $joinableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$joinRepository = $om->getRepository(Join::CLASS_NAME);
+		$joinRepository = $om->getRepository(Join::class);
 
 		// Retrieve joins
 		$joins = $joinRepository->findByEntityTypeAndEntityId($joinableSrc->getType(), $joinableSrc->getId());

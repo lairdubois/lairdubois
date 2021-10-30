@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Join extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Join';
 	const STRIPPED_NAME = 'join';
 
 	/**

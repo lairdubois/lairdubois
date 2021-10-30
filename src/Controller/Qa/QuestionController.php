@@ -143,7 +143,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertLockUnlockable($question, $lock);
 
 		// Lock or Unlock
@@ -165,7 +165,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertPublishable($question);
 
 		// Publish
@@ -183,7 +183,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertUnpublishable($question);
 
 		// Unpublish
@@ -208,7 +208,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertEditabable($question);
 
 		$form = $this->createForm(QuestionType::class, $question);
@@ -228,7 +228,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertEditabable($question);
 
 		$originalBodyBlocks = $question->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -289,7 +289,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertDeletable($question);
 
 		// Delete
@@ -307,7 +307,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertChownable($question);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -328,7 +328,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertShowable($question, true);
 
 		return array(
@@ -365,10 +365,10 @@ class QuestionController extends AbstractController {
 
 			$maybeUtils = $this->get(MaybeUtils::class);
 			if ($maybeUtils->canDoIt(0, 10, 'tip')) {
-				$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+				$tipRepository = $om->getRepository(Tip::class);
 				$highlightedTip = $tipRepository->findOneRandomByUser($this->getUser());
 			} else if ($maybeUtils->canDoIt(0, 5, 'offer')) {
-				$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+				$offerRepository = $om->getRepository(Offer::class);
 				$highlightedOffer = $offerRepository->findOneRandomByCategoryAndUser(Offer::CATEGORY_JOB, $this->getUser());
 			}
 
@@ -559,7 +559,7 @@ class QuestionController extends AbstractController {
 
 			},
 			'qa_question',
-			\App\Entity\Qa\Question::CLASS_NAME,
+			\App\Entity\Qa\Question::class,
 			'core_qa_question_list_page',
 			$routeParameters
 		);
@@ -613,12 +613,12 @@ class QuestionController extends AbstractController {
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertShowable($question);
 
 		// Creations
 
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -651,12 +651,12 @@ class QuestionController extends AbstractController {
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertShowable($question);
 
 		// Plans
 
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -689,12 +689,12 @@ class QuestionController extends AbstractController {
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertShowable($question);
 
 		// Howtos
 
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -724,8 +724,8 @@ class QuestionController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(\App\Entity\Qa\Question::CLASS_NAME);
-		$answerRepository = $om->getRepository(\App\Entity\Qa\Answer::CLASS_NAME);
+		$questionRepository = $om->getRepository(\App\Entity\Qa\Question::class);
+		$answerRepository = $om->getRepository(\App\Entity\Qa\Answer::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -755,7 +755,7 @@ class QuestionController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userQuestions = $explorableUtils->getPreviousAndNextPublishedUserExplorables($question, $questionRepository, $question->getUser()->getMeta()->getPublicQuestionCount());
-		$similarQuestions = $explorableUtils->getSimilarExplorables($question, 'qa_question', Question::CLASS_NAME, $userQuestions);
+		$similarQuestions = $explorableUtils->getSimilarExplorables($question, 'qa_question', Question::class, $userQuestions);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');
@@ -792,7 +792,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function adminConvertToOffer($id) {
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$questionRepository = $om->getRepository(Question::class);
 
 		$question = $questionRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($question)) {

@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Longtext extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Longtext';
 	const TYPE = 17;
 
 	const TYPE_STRIPPED_NAME = 'longtext';

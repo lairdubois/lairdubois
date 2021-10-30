@@ -22,7 +22,6 @@ class Workshop extends AbstractWonder implements BlockBodiedInterface, Localisab
 
 	use BlockBodiedTrait, LocalisableTrait, FeedbackableTrait;
 
-	const CLASS_NAME = 'App\Entity\Wonder\Workshop';
 	const TYPE = 101;
 
 	/**

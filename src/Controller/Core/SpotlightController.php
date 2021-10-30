@@ -36,7 +36,7 @@ class SpotlightController extends AbstractController {
 	 */
 	public function feed() {
 		$om = $this->getDoctrine()->getManager();
-		$spotlightRepository = $om->getRepository(Spotlight::CLASS_NAME);
+		$spotlightRepository = $om->getRepository(Spotlight::class);
 		$translator = $this->get('translator');
 		$typableUtils = $this->get(TypableUtils::class);
 

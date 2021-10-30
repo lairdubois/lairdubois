@@ -283,7 +283,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 				$om = $this->getDoctrine()->getManager();
 
 				// Check referer
-				$refererRepository = $om->getRepository(Referer::CLASS_NAME);
+				$refererRepository = $om->getRepository(Referer::class);
 				$referer = $refererRepository->findOneByBaseUrl($baseUrl);
 				if (is_null($referer)) {
 
@@ -297,7 +297,7 @@ class EmbeddableUtils extends AbstractContainerAwareUtils {
 				}
 
 				// Process referral
-				$referralRepository = $om->getRepository(Referral::CLASS_NAME);
+				$referralRepository = $om->getRepository(Referral::class);
 				$referral = $referralRepository->findOneByEntityTypeAndEntityIdAndUrl($embeddable->getType(), $embeddable->getId(), $url);
 				if (is_null($referral)) {
 

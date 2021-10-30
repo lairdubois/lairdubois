@@ -56,7 +56,6 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	use TitledTrait, SluggedTrait, PicturedTrait, MultiPicturedTrait, BlockBodiedTrait;
 	use RepublishableTrait, IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait, LocalisableTrait, LocalisableExtendedTrait;
 
-	const CLASS_NAME = 'App\Entity\Offer\Offer';
 	const TYPE = 122;
 
 	const ACTIVE_LIFETIME = '30 day';

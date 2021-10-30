@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Isbn extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Isbn';
 	const TYPE = 19;
 
 	const TYPE_STRIPPED_NAME = 'isbn';

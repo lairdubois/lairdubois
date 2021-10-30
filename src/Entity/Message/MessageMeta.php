@@ -15,8 +15,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class MessageMeta {
 
-	const CLASS_NAME = 'App\Entity\Message\MessageMeta';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

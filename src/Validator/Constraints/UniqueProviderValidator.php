@@ -28,7 +28,7 @@ class UniqueProviderValidator extends ConstraintValidator {
 		if (!is_null($value)) {
 			if ($value instanceof Sign) {
 				$data = $value->getData();
-				$providerRepository = $this->om->getRepository(Provider::CLASS_NAME);
+				$providerRepository = $this->om->getRepository(Provider::class);
 				if (!is_null($data) && $providerRepository->existsBySign($data, $constraint->excludedId)) {
 					$this->context->buildViolation($constraint->message)
 						->atPath('signValue')

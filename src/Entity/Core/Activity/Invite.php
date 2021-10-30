@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Invite extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Invite';
 	const STRIPPED_NAME = 'invite';
 
 	/**

@@ -32,83 +32,83 @@ EOT
 
 		$defs = array(
 			array(
-				'className' => \App\Entity\Core\Comment::CLASS_NAME,
+				'className' => \App\Entity\Core\Comment::class,
 				'name'      => 'comment',
 				'hiddable'	=> false,
 			),
 			array(
-				'className' => \App\Entity\Wonder\Creation::CLASS_NAME,
+				'className' => \App\Entity\Wonder\Creation::class,
 				'name'      => 'creation',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Wonder\Plan::CLASS_NAME,
+				'className' => \App\Entity\Wonder\Plan::class,
 				'name'      => 'plan',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Howto\Howto::CLASS_NAME,
+				'className' => \App\Entity\Howto\Howto::class,
 				'name'      => 'howto',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Wonder\Workshop::CLASS_NAME,
+				'className' => \App\Entity\Wonder\Workshop::class,
 				'name'      => 'workshop',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Find\Find::CLASS_NAME,
+				'className' => \App\Entity\Find\Find::class,
 				'name'      => 'find',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Event\Event::CLASS_NAME,
+				'className' => \App\Entity\Event\Event::class,
 				'name'      => 'event',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Qa\Question::CLASS_NAME,
+				'className' => \App\Entity\Qa\Question::class,
 				'name'      => 'question',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Qa\Answer::CLASS_NAME,
+				'className' => \App\Entity\Qa\Answer::class,
 				'name'      => 'answer',
 				'hiddable'	=> false,
 			),
 			array(
-				'className' => \App\Entity\Offer\Offer::CLASS_NAME,
+				'className' => \App\Entity\Offer\Offer::class,
 				'name'      => 'offer',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Promotion\Graphic::CLASS_NAME,
+				'className' => \App\Entity\Promotion\Graphic::class,
 				'name'      => 'graphic',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Workflow\Workflow::CLASS_NAME,
+				'className' => \App\Entity\Workflow\Workflow::class,
 				'name'      => 'workflow',
 				'hiddable'	=> true,
 			),
 			array(
-				'className' => \App\Entity\Collection\Collection::CLASS_NAME,
+				'className' => \App\Entity\Collection\Collection::class,
 				'name'      => 'collection',
 				'hiddable'	=> true,
 			),
 
 			array(
-				'className' => \App\Entity\Knowledge\Value\BaseValue::CLASS_NAME,
+				'className' => \App\Entity\Knowledge\Value\BaseValue::class,
 				'name'      => 'proposal',
 				'hiddable'	=> false,
 			),
 			array(
-				'className' => \App\Entity\Knowledge\School\Testimonial::CLASS_NAME,
+				'className' => \App\Entity\Knowledge\School\Testimonial::class,
 				'name'      => 'testimonial',
 				'hiddable'	=> false,
 			),
 			array(
-				'className' => \App\Entity\Core\Review::CLASS_NAME,
+				'className' => \App\Entity\Core\Review::class,
 				'name'      => 'review',
 				'hiddable'	=> false,
 			),

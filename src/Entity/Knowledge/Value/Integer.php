@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Integer extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Integer';
 	const TYPE = 11;
 
 	const TYPE_STRIPPED_NAME = 'integer';

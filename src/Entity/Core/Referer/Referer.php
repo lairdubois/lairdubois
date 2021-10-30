@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Referer {
 
-	const CLASS_NAME = 'App\Entity\Core\Referer\Referer';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

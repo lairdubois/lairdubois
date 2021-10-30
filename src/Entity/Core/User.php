@@ -28,8 +28,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Indexab
 
 	use IndexableTrait, SitemapableTrait, LocalisableTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\User';
-
     const ROLE_DEFAULT = 'ROLE_USER';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 

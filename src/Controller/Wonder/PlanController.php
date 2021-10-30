@@ -151,7 +151,7 @@ class PlanController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertLockUnlockable($plan, $lock);
 
 		// Lock or Unlock
@@ -173,7 +173,7 @@ class PlanController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertPublishable($plan);
 
 		// Publish
@@ -191,7 +191,7 @@ class PlanController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertUnpublishable($plan);
 
 		// Unpublish
@@ -216,7 +216,7 @@ class PlanController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertEditabable($plan);
 
 		$form = $this->createForm(PlanType::class, $plan);
@@ -236,7 +236,7 @@ class PlanController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertEditabable($plan);
 
 		$picturedUtils = $this->get(PicturedUtils::class);
@@ -303,7 +303,7 @@ class PlanController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertDeletable($plan);
 
 		// Delete
@@ -321,7 +321,7 @@ class PlanController extends AbstractController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertChownable($plan);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -342,7 +342,7 @@ class PlanController extends AbstractController {
 	public function download($id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		$planUtils = $this->get(PlanUtils::class);
@@ -385,12 +385,12 @@ class PlanController extends AbstractController {
 	public function questions(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		// Questions
 
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$questionRepository = $om->getRepository(Question::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -423,12 +423,12 @@ class PlanController extends AbstractController {
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		// Howtos
 
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -461,12 +461,12 @@ class PlanController extends AbstractController {
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		// Creations
 
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -499,12 +499,12 @@ class PlanController extends AbstractController {
 	public function workflows(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		// Workflows
 
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$workflowRepository = $om->getRepository(Workflow::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -537,12 +537,12 @@ class PlanController extends AbstractController {
 	public function workshops(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		// Workshops
 
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$workshopRepository = $om->getRepository(Workshop::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -575,12 +575,12 @@ class PlanController extends AbstractController {
 	public function schools(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		// Schools
 
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -612,9 +612,9 @@ class PlanController extends AbstractController {
 	 */
 	public function inspirations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		// Inspirations
@@ -650,9 +650,9 @@ class PlanController extends AbstractController {
 	 */
 	public function rebounds(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan);
 
 		// Rebounds
@@ -695,7 +695,7 @@ class PlanController extends AbstractController {
 
 		$id = intval($id);
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan, true);
 
 		$sticker = $plan->getSticker();
@@ -728,7 +728,7 @@ class PlanController extends AbstractController {
 
 		$id = intval($id);
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan, true);
 
 		$strip = $plan->getStrip();
@@ -762,7 +762,7 @@ class PlanController extends AbstractController {
 
 		$id = intval($id);
 
-		$plan = $this->retrievePublication($id, Plan::CLASS_NAME);
+		$plan = $this->retrievePublication($id, Plan::class);
 		$this->assertShowable($plan, true);
 
 		return array(
@@ -990,7 +990,7 @@ class PlanController extends AbstractController {
 
 			},
 			'wonder_plan',
-			\App\Entity\Wonder\Plan::CLASS_NAME,
+			\App\Entity\Wonder\Plan::class,
 			'core_plan_list_page',
 			$routeParameters
 		);
@@ -1036,7 +1036,7 @@ class PlanController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -1064,7 +1064,7 @@ class PlanController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userPlans = $explorableUtils->getPreviousAndNextPublishedUserExplorables($plan, $planRepository, $plan->getUser()->getMeta()->getPublicPlanCount());
-		$similarPlans = $explorableUtils->getSimilarExplorables($plan, 'wonder_plan', Plan::CLASS_NAME, $userPlans);
+		$similarPlans = $explorableUtils->getSimilarExplorables($plan, 'wonder_plan', Plan::class, $userPlans);
 
 		$likableUtils = $this->get(LikableUtils::class);
 		$watchableUtils = $this->get(WatchableUtils::class);

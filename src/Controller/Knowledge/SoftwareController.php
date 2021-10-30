@@ -162,7 +162,7 @@ class SoftwareController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$software = $this->retrievePublication($id, Software::CLASS_NAME);
+		$software = $this->retrievePublication($id, Software::class);
 		$this->assertDeletable($software);
 
 		// Delete
@@ -181,7 +181,7 @@ class SoftwareController extends AbstractController {
 	 */
 	public function widget(Request $request, $id) {
 
-		$software = $this->retrievePublication($id, Software::CLASS_NAME);
+		$software = $this->retrievePublication($id, Software::class);
 		$this->assertShowable($software, true);
 
 		return array(
@@ -351,7 +351,7 @@ class SoftwareController extends AbstractController {
 
 			},
 			'knowledge_software',
-			\App\Entity\Knowledge\Software::CLASS_NAME,
+			\App\Entity\Knowledge\Software::class,
 			'core_software_list_page'
 		);
 
@@ -376,7 +376,7 @@ class SoftwareController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$softwareRepository = $om->getRepository(Software::CLASS_NAME);
+		$softwareRepository = $om->getRepository(Software::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

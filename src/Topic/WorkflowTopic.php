@@ -13,7 +13,7 @@ class WorkflowTopic extends AbstractContainerAwareTopic {
 
 	private function _retrieveWorkflow(ConnectionInterface $connection, WampRequest $request, $user) {
 		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$workflowRepository = $om->getRepository(Workflow::class);
 
 		$id = intval($request->getAttributes()->get('id'));
 

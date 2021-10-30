@@ -20,7 +20,7 @@ class MentionUtils extends AbstractContainerAwareUtils {
 
     public function deleteMentions(MentionSourceInterface $entity, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$mentionRepository = $om->getRepository(Mention::CLASS_NAME);
+		$mentionRepository = $om->getRepository(Mention::class);
 
 		$mentions = $mentionRepository->findByEntityTypeAndEntityId($entity->getType(), $entity->getId());
 		foreach ($mentions as $mention) {
@@ -71,7 +71,7 @@ class MentionUtils extends AbstractContainerAwareUtils {
 			$mentionedUsernames = array_unique($mentionedUsernames);
 
 			// Retrieve mentioned users
-            $userRepository = $om->getRepository(User::CLASS_NAME);
+            $userRepository = $om->getRepository(User::class);
 			$mentionedUsers = array();
 			foreach ($mentionedUsernames as $username) {
 				$user = $userRepository->findOneByUsername($username);
@@ -81,7 +81,7 @@ class MentionUtils extends AbstractContainerAwareUtils {
 			}
 
 			// Retrieve mentions
-			$mentionRepository = $om->getRepository(Mention::CLASS_NAME);
+			$mentionRepository = $om->getRepository(Mention::class);
 			$mentions = $mentionRepository->findByEntityTypeAndEntityId($entity->getType(), $entity->getId());
 
 			$mentionsToRemove = array();

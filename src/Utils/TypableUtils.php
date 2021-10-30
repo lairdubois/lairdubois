@@ -176,7 +176,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
     }
 
     public function getRepositoryByType($type) {
-        $className = $this->getClassNameByType($type);
+        $className = $this->getClassByType($type);
         if (!is_null($className)) {
             $om = $this->get('doctrine.orm.entity_manager');
             $repository = $om->getRepository($className);
@@ -185,24 +185,7 @@ class TypableUtils extends AbstractContainerAwareUtils {
         return null;
     }
 
-    public function getManagerByType($type) {
-        $strippedName = $this->getStrippedNameByType($type);
-        if (!is_null($strippedName)) {
-            $manager = $this->get('ladb_core.'.$strippedName.'_manager');
-            return $manager;
-        }
-        return null;
-    }
-
     /////
-
-    public static function getClassNameByType($type) {
-        $class = self::getClassByType($type);
-        if (!is_null($class)) {
-            return $class::CLASS_NAME;
-        }
-        return null;
-    }
 
     public static function getClassByType($type) {
         switch ($type) {

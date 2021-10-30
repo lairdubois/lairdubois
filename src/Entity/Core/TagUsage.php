@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class TagUsage {
 
-	const CLASS_NAME = 'App\Entity\Core\TagUsage';
-
 	/**
 	 * @ORM\Id
 	 * @ORM\ManyToOne(targetEntity="App\Entity\Core\Tag", inversedBy="usages")

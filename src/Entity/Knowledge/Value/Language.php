@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Language extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Language';
 	const TYPE = 18;
 
 	const TYPE_STRIPPED_NAME = 'language';

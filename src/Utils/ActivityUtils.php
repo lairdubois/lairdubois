@@ -225,91 +225,91 @@ class ActivityUtils {
 	}
 
 	public function deleteActivitiesByComment(\App\Entity\Core\Comment $comment, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Comment::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Comment::class);
 		$activities = $activityRepository->findByComment($comment);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByValue(\App\Entity\Knowledge\Value\BaseValue $value, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Contribute::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Contribute::class);
 		$activities = $activityRepository->findByValue($value);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByFollower(\App\Entity\Core\Follower $follower, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Follow::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Follow::class);
 		$activities = $activityRepository->findByFollower($follower);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByLike(\App\Entity\Core\Like $like, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Like::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Like::class);
 		$activities = $activityRepository->findByLike($like);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByMention(\App\Entity\Core\Mention $mention, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Mention::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Mention::class);
 		$activities = $activityRepository->findByMention($mention);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByVote(\App\Entity\Core\Vote $vote, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Vote::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Vote::class);
 		$activities = $activityRepository->findByVote($vote);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByJoin(\App\Entity\Core\Join $join, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Join::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Join::class);
 		$activities = $activityRepository->findByJoin($join);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByMessage(\App\Entity\Message\Message $message, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Write::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Write::class);
 		$activities = $activityRepository->findByMessage($message);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByAnswer(\App\Entity\Qa\Answer $answer, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Answer::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Answer::class);
 		$activities = $activityRepository->findByAnswer($answer);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByTestimonial(\App\Entity\Knowledge\School\Testimonial $testimonial, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Testify::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Testify::class);
 		$activities = $activityRepository->findByTestimonial($testimonial);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByReview(\App\Entity\Core\Review $review, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Review::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Review::class);
 		$activities = $activityRepository->findByReview($review);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByFeedback(\App\Entity\Core\Feedback $feedback, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Feedback::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Feedback::class);
 		$activities = $activityRepository->findByFeedback($feedback);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByInvitation(\App\Entity\Core\MemberInvitation $invitation, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Invite::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Invite::class);
 		$activities = $activityRepository->findByInvitation($invitation);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByRequest(\App\Entity\Core\MemberRequest $request, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Request::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Request::class);
 		$activities = $activityRepository->findByRequest($request);
 		$this->_deleteActivities($activities, $flush);
 	}
 
 	public function deleteActivitiesByEntityTypeAndEntityId($entityType, $entityId, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Publish::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Publish::class);
 		$activities = $activityRepository->findByEntityTypeAndEntityId($entityType, $entityId);
 		$this->_deleteActivities($activities, $flush);
 	}
@@ -317,7 +317,7 @@ class ActivityUtils {
 	// Transfer /////
 
 	public function transferPublishActivities($entityTypeSrc, $entityIdSrc, $entityTypeDest, $entityIdDest, $flush = true) {
-		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Publish::CLASS_NAME);
+		$activityRepository = $this->om->getRepository(\App\Entity\Core\Activity\Publish::class);
 		$activities = $activityRepository->findByEntityTypeAndEntityId($entityTypeSrc, $entityIdSrc);
 
 		foreach ($activities as $activity) {

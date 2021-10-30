@@ -79,7 +79,7 @@ abstract class AbstractAuthoredPublicationManager extends AbstractPublicationMan
 		$publication->setUser($targetUser);
 
 		// Update likes
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 		$likes = $likeRepository->findByEntityTypeAndEntityId($publication->getType(), $publication->getId());
 		$likeCount = count($likes);
 		foreach ($likes as $like) {

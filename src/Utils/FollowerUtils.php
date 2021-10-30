@@ -17,7 +17,7 @@ class FollowerUtils extends AbstractContainerAwareUtils {
 
     public function deleteFollowersByUser(User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
+		$followerRepository = $om->getRepository(Follower::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$followers = $followerRepository->findByUser($user);
@@ -34,7 +34,7 @@ class FollowerUtils extends AbstractContainerAwareUtils {
 
 	public function deleteFollowingsByUser(User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
+		$followerRepository = $om->getRepository(Follower::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$followers = $followerRepository->findByFollowingUser($user);
@@ -51,7 +51,7 @@ class FollowerUtils extends AbstractContainerAwareUtils {
 
 	public function deleteByFollowingUserAndUser(User $followingUser, User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
+		$followerRepository = $om->getRepository(Follower::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$follower = $followerRepository->findOneByFollowingUserIdAndUser($followingUser->getId(), $user);
@@ -74,7 +74,7 @@ class FollowerUtils extends AbstractContainerAwareUtils {
 			return null;
 		}
 
-		$followerRepository = $om->getRepository(Follower::CLASS_NAME);
+		$followerRepository = $om->getRepository(Follower::class);
 		$follower = null;
 		if (!is_null($followerUser)) {
 			$follower = $followerRepository->findOneByFollowingUserIdAndUser($followingUser->getId(), $followerUser);

@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Request extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Request';
 	const STRIPPED_NAME = 'request';
 
 	/**

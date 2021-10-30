@@ -21,8 +21,6 @@ class Join implements AuthoredInterface {
 
 	use AuthoredTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\Join';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

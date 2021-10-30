@@ -13,7 +13,6 @@ use App\Validator\Constraints as LadbAssert;
  */
 class Price extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Price';
 	const TYPE = 20;
 
 	const TYPE_STRIPPED_NAME = 'price';

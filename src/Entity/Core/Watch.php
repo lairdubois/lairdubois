@@ -21,8 +21,6 @@ class Watch implements AuthoredInterface {
 
 	use AuthoredTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\Watch';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

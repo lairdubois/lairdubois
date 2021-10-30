@@ -74,7 +74,7 @@ class PartController extends AbstractWorkflowBasedController {
 	 */
 	public function edit(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$partRepository = $om->getRepository(Part::CLASS_NAME);
+		$partRepository = $om->getRepository(Part::class);
 
 		$part = $partRepository->findOneById($id);
 		if (is_null($part)) {
@@ -96,7 +96,7 @@ class PartController extends AbstractWorkflowBasedController {
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$partRepository = $om->getRepository(Part::CLASS_NAME);
+		$partRepository = $om->getRepository(Part::class);
 
 		$part = $partRepository->findOneById($id);
 		if (is_null($part)) {
@@ -112,7 +112,7 @@ class PartController extends AbstractWorkflowBasedController {
 			$om->flush();
 
 			// Retrieve updated tasks
-			$taskRepository = $om->getRepository(Task::CLASS_NAME);
+			$taskRepository = $om->getRepository(Task::class);
 			$tasks = $taskRepository->findByPart($part);
 
 			// Compute parts count
@@ -150,7 +150,7 @@ class PartController extends AbstractWorkflowBasedController {
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$partRepository = $om->getRepository(Part::CLASS_NAME);
+		$partRepository = $om->getRepository(Part::class);
 
 		$part = $partRepository->findOneById($id);
 		if (is_null($part)) {
@@ -163,7 +163,7 @@ class PartController extends AbstractWorkflowBasedController {
 		$workflow->removePart($part);
 
 		// Retrieve updated tasks
-		$taskRepository = $om->getRepository(Task::CLASS_NAME);
+		$taskRepository = $om->getRepository(Task::class);
 		$tasks = $taskRepository->findByPart($part);
 
 		$om->remove($part);

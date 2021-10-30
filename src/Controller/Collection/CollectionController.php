@@ -142,7 +142,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$collection = $this->retrievePublication($id, Collection::class);
 		$this->assertLockUnlockable($collection, $lock);
 
 		if ($collection->getIsLocked() === $lock) {
@@ -168,7 +168,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function publish($id) {
 
-		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$collection = $this->retrievePublication($id, Collection::class);
 		$this->assertPublishable($collection);
 
 		// Publish
@@ -186,7 +186,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$collection = $this->retrievePublication($id, Collection::class);
 		$this->assertUnpublishable($collection);
 
 		// Unpublish
@@ -211,7 +211,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function edit($id) {
 
-		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$collection = $this->retrievePublication($id, Collection::class);
 		$this->assertEditabable($collection);
 
 		$form = $this->createForm(CollectionType::class, $collection);
@@ -232,7 +232,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$collection = $this->retrievePublication($id, Collection::class);
 		$this->assertEditabable($collection);
 
 		$previouslyUsedTags = $collection->getTags()->toArray();	// Need to be an array to copy values
@@ -282,7 +282,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function delete($id) {
 
-		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$collection = $this->retrievePublication($id, Collection::class);
 		$this->assertDeletable($collection);
 
 		// Delete
@@ -301,7 +301,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function widget(Request $request, $id) {
 
-		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$collection = $this->retrievePublication($id, Collection::class);
 		$this->assertShowable($collection, true);
 
 		return array(
@@ -314,7 +314,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function add($id, $entityType, $entityId) {
 
-		$collection = $this->retrievePublication($id, Collection::CLASS_NAME);
+		$collection = $this->retrievePublication($id, Collection::class);
 
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $collection->getUser()->getId() != $this->getUser()->getId()) {
 			throw $this->createNotFoundException('Not allowed (core_collection_add)');
@@ -468,7 +468,7 @@ class CollectionController extends AbstractCollectionBasedController {
 
 			},
 			'collection_collection',
-			\App\Entity\Collection\Collection::CLASS_NAME,
+			\App\Entity\Collection\Collection::class,
 			'core_collection_list_page'
 		);
 
@@ -494,7 +494,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function listAvailable($entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+		$collectionRepository = $om->getRepository(Collection::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		// Retrieve related entity
@@ -535,7 +535,7 @@ class CollectionController extends AbstractCollectionBasedController {
 	 */
 	public function listByEntity(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$collectionRepository = $om->getRepository(Collection::CLASS_NAME);
+		$collectionRepository = $om->getRepository(Collection::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		// Retrieve related entity
@@ -605,7 +605,7 @@ class CollectionController extends AbstractCollectionBasedController {
 		if ($entityType > 0) {
 
 			$om = $this->getDoctrine()->getManager();
-			$entryRepository = $om->getRepository(Entry::CLASS_NAME);
+			$entryRepository = $om->getRepository(Entry::class);
 			$paginatorUtils = $this->get(PaginatorUtils::class);
 			$typableUtils = $this->get(TypableUtils::class);
 

@@ -11,7 +11,7 @@ class ToolRepository extends AbstractKnowledgeRepository {
 	/////
 
 	public function findUserIdsById($id) {
-		return $this->getEntityManager()->getRepository(BaseValue::CLASS_NAME)->findUserIdsByParentEntityTypeAndParentEntityId(Tool::TYPE, $id);
+		return $this->getEntityManager()->getRepository(BaseValue::class)->findUserIdsByParentEntityTypeAndParentEntityId(Tool::TYPE, $id);
 	}
 
 	//////

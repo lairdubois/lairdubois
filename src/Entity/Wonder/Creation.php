@@ -25,7 +25,6 @@ class Creation extends AbstractWonder implements BlockBodiedInterface, Inspirabl
 	use BlockBodiedTrait;
 	use InspirableTrait, FeedbackableTrait, SpotlightableTrait;
 
-	const CLASS_NAME = 'App\Entity\Wonder\Creation';
 	const TYPE = 100;
 
 	/**

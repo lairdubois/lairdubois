@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Tag {
 
-	const CLASS_NAME = 'App\Entity\Core\Tag';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

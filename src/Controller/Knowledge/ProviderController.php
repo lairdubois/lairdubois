@@ -163,7 +163,7 @@ class ProviderController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$provider = $this->retrievePublication($id, Provider::CLASS_NAME);
+		$provider = $this->retrievePublication($id, Provider::class);
 		$this->assertDeletable($provider);
 
 		// Delete
@@ -182,7 +182,7 @@ class ProviderController extends AbstractController {
 	 */
 	public function location(Request $request, $id) {
 
-		$provider = $this->retrievePublication($id, Provider::CLASS_NAME);
+		$provider = $this->retrievePublication($id, Provider::class);
 		$this->assertShowable($provider);
 
 		$features = array();
@@ -209,7 +209,7 @@ class ProviderController extends AbstractController {
 	 */
 	public function widget(Request $request, $id) {
 
-		$provider = $this->retrievePublication($id, Provider::CLASS_NAME);
+		$provider = $this->retrievePublication($id, Provider::class);
 		$this->assertShowable($provider, true);
 
 		return array(
@@ -440,7 +440,7 @@ class ProviderController extends AbstractController {
 
 			},
 			'knowledge_provider',
-			\App\Entity\Knowledge\Provider::CLASS_NAME,
+			\App\Entity\Knowledge\Provider::class,
 			'core_provider_list_page',
 			$routeParameters
 		);
@@ -499,7 +499,7 @@ class ProviderController extends AbstractController {
 	 */
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+		$providerRepository = $om->getRepository(Provider::class);
 
 		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($provider)) {
@@ -508,7 +508,7 @@ class ProviderController extends AbstractController {
 
 		// Creations
 
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -540,7 +540,7 @@ class ProviderController extends AbstractController {
 	 */
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+		$providerRepository = $om->getRepository(Provider::class);
 
 		$provider = $providerRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($provider)) {
@@ -549,7 +549,7 @@ class ProviderController extends AbstractController {
 
 		// Howtos
 
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -583,7 +583,7 @@ class ProviderController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+		$providerRepository = $om->getRepository(Provider::class);
 
 		$id = intval($id);
 
@@ -603,7 +603,7 @@ class ProviderController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$providerRepository = $om->getRepository(Provider::CLASS_NAME);
+		$providerRepository = $om->getRepository(Provider::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

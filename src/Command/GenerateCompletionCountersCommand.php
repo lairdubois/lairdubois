@@ -34,19 +34,19 @@ EOT
 
 		$defs = array(
 			array(
-				'className' => \App\Entity\Knowledge\Book::CLASS_NAME,
+				'className' => \App\Entity\Knowledge\Book::class,
 			),
 			array(
-				'className' => \App\Entity\Knowledge\Provider::CLASS_NAME,
+				'className' => \App\Entity\Knowledge\Provider::class,
 			),
 			array(
-				'className' => \App\Entity\Knowledge\School::CLASS_NAME,
+				'className' => \App\Entity\Knowledge\School::class,
 			),
 			array(
-				'className' => \App\Entity\Knowledge\Software::CLASS_NAME,
+				'className' => \App\Entity\Knowledge\Software::class,
 			),
 			array(
-				'className' => \App\Entity\Knowledge\Wood::CLASS_NAME,
+				'className' => \App\Entity\Knowledge\Wood::class,
 			),
 		);
 

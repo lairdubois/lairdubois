@@ -19,7 +19,7 @@ class WebpushNotificationConsumer implements ConsumerInterface {
 		$this->logger = $container->get('logger');
 
 		$this->om = $container->get('doctrine')->getManager();
-		$this->userRepository = $this->om->getRepository(User::CLASS_NAME);
+		$this->userRepository = $this->om->getRepository(User::class);
 		$this->webpushNotificationUtils = $container->get(WebpushNotificationUtils::class);
 
 	}

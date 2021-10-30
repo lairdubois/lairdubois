@@ -2,16 +2,16 @@
 
 namespace App\Event;
 
-use App\Manager\Qa\QuestionManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Entity\Knowledge\Value\BaseValue;
-use App\Model\IndexableInterface;
-use App\Utils\SearchUtils;
+use App\Manager\Qa\QuestionManager;
 use App\Utils\KnowledgeUtils;
+use App\Utils\SearchUtils;
 use App\Utils\TextureUtils;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
-class VotableListener implements EventSubscriberInterface {
+class VotableListener implements EventSubscriberInterface, ServiceSubscriberInterface {
 
 	const VOTE_UPDATED = 'ladb.votable.vote_updated';
 
@@ -20,6 +20,15 @@ class VotableListener implements EventSubscriberInterface {
 	public function __construct(ContainerInterface $container) {
 		$this->container = $container;
 	}
+
+    public static function getSubscribedServices() {
+        return array(
+            '?'.QuestionManager::class,
+            '?'.KnowledgeUtils::class,
+            '?'.SearchUtils::class,
+            '?'.TextureUtils::class,
+        );
+    }
 
 	public static function getSubscribedEvents() {
 		return array(

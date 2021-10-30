@@ -57,7 +57,7 @@ class AnswerController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_qa_answer_new)');
 		}
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 
 		$answer = new Answer();
 		$answer->addBodyBlock(new \App\Entity\Core\Block\Text());	// Add a default Text body block
@@ -80,10 +80,10 @@ class AnswerController extends AbstractController {
 
 		$this->createLock('core_qa_answer_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 
 		$om = $this->getDoctrine()->getManager();
-		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$answerRepository = $om->getRepository(Answer::class);
 		if ($answerRepository->existsByQuestionAndUser($question, $this->getUser())) {
 			throw $this->createNotFoundException('Only one answer allowed (id='.$id.').');
 		}
@@ -169,7 +169,7 @@ class AnswerController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$answerRepository = $om->getRepository(Answer::class);
 
 		$answer = $answerRepository->findOneById($id);
 		if (is_null($answer)) {
@@ -197,7 +197,7 @@ class AnswerController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$answerRepository = $om->getRepository(Answer::class);
 
 		$answer = $answerRepository->findOneById($id);
 		if (is_null($answer)) {
@@ -259,7 +259,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function bestToggle(Request $request, $id, $action) {
 		$om = $this->getDoctrine()->getManager();
-		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$answerRepository = $om->getRepository(Answer::class);
 
 		$answer = $answerRepository->findOneById($id);
 		if (is_null($answer)) {
@@ -299,7 +299,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$answerRepository = $om->getRepository(Answer::class);
 
 		$answer = $answerRepository->findOneById($id);
 		if (is_null($answer)) {
@@ -330,7 +330,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function show($id) {
 		$om = $this->getDoctrine()->getManager();
-		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$answerRepository = $om->getRepository(Answer::class);
 
 		$answer = $answerRepository->findOneById($id);
 		if (is_null($answer)) {
@@ -358,8 +358,8 @@ class AnswerController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(\App\Entity\Qa\Question::CLASS_NAME);
-		$answerRepository = $om->getRepository(\App\Entity\Qa\Answer::CLASS_NAME);
+		$questionRepository = $om->getRepository(\App\Entity\Qa\Question::class);
+		$answerRepository = $om->getRepository(\App\Entity\Qa\Answer::class);
 
 		$id = intval($id);
 
@@ -388,7 +388,7 @@ class AnswerController extends AbstractController {
 	 */
 	public function adminConvertToComment($id) {
 		$om = $this->getDoctrine()->getManager();
-		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
+		$answerRepository = $om->getRepository(Answer::class);
 
 		$answer = $answerRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($answer)) {

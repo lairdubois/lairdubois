@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Contribute extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Contribute';
 	const STRIPPED_NAME = 'contribute';
 
 	/**

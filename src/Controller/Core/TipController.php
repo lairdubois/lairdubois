@@ -95,7 +95,7 @@ class TipController extends AbstractController {
 	 */
 	public function edit($id) {
 		$om = $this->getDoctrine()->getManager();
-		$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+		$tipRepository = $om->getRepository(Tip::class);
 
 		$tip = $tipRepository->findOneById($id);
 		if (is_null($tip)) {
@@ -117,7 +117,7 @@ class TipController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+		$tipRepository = $om->getRepository(Tip::class);
 
 		$tip = $tipRepository->findOneById($id);
 		if (is_null($tip)) {
@@ -163,7 +163,7 @@ class TipController extends AbstractController {
 	 */
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
-		$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+		$tipRepository = $om->getRepository(Tip::class);
 
 		$tip = $tipRepository->findOneById($id);
 		if (is_null($tip)) {
@@ -237,7 +237,7 @@ class TipController extends AbstractController {
 			},
 			null,
 			'core_tip',
-			\App\Entity\Core\Tip::CLASS_NAME,
+			\App\Entity\Core\Tip::class,
 			'core_tip_list_page'
 		);
 
@@ -262,7 +262,7 @@ class TipController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$tipRepository = $om->getRepository(Tip::CLASS_NAME);
+		$tipRepository = $om->getRepository(Tip::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

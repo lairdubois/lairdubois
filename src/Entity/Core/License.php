@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class License {
 
-	const CLASS_NAME = 'App\Entity\Core\License';
-
 	const SUPPORTED_VERSIONS = [ '3.0', '4.0' ];
 	const DEFAULT_VERSION = '4.0';
 

@@ -52,8 +52,8 @@ EOT
 
 		$om = $this->getDoctrine()->getManager();
 		$activityRepository = $om->getRepository(AbstractActivity::class);
-		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
-		$notificationRepository = $om->getRepository(Notification::CLASS_NAME);
+		$watchRepository = $om->getRepository(Watch::class);
+		$notificationRepository = $om->getRepository(Notification::class);
 		$typableUtils = $this->get(TypableUtils::class);
 
 		$notifiedUsers = array();
@@ -188,7 +188,7 @@ EOT
 
 						if ($actorUser->getMeta()->getMemberCount() > 0 && $publication instanceof TitledInterface) {
 
-							$memberRepository = $om->getRepository(Member::CLASS_NAME);
+							$memberRepository = $om->getRepository(Member::class);
 							$members = $memberRepository->findByTeam($actorUser);
 							if (!is_null($members)) {
 								foreach ($members as $member) {
@@ -212,7 +212,7 @@ EOT
 
 						if ($actorUser->getMeta()->getFollowerCount() >= 0 && $publication instanceof TitledInterface) {
 
-							$followerRepository = $om->getRepository(Follower::CLASS_NAME);
+							$followerRepository = $om->getRepository(Follower::class);
 							$followers = $followerRepository->findByFollowingUser($actorUser);
 							if (!is_null($followers)) {
 								foreach ($followers as $follower) {
@@ -506,7 +506,7 @@ EOT
 	private function _forwardNotification($om, $user, $activity, $groupIdentifier, &$notifiedUsers, &$groupIdentifiers, &$freshNotificationCount, $allowedUsers = null) {
 		if ($user->getIsTeam()) {
 
-			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			$memberRepository = $om->getRepository(Member::class);
 			$members = $memberRepository->findPaginedByTeam($user);
 
 			foreach ($members as $member) {

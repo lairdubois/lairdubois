@@ -29,7 +29,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 	private function _retrieveTaskFromTaskIdParam(Request $request, $param = 'taskId', $notFoundException = true) {
 		$om = $this->getDoctrine()->getManager();
-		$taskRepository = $om->getRepository(Task::CLASS_NAME);
+		$taskRepository = $om->getRepository(Task::class);
 
 		$taskId = intval($request->get($param, 0));
 
@@ -335,7 +335,7 @@ class TaskController extends AbstractWorkflowBasedController {
 	 */
 	public function positionUpdate(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$taskRepository = $om->getRepository(Task::CLASS_NAME);
+		$taskRepository = $om->getRepository(Task::class);
 
 		// Retrieve Workflow
 		$workflow = $this->_retrieveWorkflow($id);

@@ -12,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Task {
 
-	const CLASS_NAME = 'App\Entity\Workflow\Task';
-
 	const STATUS_UNKNOW = 0;
 	const STATUS_PENDING = 1;
 	const STATUS_WORKABLE = 2;

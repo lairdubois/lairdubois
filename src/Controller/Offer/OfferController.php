@@ -133,7 +133,7 @@ class OfferController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertLockUnlockable($offer, $lock);
 
 		// Lock or Unlock
@@ -155,7 +155,7 @@ class OfferController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertPublishable($offer, Offer::MAX_PUBLISH_COUNT);
 
 		// Publish
@@ -173,7 +173,7 @@ class OfferController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertUnpublishable($offer);
 
 		// Unpublish
@@ -198,7 +198,7 @@ class OfferController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertEditabable($offer);
 
 		$form = $this->createForm(OfferType::class, $offer);
@@ -218,7 +218,7 @@ class OfferController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertEditabable($offer);
 
 		$picturedUtils = $this->get(PicturedUtils::class);
@@ -277,7 +277,7 @@ class OfferController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertDeletable($offer, true);
 
 		// Delete
@@ -295,7 +295,7 @@ class OfferController extends AbstractController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertChownable($offer);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -316,7 +316,7 @@ class OfferController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertShowable($offer, true);
 
 		return array(
@@ -330,7 +330,7 @@ class OfferController extends AbstractController {
 	 */
 	public function location($id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertShowable($offer);
 
 		$features = array();
@@ -360,7 +360,7 @@ class OfferController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_offer_card)');
 		}
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertShowable($offer);
 
 		return array(
@@ -373,7 +373,7 @@ class OfferController extends AbstractController {
 	 */
 	public function messageNew(Request $request, $id) {
 
-		$offer = $this->retrievePublication($id, Offer::CLASS_NAME);
+		$offer = $this->retrievePublication($id, Offer::class);
 		$this->assertShowable($offer, true);
 		if ($offer->getUser() === $this->getUser()) {
 			throw $this->createNotFoundException('Unable to send to yourself (core_offer_message_new)');
@@ -570,7 +570,7 @@ class OfferController extends AbstractController {
 
 			},
 			'offer_offer',
-			\App\Entity\Offer\Offer::CLASS_NAME,
+			\App\Entity\Offer\Offer::class,
 			'core_offer_list_page'
 		);
 
@@ -630,7 +630,7 @@ class OfferController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+		$offerRepository = $om->getRepository(Offer::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -650,7 +650,7 @@ class OfferController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userOffers = $explorableUtils->getPreviousAndNextPublishedUserExplorables($offer, $offerRepository, $offer->getUser()->getMeta()->getPublicOfferCount());
-		$similarOffers = $explorableUtils->getSimilarExplorables($offer, 'offer_offer', Offer::CLASS_NAME, $userOffers, 2, array( new \Elastica\Query\Term(array( 'kind' => $offer->getKind() )), new \Elastica\Query\Term(array( 'category' => $offer->getCategory() )) ));
+		$similarOffers = $explorableUtils->getSimilarExplorables($offer, 'offer_offer', Offer::class, $userOffers, 2, array( new \Elastica\Query\Term(array( 'kind' => $offer->getKind() )), new \Elastica\Query\Term(array( 'category' => $offer->getCategory() )) ));
 
 		$likableUtils = $this->get(LikableUtils::class);
 		$watchableUtils = $this->get(WatchableUtils::class);
@@ -680,7 +680,7 @@ class OfferController extends AbstractController {
 	 */
 	public function adminConvertToQuestion($id) {
 		$om = $this->getDoctrine()->getManager();
-		$offerRepository = $om->getRepository(Offer::CLASS_NAME);
+		$offerRepository = $om->getRepository(Offer::class);
 
 		$offer = $offerRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($offer)) {

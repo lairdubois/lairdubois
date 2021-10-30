@@ -26,7 +26,6 @@ class School extends AbstractKnowledge implements LocalisableInterface {
 
 	use LocalisableTrait;
 
-	const CLASS_NAME = 'App\Entity\Knowledge\School';
 	const TYPE = 115;
 
 	const STRIPPED_NAME = 'school';

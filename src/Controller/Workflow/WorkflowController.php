@@ -130,7 +130,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertLockUnlockable($workflow, $lock);
 
 		// Lock or Unlock
@@ -152,7 +152,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function publish($id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertPublishable($workflow);
 
 		// Publish
@@ -170,7 +170,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertUnpublishable($workflow);
 
 		// Unpublish
@@ -195,7 +195,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function edit($id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertEditabable($workflow);
 
 		$form = $this->createForm(WorkflowType::class, $workflow);
@@ -215,7 +215,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function update(Request $request, $id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertEditabable($workflow);
 
 		$previouslyUsedTags = $workflow->getTags()->toArray();	// Need to be an array to copy values
@@ -266,7 +266,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function delete($id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertDeletable($workflow);
 
 		// Delete
@@ -284,7 +284,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$workflow = $this->retrievePublication($id, Workshop::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workshop::class);
 		$this->assertChownable($workflow);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -305,7 +305,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function widget($id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow, true);
 
 		return array(
@@ -322,12 +322,12 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Howtos
 
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -360,12 +360,12 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Creations
 
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -398,12 +398,12 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Plans
 
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -436,12 +436,12 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	public function workshops(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Workshops
 
-		$workshopRepository = $om->getRepository(Workshop::CLASS_NAME);
+		$workshopRepository = $om->getRepository(Workshop::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -473,9 +473,9 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function inspirations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$workflowRepository = $om->getRepository(Workflow::class);
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Inspirations
@@ -511,9 +511,9 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function rebounds(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$workflowRepository = $om->getRepository(Workflow::CLASS_NAME);
+		$workflowRepository = $om->getRepository(Workflow::class);
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Rebounds
@@ -547,7 +547,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function restartConfirm(Request $request, $id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		return array(
@@ -560,7 +560,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function restart($id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Restart
@@ -580,7 +580,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function copy($id) {
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Copy
@@ -599,9 +599,9 @@ class WorkflowController extends AbstractWorkflowBasedController {
 	 */
 	public function statistics(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$taskRepository = $om->getRepository(Task::CLASS_NAME);
+		$taskRepository = $om->getRepository(Task::class);
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		$dataDurationsPerLabel = array();
@@ -633,7 +633,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 		$layout = $request->get('layout', 'page');
 
-		$workflow = $this->retrievePublication($id, Workflow::CLASS_NAME);
+		$workflow = $this->retrievePublication($id, Workflow::class);
 		$this->assertShowable($workflow);
 
 		// Dispatch publication event
@@ -847,7 +847,7 @@ class WorkflowController extends AbstractWorkflowBasedController {
 
 			},
 			'workflow_workflow',
-			\App\Entity\Workflow\Workflow::CLASS_NAME,
+			\App\Entity\Workflow\Workflow::class,
 			'core_workflow_list_page',
 			$routeParameters
 		);

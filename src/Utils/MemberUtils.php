@@ -12,7 +12,7 @@ class MemberUtils extends AbstractContainerAwareUtils {
 
 	public function deleteMembersByTeam(User $team, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 
 		$members = $memberRepository->findByUser($team);
 		foreach ($members as $member) {
@@ -27,7 +27,7 @@ class MemberUtils extends AbstractContainerAwareUtils {
 
 	public function deleteTeamsByUser(User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 
 		$members = $memberRepository->findByTeam($user);
 		foreach ($members as $member) {

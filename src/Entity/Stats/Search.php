@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Search {
 
-	const CLASS_NAME = 'App\Entity\Stats\Search';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

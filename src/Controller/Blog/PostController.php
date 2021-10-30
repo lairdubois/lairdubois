@@ -125,7 +125,7 @@ class PostController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$post = $this->retrievePublication($id, Post::class);
 		$this->assertLockUnlockable($post, $lock);
 
 		// Lock or Unlock
@@ -148,7 +148,7 @@ class PostController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$post = $this->retrievePublication($id, Post::class);
 		$this->assertPublishable($post);
 
 		// Publish
@@ -166,7 +166,7 @@ class PostController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$post = $this->retrievePublication($id, Post::class);
 		$this->assertUnpublishable($post);
 
 		// Unpublish
@@ -192,7 +192,7 @@ class PostController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$post = $this->retrievePublication($id, Post::class);
 		$this->assertEditabable($post);
 
 		$form = $this->createForm(PostType::class, $post);
@@ -215,7 +215,7 @@ class PostController extends AbstractController {
 
 		$doUp = $request->get('ladb_do_up', false);
 
-		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$post = $this->retrievePublication($id, Post::class);
 		$this->assertEditabable($post);
 
 		$originalBodyBlocks = $post->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -276,7 +276,7 @@ class PostController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$post = $this->retrievePublication($id, Post::class);
 		$this->assertDeletable($post);
 
 		// Delete
@@ -295,7 +295,7 @@ class PostController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$post = $this->retrievePublication($id, Post::CLASS_NAME);
+		$post = $this->retrievePublication($id, Post::class);
 		$this->assertShowable($post, true);
 
 		return array(
@@ -435,7 +435,7 @@ class PostController extends AbstractController {
 
 			},
 			'blog_post',
-			\App\Entity\Blog\Post::CLASS_NAME,
+			\App\Entity\Blog\Post::class,
 			'core_blog_post_list_page'
 		);
 
@@ -460,7 +460,7 @@ class PostController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$postRepository = $om->getRepository(\App\Entity\Blog\Post::CLASS_NAME);
+		$postRepository = $om->getRepository(\App\Entity\Blog\Post::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -475,7 +475,7 @@ class PostController extends AbstractController {
 		$this->assertShowable($post);
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
-		$similarPosts = $explorableUtils->getSimilarExplorables($post, 'blog_post', Post::CLASS_NAME);
+		$similarPosts = $explorableUtils->getSimilarExplorables($post, 'blog_post', Post::class);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');

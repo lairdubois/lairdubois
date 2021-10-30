@@ -13,7 +13,6 @@ use App\Validator\Constraints as LadbAssert;
  */
 class Label {
 
-	const CLASS_NAME = 'App\Entity\Workflow\Label';
 	const COLOR_SEQUENCE = [ '#61BD4F', '#F2D600', '#FFAB4A', '#EB5A46', '#C377E0', '#0079BF', '#00C2E0', '#51E898', '#FF80CE', '#4D4D4D' ];
 
 	/**

@@ -128,7 +128,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertLockUnlockable($question, $lock);
 
 		// Lock or Unlock
@@ -151,7 +151,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertPublishable($question);
 
 		// Publish
@@ -169,7 +169,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertUnpublishable($question);
 
 		// Unpublish
@@ -195,7 +195,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertEditabable($question);
 
 		$form = $this->createForm(QuestionType::class, $question);
@@ -216,7 +216,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertEditabable($question);
 
 		$originalBodyBlocks = $question->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -277,7 +277,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertDeletable($question);
 
 		// Delete
@@ -296,7 +296,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+		$question = $this->retrievePublication($id, Question::class);
 		$this->assertShowable($question, true);
 
 		return array(
@@ -444,7 +444,7 @@ class QuestionController extends AbstractController {
 
 			},
 			'faq_question',
-			\App\Entity\Faq\Question::CLASS_NAME,
+			\App\Entity\Faq\Question::class,
 			'core_faq_question_list_page'
 		);
 
@@ -469,7 +469,7 @@ class QuestionController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$questionRepository = $om->getRepository(Question::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		if (intval($id) == 0) {
@@ -487,7 +487,7 @@ class QuestionController extends AbstractController {
 		$this->assertShowable($question);
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
-		$similarQuestions = $explorableUtils->getSimilarExplorables($question, 'faq_question', Question::CLASS_NAME, null, 10);
+		$similarQuestions = $explorableUtils->getSimilarExplorables($question, 'faq_question', Question::class, null, 10);
 
 		// Dispatch publication event
 		$dispatcher = $this->get('event_dispatcher');

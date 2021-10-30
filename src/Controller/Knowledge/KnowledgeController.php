@@ -141,7 +141,7 @@ class KnowledgeController extends AbstractController {
 	 */
 	public function contributors(Request $request, $entityType, $entityId, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$userRepository = $om->getRepository(User::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		// Retrieve related entity
@@ -312,7 +312,7 @@ class KnowledgeController extends AbstractController {
 		$entityClass = $this->_computeEntityClass($fieldType);
 		$formTypeFqcn = $this->_computeFormTypeFqcn($fieldType);
 
-		$valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+		$valueRepository = $om->getRepository(get_class($entityClass));
 		$value = $this->_retrieveValue($valueRepository, $id);
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && ($value->getUser()->getId() != $this->getUser()->getId() || $value->getVoteCount() > 0)) {
 			throw $this->createNotFoundException('Not allowed (core_knowledge_value_edit)');
@@ -359,7 +359,7 @@ class KnowledgeController extends AbstractController {
 		$entityClass = $this->_computeEntityClass($fieldType);
 		$formTypeFqcn = $this->_computeFormTypeFqcn($fieldType);
 
-		$valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+		$valueRepository = $om->getRepository(get_class($entityClass));
 		$value = $this->_retrieveValue($valueRepository, $id);
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && ($value->getUser()->getId() != $this->getUser()->getId() || $value->getVoteCount() > 0)) {
 			throw $this->createNotFoundException('Not allowed (core_knowledge_value_update)');
@@ -434,7 +434,7 @@ class KnowledgeController extends AbstractController {
 
 		$entityClass = $this->_computeEntityClass($fieldType);
 
-		$valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+		$valueRepository = $om->getRepository(get_class($entityClass));
 		$value = $this->_retrieveValue($valueRepository, $id);
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && ($value->getUser()->getId() != $this->getUser()->getId() || $value->getVoteCount() > 0 || $fieldMandatory)) {
 			throw $this->createNotFoundException('Not allowed (core_knowledge_value_delete)');
@@ -511,7 +511,7 @@ class KnowledgeController extends AbstractController {
 
         $entityClass = $this->_computeEntityClass($fieldType);
 
-        $valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+        $valueRepository = $om->getRepository(get_class($entityClass));
         $value = $this->_retrieveValue($valueRepository, $id);
         if (!$value instanceof Pdf) {
             throw $this->createNotFoundException('Only Pdf values allowed to download (core_knowledge_value_download)');
@@ -552,7 +552,7 @@ class KnowledgeController extends AbstractController {
 
         $entityClass = $this->_computeEntityClass($fieldType);
 
-        $valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+        $valueRepository = $om->getRepository(get_class($entityClass));
         $value = $this->_retrieveValue($valueRepository, $id);
         if (!$value instanceof Pdf) {
             throw $this->createNotFoundException('Only Pdf values allowed to view (core_knowledge_value_view)');
@@ -624,7 +624,7 @@ class KnowledgeController extends AbstractController {
 	 */
 	public function valueShow(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$valueRepository = $om->getRepository(BaseValue::CLASS_NAME);
+		$valueRepository = $om->getRepository(BaseValue::class);
 
 		$value = $valueRepository->findOneById($id);
 		if (is_null($value)) {
@@ -674,7 +674,7 @@ class KnowledgeController extends AbstractController {
 
 		$entityClass = $this->_computeEntityClass($fieldSrcType);
 
-		$valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+		$valueRepository = $om->getRepository(get_class($entityClass));
 		$value = $this->_retrieveValue($valueRepository, $id);
 
 		$value->setParentEntityField($fieldDest);

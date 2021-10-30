@@ -12,8 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Charge {
 
-	const CLASS_NAME = 'App\Entity\Funding\Charge';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

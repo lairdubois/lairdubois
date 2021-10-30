@@ -186,7 +186,7 @@ class ToolController extends AbstractController {
      */
     public function deleteAction($id) {
 
-        $tool = $this->retrievePublication($id, Tool::CLASS_NAME);
+        $tool = $this->retrievePublication($id, Tool::class);
         $this->assertDeletable($tool);
 
         // Delete
@@ -205,7 +205,7 @@ class ToolController extends AbstractController {
      */
     public function widgetAction($id) {
 
-        $tool = $this->retrievePublication($id, Tool::CLASS_NAME);
+        $tool = $this->retrievePublication($id, Tool::class);
         $this->assertShowable($tool, true);
 
         return array(
@@ -358,7 +358,7 @@ class ToolController extends AbstractController {
 
             },
             'knowledge_tool',
-            \App\Entity\Knowledge\Tool::CLASS_NAME,
+            \App\Entity\Knowledge\Tool::class,
             'core_tool_list_page'
         );
 
@@ -383,7 +383,7 @@ class ToolController extends AbstractController {
      */
     public function showAction(Request $request, $id) {
         $om = $this->getDoctrine()->getManager();
-        $toolRepository = $om->getRepository(Tool::CLASS_NAME);
+        $toolRepository = $om->getRepository(Tool::class);
         $witnessManager = $this->get(WitnessManager::class);
 
         $id = intval($id);

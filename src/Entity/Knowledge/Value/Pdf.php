@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Pdf extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Pdf';
 	const TYPE = 26;
 
 	const TYPE_STRIPPED_NAME = 'pdf';

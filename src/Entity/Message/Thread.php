@@ -13,7 +13,6 @@ use App\Model\TypableInterface;
  */
 class Thread implements TypableInterface {
 
-	const CLASS_NAME = 'App\Entity\Message\Thread';
 	const TYPE = 2;
 
 	/**

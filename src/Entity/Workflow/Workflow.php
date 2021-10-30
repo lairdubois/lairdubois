@@ -46,7 +46,6 @@ class Workflow extends AbstractAuthoredPublication implements IndexableInterface
 	use TitledTrait, SluggedTrait, PicturedTrait, HtmlBodiedTrait, LicensedTrait;
 	use IndexableTrait, SitemapableTrait, LikableTrait, WatchableTrait, CommentableTrait, TaggableTrait, ViewableTrait, InspirableTrait, CollectionnableTrait;
 
-	const CLASS_NAME = 'App\Entity\Workflow\Workflow';
 	const TYPE = 118;
 
 	/**

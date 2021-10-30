@@ -10,6 +10,4 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Hardware extends AbstractInput {
 
-	const CLASS_NAME = 'App\Entity\Input\Hardware';
-
 }

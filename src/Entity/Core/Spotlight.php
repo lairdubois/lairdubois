@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Spotlight {
 
-	const CLASS_NAME = 'App\Entity\Core\Spotlight';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

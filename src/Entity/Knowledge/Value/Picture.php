@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Picture extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Picture';
 	const TYPE = 12;
 
 	const TYPE_STRIPPED_NAME = 'picture';

@@ -158,7 +158,7 @@ class SchoolController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$school = $this->retrievePublication($id, School::CLASS_NAME);
+		$school = $this->retrievePublication($id, School::class);
 		$this->assertDeletable($school);
 
 		// Delete
@@ -177,7 +177,7 @@ class SchoolController extends AbstractController {
 	 */
 	public function location(Request $request, $id) {
 
-		$school = $this->retrievePublication($id, School::CLASS_NAME);
+		$school = $this->retrievePublication($id, School::class);
 		$this->assertShowable($school);
 
 		$features = array();
@@ -204,7 +204,7 @@ class SchoolController extends AbstractController {
 	 */
 	public function widget(Request $request, $id) {
 
-		$school = $this->retrievePublication($id, School::CLASS_NAME);
+		$school = $this->retrievePublication($id, School::class);
 		$this->assertShowable($school, true);
 
 		return array(
@@ -389,7 +389,7 @@ class SchoolController extends AbstractController {
 
 			},
 			'knowledge_school',
-			\App\Entity\Knowledge\School::CLASS_NAME,
+			\App\Entity\Knowledge\School::class,
 			'core_school_list_page',
 			$routeParameters
 		);
@@ -448,7 +448,7 @@ class SchoolController extends AbstractController {
 	 */
 	public function creations(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 
 		$school = $schoolRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($school)) {
@@ -457,7 +457,7 @@ class SchoolController extends AbstractController {
 
 		// Creations
 
-		$creationRepository = $om->getRepository(Creation::CLASS_NAME);
+		$creationRepository = $om->getRepository(Creation::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -489,7 +489,7 @@ class SchoolController extends AbstractController {
 	 */
 	public function plans(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 
 		$school = $schoolRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($school)) {
@@ -498,7 +498,7 @@ class SchoolController extends AbstractController {
 
 		// Plans
 
-		$planRepository = $om->getRepository(Plan::CLASS_NAME);
+		$planRepository = $om->getRepository(Plan::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -530,7 +530,7 @@ class SchoolController extends AbstractController {
 	 */
 	public function howtos(Request $request, $id, $filter = "recent", $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 
 		$school = $schoolRepository->findOneByIdJoinedOnOptimized($id);
 		if (is_null($school)) {
@@ -539,7 +539,7 @@ class SchoolController extends AbstractController {
 
 		// Howtos
 
-		$howtoRepository = $om->getRepository(Howto::CLASS_NAME);
+		$howtoRepository = $om->getRepository(Howto::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
@@ -573,7 +573,7 @@ class SchoolController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 
 		$id = intval($id);
 
@@ -593,7 +593,7 @@ class SchoolController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

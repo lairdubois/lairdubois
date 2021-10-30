@@ -54,7 +54,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	 */
 	public function new(Request $request, $id) {
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertEditabable($howto);
 
 		$article = new Article();
@@ -78,7 +78,7 @@ class ArticleController extends AbstractHowtoBasedController {
 
 		$om = $this->getDoctrine()->getManager();
 
-		$howto = $this->retrievePublication($id, Howto::CLASS_NAME);
+		$howto = $this->retrievePublication($id, Howto::class);
 		$this->assertEditabable($howto);
 
 		$article = new Article();
@@ -124,7 +124,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	 */
 	public function publish($id) {
 
-		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$article = $this->retrievePublication($id, Article::class);
 		$this->assertPublishable($article);
 
 		// Publish
@@ -150,7 +150,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$article = $this->retrievePublication($id, Article::class);
 		$this->assertUnpublishable($article->getHowto(), true);
 
 		// Unpublish
@@ -175,7 +175,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	 */
 	public function edit(Request $request, $id) {
 
-		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$article = $this->retrievePublication($id, Article::class);
 		$this->assertEditabable($article->getHowto());
 
 		$form = $this->createForm(HowtoArticleType::class, $article);
@@ -201,7 +201,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	 */
 	public function update(Request $request, $id) {
 
-		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$article = $this->retrievePublication($id, Article::class);
 		$this->assertEditabable($article->getHowto());
 
 		$originalBodyBlocks = $article->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -268,7 +268,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
 
-		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$article = $this->retrievePublication($id, Article::class);
 		$this->assertDeletable($article->getHowto(), true);
 
 		$howto = $article->getHowto();
@@ -299,7 +299,7 @@ class ArticleController extends AbstractHowtoBasedController {
 
 		$id = intval($id);
 
-		$article = $this->retrievePublication($id, Article::CLASS_NAME);
+		$article = $this->retrievePublication($id, Article::class);
 		$this->assertShowable($article->getHowto(), true);
 
 		return array(
@@ -319,7 +319,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	 */
 	public function sticker(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
+		$articleRepository = $om->getRepository(Article::class);
 
 		$id = intval($id);
 
@@ -369,7 +369,7 @@ class ArticleController extends AbstractHowtoBasedController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$articleRepository = $om->getRepository(Article::CLASS_NAME);
+		$articleRepository = $om->getRepository(Article::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

@@ -111,7 +111,7 @@ class CommentController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		$comment = new Comment();
 		$form = $this->get('form.factory')->createNamed(CommentType::DEFAULT_BLOCK_PREFIX.'_'.$entityType.'_'.$entityId.'_'.$parentId, CommentType::class, $comment);
@@ -166,7 +166,7 @@ class CommentController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		$comment = $commentRepository->findOneById($id);
 		if (is_null($comment)) {
@@ -199,7 +199,7 @@ class CommentController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		$comment = $commentRepository->findOneById($id);
 		if (is_null($comment)) {
@@ -249,7 +249,7 @@ class CommentController extends AbstractController {
 	 */
 	public function delete($id) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 		$commentableUtils = $this->get(CommentableUtils::class);
 
 		$comment = $commentRepository->findOneById($id);
@@ -284,7 +284,7 @@ class CommentController extends AbstractController {
 	 */
 	public function show($id) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 		$typableUtils = $this->get(TypableUtils::class);
 
 		$comment = $commentRepository->findOneById($id);
@@ -309,7 +309,7 @@ class CommentController extends AbstractController {
 	 */
 	public function adminMoveup($id) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
 
 		$comment = $commentRepository->findOneById($id);
 		if (is_null($comment)) {
@@ -335,8 +335,8 @@ class CommentController extends AbstractController {
 	 */
 	public function adminConvertToAnswer($id, $questionId) {
 		$om = $this->getDoctrine()->getManager();
-		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
-		$questionRepository = $om->getRepository(Question::CLASS_NAME);
+		$commentRepository = $om->getRepository(Comment::class);
+		$questionRepository = $om->getRepository(Question::class);
 
 		$comment = $commentRepository->findOneById($id);
 		if (is_null($comment)) {

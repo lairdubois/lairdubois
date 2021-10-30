@@ -11,6 +11,4 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Skill extends AbstractInput {
 
-	const CLASS_NAME = 'App\Entity\Input\Skill';
-
 }

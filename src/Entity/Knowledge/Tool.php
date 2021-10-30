@@ -26,7 +26,6 @@ class Tool extends AbstractKnowledge implements ReviewableInterface {
 
 	use ReviewableTrait;
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Tool';
 	const TYPE = 124;
 
 	const STRIPPED_NAME = 'tool';

@@ -164,7 +164,7 @@ class WoodController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$wood = $this->retrievePublication($id, Wood::CLASS_NAME);
+		$wood = $this->retrievePublication($id, Wood::class);
 		$this->assertDeletable($wood);
 
 		// Delete
@@ -187,10 +187,10 @@ class WoodController extends AbstractController {
 		$om = $this->getDoctrine()->getManager();
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
-		$wood = $this->retrievePublication($id, Wood::CLASS_NAME);
+		$wood = $this->retrievePublication($id, Wood::class);
 		$this->assertShowable($wood);
 
-		$textureRepository = $om->getRepository(Wood\Texture::CLASS_NAME);
+		$textureRepository = $om->getRepository(Wood\Texture::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page);
 		$limit = $paginatorUtils->computePaginatorLimit($page);
@@ -217,7 +217,7 @@ class WoodController extends AbstractController {
 	 */
 	public function textureDownload($id) {
 		$om = $this->getDoctrine()->getManager();
-		$textureRepository = $om->getRepository(Wood\Texture::CLASS_NAME);
+		$textureRepository = $om->getRepository(Wood\Texture::class);
 
 		$texture = $textureRepository->findOneById($id);
 		if (is_null($texture)) {
@@ -257,7 +257,7 @@ class WoodController extends AbstractController {
 	 */
 	public function textureShow(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$textureRepository = $om->getRepository(Wood\Texture::CLASS_NAME);
+		$textureRepository = $om->getRepository(Wood\Texture::class);
 
 		$texture = $textureRepository->findOneById($id);
 		if (is_null($texture)) {
@@ -275,7 +275,7 @@ class WoodController extends AbstractController {
 	 */
 	public function widget(Request $request, $id) {
 
-		$wood = $this->retrievePublication($id, Wood::CLASS_NAME);
+		$wood = $this->retrievePublication($id, Wood::class);
 		$this->assertShowable($wood, true);
 
 		return array(
@@ -411,7 +411,7 @@ class WoodController extends AbstractController {
 
 			},
 			'knowledge_wood',
-			\App\Entity\Knowledge\Wood::CLASS_NAME,
+			\App\Entity\Knowledge\Wood::class,
 			'core_wood_list_page'
 		);
 
@@ -436,7 +436,7 @@ class WoodController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$woodRepository = $om->getRepository(Wood::CLASS_NAME);
+		$woodRepository = $om->getRepository(Wood::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Like extends AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\Like';
 	const STRIPPED_NAME = 'like';
 
 	/**

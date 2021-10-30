@@ -18,7 +18,7 @@ class TagController extends AbstractController {
 	 */
 	public function usageHighlightToggle(Request $request, $id, $action) {
 		$om = $this->getDoctrine()->getManager();
-		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
+		$tagUsageRepository = $om->getRepository(TagUsage::class);
 
 		$tagUsage = $tagUsageRepository->findOneById($id);
 		if (is_null($tagUsage)) {

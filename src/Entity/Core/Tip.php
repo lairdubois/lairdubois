@@ -25,7 +25,6 @@ class Tip extends AbstractPublication implements TitledInterface, HtmlBodiedInte
 	use HtmlBodiedTrait;
 	use IndexableTrait, ViewableTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\Tip';
 	const TYPE = 5;
 
 	/**

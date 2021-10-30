@@ -21,7 +21,7 @@ abstract class AbstractThreadController extends AbstractController {
 
     protected function retrieveThread($id) {
 		$om = $this->getDoctrine()->getManager();
-		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
+		$threadRepository = $om->getRepository(Thread::class);
 		$thread = $threadRepository->findOneByIdJoinedOnMetaAndParticipant($id);
 		if (is_null($thread)) {
 			throw $this->createNotFoundException('Unable to find Thread entity (id='.$id.').');
@@ -35,7 +35,7 @@ abstract class AbstractThreadController extends AbstractController {
 		if (!$thread->getParticipants()->contains($this->getUser())) {
 
 			$om = $this->getDoctrine()->getManager();
-			$memberRepository = $om->getRepository(Member::CLASS_NAME);
+			$memberRepository = $om->getRepository(Member::class);
 			$allowed = false;
 			foreach ($thread->getParticipants() as $participant) {
 				if ($memberRepository->existsByTeamAndUser($participant, $this->getUser())) {
@@ -61,7 +61,7 @@ abstract class AbstractThreadController extends AbstractController {
 	protected function notifyRecipientsForIncomingMessage(array $recipients, User $sender, Thread $thread, Message $message) {
 
 		$om = $this->getDoctrine()->getManager();
-		$memberRepository = $om->getRepository(Member::CLASS_NAME);
+		$memberRepository = $om->getRepository(Member::class);
 		$mailerUtils = $this->get(MailerUtils::class);
 		$webpushNotificationUtils = $this->get(WebpushNotificationUtils::class);
 		$notifiedRecipients = array();

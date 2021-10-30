@@ -11,7 +11,7 @@ class BookRepository extends AbstractKnowledgeRepository {
 	/////
 
 	public function findUserIdsById($id) {
-		return $this->getEntityManager()->getRepository(BaseValue::CLASS_NAME)->findUserIdsByParentEntityTypeAndParentEntityId(Book::TYPE, $id);
+		return $this->getEntityManager()->getRepository(BaseValue::class)->findUserIdsByParentEntityTypeAndParentEntityId(Book::TYPE, $id);
 	}
 
 	//////

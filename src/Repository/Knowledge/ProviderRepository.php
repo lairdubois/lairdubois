@@ -17,7 +17,7 @@ class ProviderRepository extends AbstractKnowledgeRepository {
 	/////
 
 	public function findUserIdsById($id) {
-		return $this->getEntityManager()->getRepository(BaseValue::CLASS_NAME)->findUserIdsByParentEntityTypeAndParentEntityId(Provider::TYPE, $id);
+		return $this->getEntityManager()->getRepository(BaseValue::class)->findUserIdsByParentEntityTypeAndParentEntityId(Provider::TYPE, $id);
 	}
 
 	//////

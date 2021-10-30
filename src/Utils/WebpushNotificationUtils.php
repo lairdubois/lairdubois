@@ -2,25 +2,25 @@
 
 namespace App\Utils;
 
-use App\Entity\Core\MemberInvitation;
-use App\Entity\Core\MemberRequest;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Minishlink\WebPush\WebPush;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use BenTools\WebPushBundle\Model\Message\Notification;
-use BenTools\WebPushBundle\Registry\WebPushManagerRegistry;
 use App\Entity\Core\Like;
+use App\Entity\Core\MemberInvitation;
+use App\Entity\Core\User;
 use App\Entity\Message\Thread;
 use App\Entity\Qa\Answer;
 use App\Entity\Qa\Question;
-use App\Entity\Core\User;
 use App\Model\LikableInterface;
+use BenTools\WebPushBundle\Model\Message\Notification;
+use BenTools\WebPushBundle\Registry\WebPushManagerRegistry;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Minishlink\WebPush\WebPush;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class WebpushNotificationUtils extends AbstractContainerAwareUtils {
 
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             'liip_imagine.cache.manager' => '?'.CacheManager::class,
+            '?'.TypableUtils::class,
         ));
     }
 

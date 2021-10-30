@@ -28,7 +28,6 @@ class Comment implements TypableInterface, BasicTimestampableInterface, Authored
 	use BasicTimestampableTrait;
 	use AuthoredTrait, HtmlBodiedTrait, MultiPicturedTrait;
 
-	const CLASS_NAME = 'App\Entity\Core\Comment';
 	const TYPE = 1;
 
 	/**

@@ -2,17 +2,17 @@
 
 namespace App\Form\Type\Knowledge\Value;
 
+use App\Form\DataTransformer\PictureToIdTransformer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Persistence\ManagerRegistry;
-use App\Form\DataTransformer\PictureToIdTransformer;
 
 class PictureValueType extends AbstractValueType {
 
 	private $om;
 
-	public function __construct(ManagerRegistry $om) {
+	public function __construct(EntityManagerInterface $om) {
 		$this->om = $om;
 	}
 

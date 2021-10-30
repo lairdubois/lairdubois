@@ -22,7 +22,7 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
     public function deleteLikes(LikableInterface $likable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
 		$likes = $likeRepository->findByEntityTypeAndEntityId($likable->getType(), $likable->getId());
@@ -43,7 +43,7 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteLikesByUser(User $user, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 		$typableUtils = $this->get(TypableUtils::class);
 		$activityUtils = $this->get(ActivityUtils::class);
 
@@ -64,7 +64,7 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 	public function incrementUsersLikeCount(LikableInterface $likable, $by = 1, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 
 		$likes = $likeRepository->findByEntityTypeAndEntityId($likable->getType(), $likable->getId());
 		foreach ($likes as $like) {
@@ -82,7 +82,7 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 	public function getLikeContext(LikableInterface $likable, User $user = null) {
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 
 		$like = null;
 		if (!is_null($user)) {
@@ -100,7 +100,7 @@ class LikableUtils extends AbstractContainerAwareUtils {
 
 	public function transferLikes(LikableInterface $likableSrc, LikableInterface $likableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$likeRepository = $om->getRepository(Like::CLASS_NAME);
+		$likeRepository = $om->getRepository(Like::class);
 
 		// Retrieve likes
 		$likes = $likeRepository->findByEntityTypeAndEntityId($likableSrc->getType(), $likableSrc->getId());

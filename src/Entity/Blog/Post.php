@@ -46,7 +46,6 @@ class Post extends AbstractDraftableAuthoredPublication implements TitledInterfa
 	use TitledTrait, SluggedTrait, PicturedTrait, BlockBodiedTrait;
 	use IndexableTrait, SitemapableTrait, TaggableTrait, ViewableTrait, ScrapableTrait, LikableTrait, WatchableTrait, CommentableTrait, CollectionnableTrait;
 
-	const CLASS_NAME = 'App\Entity\Blog\Post';
 	const TYPE = 108;
 
 	const HIGHLIGHT_LEVEL_NONE = 0;

@@ -135,7 +135,7 @@ class EventController extends AbstractController {
 	 */
 	public function lockUnlock($id, $lock) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertLockUnlockable($event, $lock);
 
 		// Lock or Unlock
@@ -157,7 +157,7 @@ class EventController extends AbstractController {
 	 */
 	public function publish($id) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertPublishable($event);
 
 		// Publish
@@ -175,7 +175,7 @@ class EventController extends AbstractController {
 	 */
 	public function unpublish(Request $request, $id) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertUnpublishable($event);
 
 		// Unpublish
@@ -200,7 +200,7 @@ class EventController extends AbstractController {
 	 */
 	public function edit($id) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertEditabable($event);
 
 		$form = $this->createForm(EventType::class, $event);
@@ -220,7 +220,7 @@ class EventController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertEditabable($event);
 
 		$originalBodyBlocks = $event->getBodyBlocks()->toArray();	// Need to be an array to copy values
@@ -276,7 +276,7 @@ class EventController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertDeletable($event);
 
 		// Delete
@@ -294,7 +294,7 @@ class EventController extends AbstractController {
 	 */
 	public function chown(Request $request, $id) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertChownable($event);
 
 		$targetUser = $this->retrieveOwner($request);
@@ -315,7 +315,7 @@ class EventController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertShowable($event, true);
 
 		return array(
@@ -329,7 +329,7 @@ class EventController extends AbstractController {
 	 */
 	public function location($id) {
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertShowable($event);
 
 		$features = array();
@@ -358,7 +358,7 @@ class EventController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_event_card)');
 		}
 
-		$event = $this->retrievePublication($id, Event::CLASS_NAME);
+		$event = $this->retrievePublication($id, Event::class);
 		$this->assertShowable($event);
 
 		return array(
@@ -580,7 +580,7 @@ class EventController extends AbstractController {
 
 			},
 			'event_event',
-			\App\Entity\Event\Event::CLASS_NAME,
+			\App\Entity\Event\Event::class,
 			'core_event_list_page'
 		);
 
@@ -653,7 +653,7 @@ class EventController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$eventRepository = $om->getRepository(Event::CLASS_NAME);
+		$eventRepository = $om->getRepository(Event::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);
@@ -673,7 +673,7 @@ class EventController extends AbstractController {
 
 		$explorableUtils = $this->get(ExplorableUtils::class);
 		$userEvents = $explorableUtils->getPreviousAndNextPublishedUserExplorables($event, $eventRepository, $event->getUser()->getMeta()->getPublicEventCount());
-		$similarEvents = $explorableUtils->getSimilarExplorables($event, 'event_event', Event::CLASS_NAME, $userEvents);
+		$similarEvents = $explorableUtils->getSimilarExplorables($event, 'event_event', Event::class, $userEvents);
 
 		$likableUtils = $this->get(LikableUtils::class);
 		$watchableUtils = $this->get(WatchableUtils::class);

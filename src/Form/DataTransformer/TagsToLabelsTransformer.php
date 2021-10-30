@@ -45,7 +45,7 @@ class TagsToLabelsTransformer implements DataTransformerInterface {
 
 		$tags = array();
 		$labelsArray = preg_split("/[,;]+/", $labelsString);
-		$repository = $this->om->getRepository(Tag::CLASS_NAME);
+		$repository = $this->om->getRepository(Tag::class);
 		foreach ($labelsArray as $label) {
 			if (!preg_match("/^[ a-zA-Z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ'-]{2,}$/", $label)) {
 				continue;

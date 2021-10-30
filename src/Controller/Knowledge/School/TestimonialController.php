@@ -41,7 +41,7 @@ class TestimonialController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
 
 		$school = $schoolRepository->findOneById($id);
 		if (is_null($school)) {
@@ -74,8 +74,8 @@ class TestimonialController extends AbstractController {
 		$this->createLock('core_knowledge_school_testimonial_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$om = $this->getDoctrine()->getManager();
-		$schoolRepository = $om->getRepository(School::CLASS_NAME);
-		$testimonialRepository = $om->getRepository(School\Testimonial::CLASS_NAME);
+		$schoolRepository = $om->getRepository(School::class);
+		$testimonialRepository = $om->getRepository(School\Testimonial::class);
 
 		$school = $schoolRepository->findOneById($id);
 		if (is_null($school)) {
@@ -137,7 +137,7 @@ class TestimonialController extends AbstractController {
 	 */
 	public function edit(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$testimonialRepository = $om->getRepository(School\Testimonial::CLASS_NAME);
+		$testimonialRepository = $om->getRepository(School\Testimonial::class);
 
 		$testimonial = $testimonialRepository->findOneById($id);
 		if (is_null($testimonial)) {
@@ -161,7 +161,7 @@ class TestimonialController extends AbstractController {
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$testimonialRepository = $om->getRepository(School\Testimonial::CLASS_NAME);
+		$testimonialRepository = $om->getRepository(School\Testimonial::class);
 
 		$testimonial = $testimonialRepository->findOneById($id);
 		if (is_null($testimonial)) {
@@ -202,7 +202,7 @@ class TestimonialController extends AbstractController {
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$testimonialRepository = $om->getRepository(School\Testimonial::CLASS_NAME);
+		$testimonialRepository = $om->getRepository(School\Testimonial::class);
 
 		$testimonial = $testimonialRepository->findOneById($id);
 		if (is_null($testimonial)) {
@@ -235,7 +235,7 @@ class TestimonialController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$testimonialRepository = $om->getRepository(School\Testimonial::CLASS_NAME);
+		$testimonialRepository = $om->getRepository(School\Testimonial::class);
 
 		$testimonial = $testimonialRepository->findOneById($id);
 		if (is_null($testimonial)) {

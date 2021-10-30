@@ -73,7 +73,7 @@ class PictureController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$pictureRepository = $om->getRepository(Picture::CLASS_NAME);
+		$pictureRepository = $om->getRepository(Picture::class);
 
 		$picture = $pictureRepository->findOneById($id);
 		if (is_null($picture)) {
@@ -108,7 +108,7 @@ class PictureController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$pictureRepository = $om->getRepository(Picture::CLASS_NAME);
+		$pictureRepository = $om->getRepository(Picture::class);
 
 		$picture = $pictureRepository->findOneById($id);
 		if (is_null($picture)) {

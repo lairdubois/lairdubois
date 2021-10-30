@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Decimal extends BaseValue {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Value\Decimal';
 	const TYPE = 27;
 
 	const TYPE_STRIPPED_NAME = 'decimal';

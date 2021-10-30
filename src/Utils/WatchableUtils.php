@@ -17,7 +17,7 @@ class WatchableUtils extends AbstractContainerAwareUtils {
 
     public function createWatch(WatchableInterface $watchable, User $user) {
 		$om = $this->getDoctrine()->getManager();
-		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
+		$watchRepository = $om->getRepository(Watch::class);
 
 		if (!$watchRepository->existsByEntityTypeAndEntityIdAndUser($watchable->getType(), $watchable->getId(), $user)) {
 
@@ -38,7 +38,7 @@ class WatchableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteWatches(WatchableInterface $watchable, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
+		$watchRepository = $om->getRepository(Watch::class);
 
 		$watches = $watchRepository->findByEntityTypeAndEntityId($watchable->getType(), $watchable->getId());
 		foreach ($watches as $watch) {
@@ -53,7 +53,7 @@ class WatchableUtils extends AbstractContainerAwareUtils {
 
 	public function getWatchContext(WatchableInterface $watchable, User $user = null) {
 		$om = $this->getDoctrine()->getManager();
-		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
+		$watchRepository = $om->getRepository(Watch::class);
 		$watch = null;
 
 		if (!is_null($user)) {
@@ -71,7 +71,7 @@ class WatchableUtils extends AbstractContainerAwareUtils {
 
 	public function transferWatches(WatchableInterface $watchableSrc, WatchableInterface $watchableDest, $flush = true) {
 		$om = $this->getDoctrine()->getManager();
-		$watchRepository = $om->getRepository(Watch::CLASS_NAME);
+		$watchRepository = $om->getRepository(Watch::class);
 
 		// Retrieve watches
 		$watches = $watchRepository->findByEntityTypeAndEntityId($watchableSrc->getType(), $watchableSrc->getId());

@@ -30,7 +30,7 @@ Encore
     .addEntry('knowledge_school', './assets/knowledge_school.js')
     .addEntry('workflow_workflow', './assets/workflow_workflow.js')
     .addEntry('workflow_workflow_workspace', './assets/workflow_workflow_workspace.js')
-    .addEntry('ladb_values', './assets/knowledge_values.js')
+    .addEntry('knowledge_values', './assets/knowledge_values.js')
     // Libs entry points
     .addEntry('lib_blueimp', './assets/lib_blueimp.js')
     .addEntry('lib_leaflet', './assets/lib_leaflet.js')

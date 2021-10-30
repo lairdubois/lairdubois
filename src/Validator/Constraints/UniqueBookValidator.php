@@ -28,7 +28,7 @@ class UniqueBookValidator extends ConstraintValidator {
 		if (!is_null($value)) {
 			if ($value instanceof BookIdentity) {
 				$data = $value->getData();
-				$bookRepository = $this->om->getRepository(Book::CLASS_NAME);
+				$bookRepository = $this->om->getRepository(Book::class);
 				if (!is_null($data) && $bookRepository->existsByIdentity($data, $constraint->excludedId)) {
 					$this->context->buildViolation($constraint->message)
 						->atPath('identity')

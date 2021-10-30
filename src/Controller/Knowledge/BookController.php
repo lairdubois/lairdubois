@@ -161,7 +161,7 @@ class BookController extends AbstractController {
 	 */
 	public function delete($id) {
 
-		$book = $this->retrievePublication($id, Book::CLASS_NAME);
+		$book = $this->retrievePublication($id, Book::class);
 		$this->assertDeletable($book);
 
 		// Delete
@@ -180,7 +180,7 @@ class BookController extends AbstractController {
 	 */
 	public function widget($id) {
 
-		$book = $this->retrievePublication($id, Book::CLASS_NAME);
+		$book = $this->retrievePublication($id, Book::class);
 		$this->assertShowable($book, true);
 
 		return array(
@@ -337,7 +337,7 @@ class BookController extends AbstractController {
 
 			},
 			'knowledge_book',
-			\App\Entity\Knowledge\Book::CLASS_NAME,
+			\App\Entity\Knowledge\Book::class,
 			'core_book_list_page'
 		);
 
@@ -362,7 +362,7 @@ class BookController extends AbstractController {
 	 */
 	public function show(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
-		$bookRepository = $om->getRepository(Book::CLASS_NAME);
+		$bookRepository = $om->getRepository(Book::class);
 		$witnessManager = $this->get(WitnessManager::class);
 
 		$id = intval($id);

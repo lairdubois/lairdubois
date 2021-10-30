@@ -18,7 +18,7 @@ class SchoolRepository extends AbstractKnowledgeRepository {
 	/////
 
 	public function findUserIdsById($id) {
-		return $this->getEntityManager()->getRepository(BaseValue::CLASS_NAME)->findUserIdsByParentEntityTypeAndParentEntityId(School::TYPE, $id);
+		return $this->getEntityManager()->getRepository(BaseValue::class)->findUserIdsByParentEntityTypeAndParentEntityId(School::TYPE, $id);
 	}
 
 	//////

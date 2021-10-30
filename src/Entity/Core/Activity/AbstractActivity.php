@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class AbstractActivity {
 
-	const CLASS_NAME = 'App\Entity\Core\Activity\AbstractActivity';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

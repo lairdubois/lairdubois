@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Texture {
 
-	const CLASS_NAME = 'App\Entity\Knowledge\Wood\Texture';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

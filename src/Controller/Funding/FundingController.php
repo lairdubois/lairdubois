@@ -38,8 +38,8 @@ class FundingController extends AbstractController {
 	 */
 	public function dashboard(Request $request, $year = null, $month = null) {
 		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$fundingRepository = $om->getRepository(Funding::class);
+		$userRepository = $om->getRepository(User::class);
 
 		// Retrieve parameters
 		$amountEur = $request->get('amount_eur', 5);	// default amount = 5€
@@ -86,7 +86,7 @@ class FundingController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+		$fundingRepository = $om->getRepository(Funding::class);
 
 		if (is_null($year) || is_null($month)) {
 			$fundingManager = $this->get(FundingManager::class);
@@ -127,7 +127,7 @@ class FundingController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+		$fundingRepository = $om->getRepository(Funding::class);
 
 		$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
 		if (is_null($funding)) {
@@ -154,7 +154,7 @@ class FundingController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$fundingRepository = $om->getRepository(Funding::CLASS_NAME);
+		$fundingRepository = $om->getRepository(Funding::class);
 
 		$funding = $fundingRepository->findOneByYearAndMonth($year, $month);
 		if (is_null($funding)) {
@@ -199,7 +199,7 @@ class FundingController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$chargeRepository = $om->getRepository(Charge::CLASS_NAME);
+		$chargeRepository = $om->getRepository(Charge::class);
 
 		$charge = $chargeRepository->findOneById($id);
 		if (is_null($charge)) {
@@ -225,7 +225,7 @@ class FundingController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$chargeRepository = $om->getRepository(Charge::CLASS_NAME);
+		$chargeRepository = $om->getRepository(Charge::class);
 
 		$charge = $chargeRepository->findOneById($id);
 		if (is_null($charge)) {
@@ -271,7 +271,7 @@ class FundingController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$chargeRepository = $om->getRepository(Charge::CLASS_NAME);
+		$chargeRepository = $om->getRepository(Charge::class);
 
 		$charge = $chargeRepository->findOneById($id);
 		if (is_null($charge)) {
@@ -445,7 +445,7 @@ class FundingController extends AbstractController {
 
 				// Retrieve User
 				$om = $this->getDoctrine()->getManager();
-				$userRepository = $om->getRepository(User::CLASS_NAME);
+				$userRepository = $om->getRepository(User::class);
 				$user = $userRepository->FindOneById($userId);
 				if (is_null($user)) {
 					throw new BadRequestHttpException('User not found (core_funding_donation_webhook)');
@@ -506,7 +506,7 @@ class FundingController extends AbstractController {
 	 */
 	public function donors(Request $request, $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$userRepository = $om->getRepository(User::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
@@ -536,8 +536,8 @@ class FundingController extends AbstractController {
 	 */
 	public function userDonationList(Request $request, $filter = 'recent', $page = 0) {
 		$om = $this->getDoctrine()->getManager();
-		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$donationRepository = $om->getRepository(Donation::class);
+		$userRepository = $om->getRepository(User::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);
@@ -573,8 +573,8 @@ class FundingController extends AbstractController {
 		}
 
 		$om = $this->getDoctrine()->getManager();
-		$donationRepository = $om->getRepository(Donation::CLASS_NAME);
-		$userRepository = $om->getRepository(User::CLASS_NAME);
+		$donationRepository = $om->getRepository(Donation::class);
+		$userRepository = $om->getRepository(User::class);
 		$paginatorUtils = $this->get(PaginatorUtils::class);
 
 		$offset = $paginatorUtils->computePaginatorOffset($page, 20, 20);

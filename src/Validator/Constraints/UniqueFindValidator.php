@@ -30,7 +30,7 @@ class UniqueFindValidator extends ConstraintValidator {
 		if (!is_null($value) && $value instanceof Find) {
 			$content = $value->getContent();
 			if (!is_null($content) && $content instanceof Link) {
-				$findRepository = $this->om->getRepository(Find::CLASS_NAME);
+				$findRepository = $this->om->getRepository(Find::class);
 				if ($content instanceof Website) {
 					if ($findRepository->existsByWebsiteUrl($content->getUrl(), $content->getId())) {
 						$this->context->addViolation($constraint->message);

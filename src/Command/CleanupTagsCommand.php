@@ -30,7 +30,7 @@ EOT
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
 		$om = $this->getDoctrine()->getManager();
-		$tagUsageRepository = $om->getRepository(TagUsage::CLASS_NAME);
+		$tagUsageRepository = $om->getRepository(TagUsage::class);
 
 		// Extract tags /////
 

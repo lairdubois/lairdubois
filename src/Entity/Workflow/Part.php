@@ -13,8 +13,6 @@ use App\Validator\Constraints as LadbAssert;
  */
 class Part {
 
-	const CLASS_NAME = 'App\Entity\Workflow\Part';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

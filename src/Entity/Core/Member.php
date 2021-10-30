@@ -13,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Member implements IdentifiableInterface {
 
-	const CLASS_NAME = 'App\Entity\Core\Member';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id

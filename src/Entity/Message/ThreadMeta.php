@@ -11,8 +11,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class ThreadMeta {
 
-	const CLASS_NAME = 'App\Entity\Message\ThreadMeta';
-
 	/**
 	 * @ORM\Column(name="id", type="integer")
 	 * @ORM\Id
