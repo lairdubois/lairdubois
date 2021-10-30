@@ -31,6 +31,7 @@ abstract class AbstractContainerAwareUtils implements ServiceSubscriberInterface
             'router' => '?'.RouterInterface::class,
             'templating' => '?'.Environment::class,
             'event_dispatcher' => '?'.EventDispatcherInterface::class,
+            '?'.CryptoUtils::class,
             '?'.PaginatorUtils::class,
             '?'.GlobalUtils::class,
         );

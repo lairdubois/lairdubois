@@ -13,10 +13,7 @@
 {% block bodyJavascripts %}
     {{ parent() }}
     {{ block('blueimpGalleryJavascripts') }}
-    {% javascripts filter='?closure'
-        '@LadbCoreBundle/Resources/assets/js/ladb/jquery.ladb.threadpage.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    {{ encore_entry_script_tags('thread') }}
     <script>
         $(document).ready(function () {
 

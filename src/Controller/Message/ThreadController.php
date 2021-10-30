@@ -2,26 +2,31 @@
 
 namespace App\Controller\Message;
 
+use App\Entity\Core\Member;
 use App\Entity\Core\User;
 use App\Entity\Message\MessageMeta;
-use App\Fos\UserManager;
+use App\Entity\Message\Thread;
+use App\Form\Model\NewThreadMessage;
+use App\Form\Type\Message\NewThreadMessageType;
+use App\Utils\MailerUtils;
+use App\Utils\MessageUtils;
+use App\Utils\PaginatorUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Entity\Core\Member;
-use App\Entity\Message\Thread;
-use App\Utils\PaginatorUtils;
-use App\Utils\MessageUtils;
-use App\Form\Type\Message\NewThreadMessageType;
-use App\Form\Model\NewThreadMessage;
-use App\Utils\MailerUtils;
 
 /**
  * @Route("/messagerie")
  */
 class ThreadController extends AbstractThreadController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.MessageUtils::class,
+        ));
+    }
+
+    /**
 	 * @Route("/thread/new", name="core_message_thread_new", defaults={"recipientUsername" = null, "announcement" = false})
 	 * @Route("/thread/to/{recipientUsername}/new", requirements={"recipientUsername" = "[a-zA-Z0-9]+"}, name="core_message_thread_new_recipientusername", defaults={"announcement" = false})
 	 * @Template("Message/newThread.html.twig")
@@ -254,7 +259,7 @@ class ThreadController extends AbstractThreadController {
 		);
 
 		if ($request->isXmlHttpRequest()) {
-			return $this->render('Message:mailbox-xhr.html.twig', $parameters);
+			return $this->render('Message/mailbox-xhr.html.twig', $parameters);
 		}
 		return $parameters;
 	}

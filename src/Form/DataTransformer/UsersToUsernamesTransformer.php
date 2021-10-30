@@ -2,17 +2,18 @@
 
 namespace App\Form\DataTransformer;
 
+use App\Entity\Core\User;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use FOS\UserBundle\Model\UserManagerInterface;
 
 class UsersToUsernamesTransformer implements DataTransformerInterface {
 
-	private $userManager;
+    private $om;
 
-	public function __construct(UserManagerInterface $userManager) {
-		$this->userManager = $userManager;
-	}
+    public function __construct(ManagerRegistry $om) {
+        $this->om = $om;
+    }
 
 	/**
 	 * Transforms an object (user) to a string (username).
@@ -44,11 +45,12 @@ class UsersToUsernamesTransformer implements DataTransformerInterface {
 
 		$users = array();
 		$usernamesArray = preg_split("/[,;]+/", $usernamesString);
+        $repository = $this->om->getRepository(User::class);
 		foreach ($usernamesArray as $username) {
 			if (!preg_match("/^[ a-zA-Z0-9]{2,}$/", $username)) {
 				continue;
 			}
-			$user = $this->userManager->findUserByUsername($username);
+			$user = $repository->findOneByUsername($username);
 			if (is_null($user) || in_array($user, $users)) {
 				continue;
 			}

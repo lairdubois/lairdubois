@@ -18,8 +18,7 @@ class SearchUtils extends AbstractContainerAwareUtils {
     protected array $objectPersisters = array();
     protected PersisterRegistry $persisterRegistry;
 
-    public function __construct(ContainerInterface $container, PersisterRegistry $persisterRegistry)
-    {
+    public function __construct(ContainerInterface $container, PersisterRegistry $persisterRegistry) {
         parent::__construct($container);
 
         // Even if we add it in subscribed services, it is not available
@@ -31,7 +30,6 @@ class SearchUtils extends AbstractContainerAwareUtils {
         return array_merge(parent::getSubscribedServices(), array(
             'logger' => '?'.LoggerInterface::class,
             'fos_elastica.index_manager' => '?'.IndexManager::class,
-            // 'fos_elastica.persister_registry' => PersisterRegistry::class,
         ));
     }
 

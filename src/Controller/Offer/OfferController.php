@@ -377,7 +377,7 @@ class OfferController extends AbstractController {
 				'%RECIPIENT%' => $offer->getUser()->getDisplayName(),
 				'%SENDER%'    => $this->getUser()->getDisplayName()
 			)),
-			'alertTemplate'     => 'App\Entity\Offer/Offer/_alert-new-thread.part.html.twig',
+			'alertTemplate'     => 'Offer/Offer/_alert-new-thread.part.html.twig',
 		));
 	}
 

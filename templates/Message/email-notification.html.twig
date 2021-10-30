@@ -1,4 +1,4 @@
-{% extends ':email-layout.html.twig' %}
+{% extends 'email-layout.html.twig' %}
 
 {% block content %}
     <p>{% if originRecipientUser == recipientUser %}Vous avez{% else%}<em>{{ originRecipientUser.displayname }}</em> a{% endif%} reçu un nouveau message de la part de <strong>{{ actorUser.displayname }}</strong> sur le sujet <a href="{{ url('core_message_thread_show', { 'id':thread.id }) }}" style="color: #f77f00; text-decoration: none;">{{ thread.subject }}</a>.</p>

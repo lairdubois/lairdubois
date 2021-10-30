@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Entity\Core\MemberInvitation;
 use App\Entity\Core\MemberRequest;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Minishlink\WebPush\WebPush;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use BenTools\WebPushBundle\Model\Message\Notification;
@@ -16,6 +17,12 @@ use App\Entity\Core\User;
 use App\Model\LikableInterface;
 
 class WebpushNotificationUtils extends AbstractContainerAwareUtils {
+
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            'liip_imagine.cache.manager' => '?'.CacheManager::class,
+        ));
+    }
 
 	public function enqueueNewAnswerNotification(Answer $answer, Question $question) {
 		$this->enqueueNotification(

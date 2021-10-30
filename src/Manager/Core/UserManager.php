@@ -34,6 +34,7 @@ class UserManager extends AbstractManager {
 
         $user->setUsername($username);
         $user->setEmail($email);
+        $user->setPlainPassword($plainPassword);
 
         return $this->createFromEntity($user, $roles);
     }

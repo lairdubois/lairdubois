@@ -12,7 +12,14 @@ use App\Utils\WebpushNotificationUtils;
 
 abstract class AbstractThreadController extends AbstractController {
 
-	protected function retrieveThread($id) {
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.MailerUtils::class,
+            '?'.WebpushNotificationUtils::class,
+        ));
+    }
+
+    protected function retrieveThread($id) {
 		$om = $this->getDoctrine()->getManager();
 		$threadRepository = $om->getRepository(Thread::CLASS_NAME);
 		$thread = $threadRepository->findOneByIdJoinedOnMetaAndParticipant($id);

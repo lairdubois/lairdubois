@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Fos\UserManager;
 use App\Manager\Core\WitnessManager;
 use App\Manager\Qa\QuestionManager;
 use App\Utils\ActivityUtils;
@@ -32,7 +31,6 @@ use App\Utils\TypableUtils;
 use App\Utils\ViewableUtils;
 use App\Utils\VotableUtils;
 use App\Utils\WatchableUtils;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\MemcachedStore;

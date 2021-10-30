@@ -17,7 +17,7 @@ class MessageController extends AbstractThreadController {
 
 	/**
 	 * @Route("/thread/{threadId}/new", requirements={"threadId" = "\d+"}, name="core_message_new")
-	 * @Template("Message:new-xhr.html.twig")
+	 * @Template("Message/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $threadId) {
 		if (!$request->isXmlHttpRequest()) {
@@ -42,7 +42,7 @@ class MessageController extends AbstractThreadController {
 
 	/**
 	 * @Route("/thread/{threadId}/create", requirements={"threadId" = "\d+"}, name="core_message_create")
-	 * @Template("Message:new-xhr.html.twig")
+	 * @Template("Message/new-xhr.html.twig")
 	 */
 	public function create(Request $request, $threadId) {
 		if (!$request->isXmlHttpRequest()) {
@@ -103,7 +103,7 @@ class MessageController extends AbstractThreadController {
 
 			$om->flush();
 
-			return $this->render('Message:create-xhr.html.twig', array( 'message' => $message ));
+			return $this->render('Message/create-xhr.html.twig', array( 'message' => $message ));
 		}
 
 		return array(
@@ -114,7 +114,7 @@ class MessageController extends AbstractThreadController {
 
 	/**
 	 * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="core_message_edit")
-	 * @Template("Message:edit-xhr.html.twig")
+	 * @Template("Message/edit-xhr.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -142,7 +142,7 @@ class MessageController extends AbstractThreadController {
 
 	/**
 	 * @Route("/{id}/update", requirements={"id" = "\d+"}, name="core_message_update")
-	 * @Template("Message:edit-xhr.html.twig")
+	 * @Template("Message/edit-xhr.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -172,7 +172,7 @@ class MessageController extends AbstractThreadController {
 
 			$om->flush();
 
-			return $this->render('Message:update-xhr.html.twig', array('message' => $message));
+			return $this->render('Message/update-xhr.html.twig', array('message' => $message));
 		}
 
 		return array(

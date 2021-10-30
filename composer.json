@@ -16,6 +16,7 @@
         "ext-dom": "*",
         "ext-libxml": "*",
         "ext-memcached": "*",
+        "ext-openssl": "*",
         "beberlei/doctrineextensions": "^1.3",
         "bentools/webpush-bundle": "^0.6.0",
         "biblys/isbn": "^2.4",

@@ -22,6 +22,7 @@ Encore
      */
     .addEntry('app_header', './assets/app_header.js')
     .addEntry('app', './assets/app.js')
+    .addEntry('thread', './assets/thread.js')
     .addEntry('event', './assets/event.js')
     .addEntry('plan', './assets/plan.js')
     .addEntry('qa', './assets/qa.js')
