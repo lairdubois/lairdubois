@@ -1,7 +1,9 @@
 {% block sharebuttonsJavascript %}
     <script>
         $(document).ready(function() {
-            $(".ladb-sharebuttons").ladbShareButtonsBuilder();
+            $(".ladb-sharebuttons").ladbShareButtonsBuilder({
+                noCounters: {{ app.debug ? 'true' : 'false' }}
+            });
         });
     </script>
 {% endblock %}

@@ -74,7 +74,7 @@
 
         $('.ladb-comment-widget', $row).ladbCommentWidget();
         LADBCommon.setupTooltips();
-        setupPopovers();
+        LADBCommon.setupPopovers();
 
     };
 
@@ -294,7 +294,7 @@
         var that = this;
 
         this.bind();
-        setupPopovers();
+        LADBCommon.setupPopovers();
 
     };
 

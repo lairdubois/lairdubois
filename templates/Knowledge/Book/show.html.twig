@@ -38,14 +38,14 @@
 
 {% block headStylesheets %}
     {{ parent() }}
-    {{ encore_entry_link_tags('book', null, '_default', {media: 'screen'}) }}
+    {{ encore_entry_link_tags('barrating') }}
 {% endblock %}
 
 {% block bodyMetas %}{% endblock %}
 
 {% block bodyJavascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('book') }}
+    {{ encore_entry_script_tags('barrating') }}
     {{ encore_entry_script_tags('ladb_values') }}
     <script>
         $(document).ready(function() {

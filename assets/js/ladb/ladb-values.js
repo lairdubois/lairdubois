@@ -15,7 +15,7 @@ var LADBValues = (function () {
                         $(".ladb-page").replaceWith($(data)[i]);
                         $('.ladb-comment-widget').ladbCommentWidget();
                         LADBCommon.setupTooltips();
-                        setupPopovers();
+                        LADBCommon.setupPopovers();
                         $(document).trigger("updated.ladb");
                         UIkit.notify("Proposition ajoutée !", {
                             status: 'success',
@@ -45,7 +45,7 @@ var LADBValues = (function () {
                     $("#ladb_value_proposal_" + id).replaceWith(data);
                     $('.ladb-comment-widget').ladbCommentWidget();
                     LADBCommon.setupTooltips();
-                    setupPopovers();
+                    LADBCommon.setupPopovers();
                     $(document).trigger("updated.ladb");
                 }
             },
@@ -84,7 +84,7 @@ var LADBValues = (function () {
                 $('.ladb-comment-widget').ladbCommentWidget();
                 //bindNewCommentAjaxForm();
                 LADBCommon.setupTooltips();
-                setupPopovers();
+                LADBCommon.setupPopovers();
                 $(document).trigger("updated.ladb");
                 UIkit.notify("Proposition supprimée !", {
                     status: 'success',
@@ -106,7 +106,7 @@ var LADBValues = (function () {
                 $(".ladb-page").replaceWith($(data));
                 $('.ladb-comment-widget').ladbCommentWidget();
                 LADBCommon.setupTooltips();
-                setupPopovers();
+                LADBCommon.setupPopovers();
                 $(document).trigger("updated.ladb");
                 UIkit.notify("Proposition déplacée !", {
                     status: 'success',

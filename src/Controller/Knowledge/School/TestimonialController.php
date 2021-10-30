@@ -21,9 +21,15 @@ use App\Event\PublicationListener;
  */
 class TestimonialController extends AbstractController {
 
-	/**
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), array(
+            '?'.TestimonialManager::class,
+        ));
+    }
+
+    /**
 	 * @Route("/{id}/temoignages/new", requirements={"id" = "\d+"}, name="core_knowledge_school_testimonial_new")
-	 * @Template("Knowledge/School/Testimonial:new-xhr.html.twig")
+	 * @Template("Knowledge/School/Testimonial/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -49,7 +55,7 @@ class TestimonialController extends AbstractController {
 
 	/**
 	 * @Route("/{id}/temoignages/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_knowledge_school_testimonial_create")
-	 * @Template("Knowledge/School/Testimonial:new-xhr.html.twig")
+	 * @Template("Knowledge/School/Testimonial/new-xhr.html.twig")
 	 */
 	public function create(Request $request, $id) {
 		if (!$request->isXmlHttpRequest()) {
@@ -109,7 +115,7 @@ class TestimonialController extends AbstractController {
 
 			$om->flush();
 
-			return $this->render('Knowledge/School/Testimonial:create-xhr.html.twig', array(
+			return $this->render('Knowledge/School/Testimonial/create-xhr.html.twig', array(
 				'school'      => $school,
 				'testimonial' => $testimonial,
 			));
@@ -123,7 +129,7 @@ class TestimonialController extends AbstractController {
 
 	/**
 	 * @Route("/temoignages/{id}/edit", requirements={"id" = "\d+"}, name="core_knowledge_school_testimonial_edit")
-	 * @Template("Knowledge/School/Testimonial:edit-xhr.html.twig")
+	 * @Template("Knowledge/School/Testimonial/edit-xhr.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -147,7 +153,7 @@ class TestimonialController extends AbstractController {
 
 	/**
 	 * @Route("/temoignages/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_knowledge_school_testimonial_update")
-	 * @Template("Knowledge/School/Testimonial:edit-xhr.html.twig")
+	 * @Template("Knowledge/School/Testimonial/edit-xhr.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -175,7 +181,7 @@ class TestimonialController extends AbstractController {
 
 			$om->flush();
 
-			return $this->render('Knowledge/School/Testimonial:update-xhr.html.twig', array(
+			return $this->render('Knowledge/School/Testimonial/update-xhr.html.twig', array(
 				'school'      => $testimonial->getSchool(),
 				'testimonial' => $testimonial,
 			));
@@ -215,7 +221,7 @@ class TestimonialController extends AbstractController {
 		$om->flush();
 
 		// Flashbag
-		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('knowledge.school.testimonial.form.alert.delete_success'));
+		$this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('knowledge.school.testimonial.alert.delete_success'));
 
 		return $this->redirect($this->generateUrl('core_school_show', array( 'id' => $school->getSluggedId() )));
 	}

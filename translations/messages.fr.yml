@@ -967,6 +967,8 @@ knowledge:
     testimonial:
       new: Ajouter mon témoignage
       edit: Editer mon témoignage
+      alert:
+        delete_success: Le témoignage a été supprimé.
     choice:
       entities: '[0,1]école|]1,Inf]écoles'
       new_schools: '[0,1]nouvelle école|]1,Inf]nouvelles écoles'

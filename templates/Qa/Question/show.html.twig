@@ -24,6 +24,7 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('qa') }}
     {{ encore_entry_script_tags('tocify') }}
     <script>
         $(document).ready(function() {

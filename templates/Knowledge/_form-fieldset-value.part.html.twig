@@ -28,7 +28,7 @@
             </button>
             <ul class="dropdown-menu">
                 {% for sourcesHistoryItem in sourcesHistory %}
-                    <li><a href="#" class="ladb-source-history-item" data-ladb-source-type="{{ sourcesHistoryItem[0] }}" data-ladb-source="{{ sourcesHistoryItem[1] }}">[{{ ('knowledge.source_type_'~sourcesHistoryItem[0])|trans }}]{% if sourcesHistoryItem[1] is not empty %} {{ sourcesHistoryItem[1]|truncate }}{% endif %}</a></li>
+                    <li><a href="#" class="ladb-source-history-item" data-ladb-source-type="{{ sourcesHistoryItem[0] }}" data-ladb-source="{{ sourcesHistoryItem[1] }}">[{{ ('knowledge.source_type_'~sourcesHistoryItem[0])|trans }}]{% if sourcesHistoryItem[1] is not empty %} {{ sourcesHistoryItem[1]|u.truncate(30, '...') }}{% endif %}</a></li>
                 {% else %}
                     <li class="disabled"><a href="#">Vide</a></li>
                 {% endfor %}

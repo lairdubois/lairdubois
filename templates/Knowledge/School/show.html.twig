@@ -66,6 +66,7 @@
 
 {% block bodyJavascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('school') }}
     {{ encore_entry_script_tags('ladb_values') }}
     {{ block('mapAreaJavascripts') }}
     <script>

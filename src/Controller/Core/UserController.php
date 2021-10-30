@@ -61,6 +61,7 @@ class UserController extends AbstractController {
     public static function getSubscribedServices() {
         return array_merge(parent::getSubscribedServices(), array(
             '?'.UserUtils::class,
+            '?'.MailerUtils::class,
             '?'.MemberInvitationManager::class,
             '?'.MemberRequestManager::class,
             '?'.MemberManager::class,

@@ -10,6 +10,7 @@
     };
 
     LadbShareButtonsBuilder.DEFAULTS = {
+        noCounters: false,
     };
 
     LadbShareButtonsBuilder.prototype.bindButton = function(button, withCounters) {
@@ -33,7 +34,7 @@
                     's': 100,
                     'p[url]': url
                 });
-                if (withCounters) {
+                if (!this.options.noCounters && withCounters) {
                     $.getJSON('/api/facebook/share.count.json?url=' + url, function(data) {
                         that.appendCounterBadge(button, data.count);
                     });
@@ -52,7 +53,7 @@
                     'media': button.getAttribute('data-sb-media'),
                     'description': button.getAttribute('data-sb-description')
                 });
-                if (withCounters) {
+                if (!this.options.noCounters && withCounters) {
                     $.getJSON('https://api.pinterest.com/v1/urls/count.json?url=' + url + '&callback=?', function(data) {
                         that.appendCounterBadge(button, data.count);
                     });

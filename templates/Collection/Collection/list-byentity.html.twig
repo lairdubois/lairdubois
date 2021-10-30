@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="ladb-filterbar">
-        <span class="ladb-heading pull-right">{{ collections.count }} {{ 'collection.collection.choice.entities'|trans({'count' : collections.count}) }}</span>
+        <span class="ladb-heading pull-right">{{ collections.count }} {{ 'collection.collection.choice.entities'|transchoice(collections.count) }}</span>
     </div>
     {{ parent() }}
 {% endblock %}
