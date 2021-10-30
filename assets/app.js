@@ -7,7 +7,6 @@ import 'jquery-ui/ui/widgets/droppable';
 import 'jquery-ui/ui/disable-selection';
 import 'devbridge-autocomplete';
 import 'jquery-textcomplete';
-import 'jquery-lazy';
 import 'jquery-sticky';
 import 'jquery.scrollto';
 import 'jscroll';
@@ -20,9 +19,13 @@ import 'blueimp-file-upload';
 import 'emojionearea';
 
 import moment from 'moment';
+moment.locale('fr');
 global.moment = moment;
 
 // Old vendors not working properly with webpack encore1
+import './js/jquery-lazy/jquery.lazy';
+import './js/jquery-lazy/jquery.lazy.ajax';
+import './js/bootbox/bootbox';
 import './js/bootstrap-markdown/bootstrap-markdown-v1';
 import './js/modernizr/modernizr-custom';
 import './js/masonry/masonry.pkgd';

@@ -48,6 +48,7 @@ class EventType extends AbstractType {
 				->addModelTransformer(new PicturesToIdsTransformer($this->om))
 			)
 			->add('location')
+//			->add('startDate', DateType::class, array( 'html5' => false, 'format' => 'dd/MM/yyyy', 'widget' => 'single_text' ))
 			->add('startDate', DateType::class, array( 'html5' => false, 'format' => 'dd/MM/yyyy', 'widget' => 'single_text' ))
 			->add('startTime', TimeType::class, array( 'html5' => false, 'widget' => 'single_text' ))
 			->add('endDate', DateType::class, array( 'html5' => false, 'format' => 'dd/MM/yyyy', 'widget' => 'single_text' ))
