@@ -7,6 +7,7 @@ RUN apt-get update -y --fix-missing && apt-get install -y \
     imagemagick \
     libfreetype6-dev \
     libgmp-dev \
+    librabbitmq-dev \
     libmemcached-dev \
     libmagickwand-dev --no-install-recommends \
     libpng-dev \
@@ -19,9 +20,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN pecl install apcu imagick memcached zip
+RUN pecl install apcu imagick memcached zip amqp
 RUN docker-php-ext-install exif gd gmp opcache pdo pdo_mysql sockets zip pcntl intl sysvsem
-RUN docker-php-ext-enable apcu imagick memcached
+RUN docker-php-ext-enable apcu imagick memcached amqp
 
 # Increase memory limit
 RUN echo 'memory_limit = 4G' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;

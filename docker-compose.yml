@@ -20,6 +20,9 @@ services:
     working_dir: /var/www/dev.lairdubois.fr
     depends_on:
       - mariadb
+      - elasticsearch
+      - rabbitmq
+      - memcached
     volumes:
       - ./:/var/www/dev.lairdubois.fr
 
@@ -48,7 +51,10 @@ services:
       - 9200:9200
 
   rabbitmq:
-    image: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
 
   memcached:
     image: memcached

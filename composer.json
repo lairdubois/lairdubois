@@ -48,6 +48,7 @@
         "stof/doctrine-extensions-bundle": "^1.6",
         "stripe/stripe-php": "^7.76",
         "suin/php-rss-writer": "^1.6",
+        "symfony/amqp-messenger": "5.3.*",
         "symfony/console": "5.3.*",
         "symfony/doctrine-messenger": "5.3.*",
         "symfony/dotenv": "5.3.*",
