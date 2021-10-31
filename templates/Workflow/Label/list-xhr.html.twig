@@ -10,7 +10,7 @@
     <table class="table table-bordered ladb-label-table" style="background-color: white;{% if workflow.labels|length == 0 %} display: none;{% endif %}">
         <tbody>
         {% for label in workflow.labels %}
-            {% include 'Workflow:Label/_row.part.html.twig' %}
+            {% include 'Workflow/Label/_row.part.html.twig' %}
         {% endfor %}
         </tbody>
     </table>

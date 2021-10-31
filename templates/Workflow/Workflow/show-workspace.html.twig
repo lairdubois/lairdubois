@@ -20,11 +20,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
     <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
-    <script src="{{ asset('bundles/goswebsocket/js/websocket.min.js') }}"></script>
+{#    <script src="{{ asset('bundles/goswebsocket/js/websocket.js') }}"></script>#}
     {{ encore_entry_script_tags('workflow_workflow_workspace') }}
-
     <script>
-        var websocket = GosSocket.connect('ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}');
+        {#var websocket = GosSocket.connect('ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}');#}
         $(document).ready(function() {
             $('.ladb-workflow-workspace').ladbWorkflowWorkspace({
                 readOnly: {{ readOnly ? 'true' : 'false' }},

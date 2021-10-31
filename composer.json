@@ -34,7 +34,7 @@
         "gedmo/doctrine-extensions": "^3.0",
         "geocoder-php/google-maps-provider": "^4.6",
         "giggsey/libphonenumber-for-php": "^8.12",
-        "gos/web-socket-bundle": "3.x",
+        "gos/web-socket-bundle": "^3.11",
         "hashids/hashids": "^4.1",
         "jaybizzle/crawler-detect": "^1.2",
         "jmikola/geojson": "^1.0",

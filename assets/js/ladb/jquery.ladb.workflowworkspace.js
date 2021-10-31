@@ -1416,7 +1416,7 @@
             this._uiMarkLoading('Connexion...');
 
             // Connect WebSocket
-            var ws = WS.connect(this.options.wsUri);
+            var ws = GosSocket.connect(this.options.wsUri);
             ws.on('socket/connect', function (session) {
 
                 // Keep ws session

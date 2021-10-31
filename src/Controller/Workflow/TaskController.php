@@ -117,7 +117,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/task/new", requirements={"id" = "\d+"}, name="core_workflow_task_new")
-	 * @Template("Workflow:Task/new-xhr.html.twig")
+	 * @Template("Workflow/Task/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $id) {
 
@@ -139,7 +139,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/task/create", requirements={"id" = "\d+"}, name="core_workflow_task_create")
-	 * @Template("Workflow:Task/new-xhr.html.twig")
+	 * @Template("Workflow/Task/new-xhr.html.twig")
 	 */
 	public function create(Request $request, $id) {
 
@@ -236,7 +236,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/task/edit", requirements={"id" = "\d+"}, name="core_workflow_task_edit")
-	 * @Template("Workflow:Task/edit-xhr.html.twig")
+	 * @Template("Workflow/Task/edit-xhr.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 
@@ -259,7 +259,7 @@ class TaskController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/task/update", requirements={"id" = "\d+"}, name="core_workflow_task_update")
-	 * @Template("Workflow:Task/edit-xhr.html.twig")
+	 * @Template("Workflow/Task/edit-xhr.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();

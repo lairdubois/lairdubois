@@ -23,6 +23,7 @@ services:
       - elasticsearch
       - rabbitmq
       - memcached
+      - maildev
     volumes:
       - ./:/var/www/dev.lairdubois.fr
 

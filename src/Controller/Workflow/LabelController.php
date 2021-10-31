@@ -16,7 +16,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/label/new", requirements={"id" = "\d+"}, name="core_workflow_label_new")
-	 * @Template("Workflow:Label/new-xhr.html.twig")
+	 * @Template("Workflow/Label/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $id) {
 
@@ -36,7 +36,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/label/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workflow_label_create")
-	 * @Template("Workflow:Label/new-xhr.html.twig")
+	 * @Template("Workflow/Label/new-xhr.html.twig")
 	 */
 	public function create(Request $request, $id) {
 
@@ -58,7 +58,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 			$om->flush();
 
-			return $this->render('Workflow:Label/create-xhr.html.twig', array(
+			return $this->render('Workflow/Label/create-xhr.html.twig', array(
 				'label' => $label,
 			));
 		}
@@ -71,7 +71,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/label/{id}/edit", requirements={"id" = "\d+"}, name="core_workflow_label_edit")
-	 * @Template("Workflow:Label/edit-xhr.html.twig")
+	 * @Template("Workflow/Label/edit-xhr.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -93,7 +93,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/label/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workflow_label_update")
-	 * @Template("Workflow:Label/edit-xhr.html.twig")
+	 * @Template("Workflow/Label/edit-xhr.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -123,7 +123,7 @@ class LabelController extends AbstractWorkflowBasedController {
 				));
 			}
 
-			return $this->render('Workflow:Label/update-xhr.html.twig', array(
+			return $this->render('Workflow/Label/update-xhr.html.twig', array(
 				'label' => $label,
 			));
 		}
@@ -136,7 +136,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/label/{id}/delete", requirements={"id" = "\d+"}, name="core_workflow_label_delete")
-	 * @Template("Workflow:Label/delete-xhr.html.twig")
+	 * @Template("Workflow/Label/delete-xhr.html.twig")
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -171,7 +171,7 @@ class LabelController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/labels", requirements={"id" = "\d+"}, name="core_workflow_label_list")
-	 * @Template("Workflow:Label/list-xhr.html.twig")
+	 * @Template("Workflow/Label/list-xhr.html.twig")
 	 */
 	public function list(Request $request, $id) {
 

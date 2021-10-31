@@ -30,7 +30,7 @@
             {{ form_widget(form.labels) }}
             <select class="ladb-workflow-label-fake-select form-control" data-ladb-mapped-input="#{{ form.labels.vars.id }}" multiple>
                 {% for label in workflow.labels %}
-                    <option data-content="{% apply spaceless %}{% apply escape %}{% include 'Workflow:Label/_span.part.html.twig' %}{% endapply %}{% endapply %}" value="{{ label.id }}">{{ label.name }}</option>
+                    <option data-content="{% apply spaceless %}{% apply escape %}{% include 'Workflow/Label/_span.part.html.twig' %}{% endapply %}{% endapply %}" value="{{ label.id }}">{{ label.name }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -40,7 +40,7 @@
             {{ form_widget(form.parts) }}
             <select class="ladb-workflow-part-fake-select form-control" data-ladb-mapped-input="#{{ form.parts.vars.id }}" multiple>
                 {% for part in workflow.parts %}
-                    <option data-content="{% apply spaceless %}{% apply escape %}{% include 'Workflow:Part/_span.part.html.twig' %}{% endapply %}{% endapply %}" value="{{ part.id }}">{{ part.name }}</option>
+                    <option data-content="{% apply spaceless %}{% apply escape %}{% include 'Workflow/Part/_span.part.html.twig' %}{% endapply %}{% endapply %}" value="{{ part.id }}">{{ part.name }}</option>
                 {% endfor %}
             </select>
         </div>

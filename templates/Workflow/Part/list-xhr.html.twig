@@ -10,7 +10,7 @@
     <table class="table table-bordered ladb-part-table" style="background-color: white;{% if workflow.parts|length == 0 %} display: none;{% endif %}">
         <tbody>
         {% for part in workflow.parts %}
-            {% include 'Workflow:Part/_row.part.html.twig' %}
+            {% include 'Workflow/Part/_row.part.html.twig' %}
         {% endfor %}
         </tbody>
     </table>

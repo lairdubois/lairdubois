@@ -4,6 +4,7 @@ namespace App\Controller\Workflow;
 
 use App\Controller\AbstractController;
 use App\Entity\Workflow\Workflow;
+use Twig\Environment;
 
 abstract class AbstractWorkflowBasedController extends AbstractController {
 
@@ -39,8 +40,6 @@ abstract class AbstractWorkflowBasedController extends AbstractController {
 	}
 
 	protected function _generateTaskInfos($tasks = array(), $fieldsStrategy = self::TASKINFO_NONE, $readOnly = false, $durationsHidden = false) {
-		$templating = $this->get('templating');
-
 		if (!is_array($tasks) && !$tasks instanceof \Traversable) {
 			$tasks = array( $tasks );
 		}
@@ -62,13 +61,13 @@ abstract class AbstractWorkflowBasedController extends AbstractController {
 				$taskInfo['sortIndex'] = $task->getPositionTop();
 			}
 			if (($fieldsStrategy & self::TASKINFO_ROW) == self::TASKINFO_ROW) {
-				$taskInfo['row'] = $templating->render('Workflow:Task/_row.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
+				$taskInfo['row'] = $this->render('Workflow/Task/_row.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
 			}
 			if (($fieldsStrategy & self::TASKINFO_WIDGET) == self::TASKINFO_WIDGET) {
-				$taskInfo['widget'] = $templating->render('Workflow:Task/_widget.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
+				$taskInfo['widget'] = $this->render('Workflow/Task/_widget.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
 			}
 			if (($fieldsStrategy & self::TASKINFO_BOX) == self::TASKINFO_BOX) {
-				$taskInfo['box'] = $templating->render('Workflow:Task/_box.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
+				$taskInfo['box'] = $this->render('Workflow/Task/_box.part.html.twig', array( 'task' => $task, 'readOnly' => $readOnly, 'durationsHidden' => $durationsHidden ));
 			}
 			$taskInfos[] = $taskInfo;
 		}
@@ -76,10 +75,8 @@ abstract class AbstractWorkflowBasedController extends AbstractController {
 	}
 
 	protected function _generateWorkflowInfos($workflow) {
-		$templating = $this->get('templating');
-
 		return array(
-			'statusPanel' => $templating->render('Workflow/Workflow/_workflow-status.part.html.twig', array( 'workflow' => $workflow )),
+			'statusPanel' => $this->render('Workflow/Workflow/_workflow-status.part.html.twig', array( 'workflow' => $workflow )),
 		);
 	}
 

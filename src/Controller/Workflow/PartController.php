@@ -16,7 +16,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/part/new", requirements={"id" = "\d+"}, name="core_workflow_part_new")
-	 * @Template("Workflow:Part/new-xhr.html.twig")
+	 * @Template("Workflow/Part/new-xhr.html.twig")
 	 */
 	public function new(Request $request, $id) {
 
@@ -35,7 +35,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/part/create", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workflow_part_create")
-	 * @Template("Workflow:Part/new-xhr.html.twig")
+	 * @Template("Workflow/Part/new-xhr.html.twig")
 	 */
 	public function create(Request $request, $id) {
 
@@ -57,7 +57,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 			$om->flush();
 
-			return $this->render('Workflow:Part/create-xhr.html.twig', array(
+			return $this->render('Workflow/Part/create-xhr.html.twig', array(
 				'part' => $part,
 			));
 		}
@@ -70,7 +70,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/part/{id}/edit", requirements={"id" = "\d+"}, name="core_workflow_part_edit")
-	 * @Template("Workflow:Part/edit-xhr.html.twig")
+	 * @Template("Workflow/Part/edit-xhr.html.twig")
 	 */
 	public function edit(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -92,7 +92,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/part/{id}/update", requirements={"id" = "\d+"}, methods={"POST"}, name="core_workflow_part_update")
-	 * @Template("Workflow:Part/edit-xhr.html.twig")
+	 * @Template("Workflow/Part/edit-xhr.html.twig")
 	 */
 	public function update(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -133,7 +133,7 @@ class PartController extends AbstractWorkflowBasedController {
 				));
 			}
 
-			return $this->render('Workflow:Part/update-xhr.html.twig', array(
+			return $this->render('Workflow/Part/update-xhr.html.twig', array(
 				'part' => $part,
 			));
 		}
@@ -146,7 +146,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/part/{id}/delete", requirements={"id" = "\d+"}, name="core_workflow_part_delete")
-	 * @Template("Workflow:Part/delete-xhr.html.twig")
+	 * @Template("Workflow/Part/delete-xhr.html.twig")
 	 */
 	public function delete(Request $request, $id) {
 		$om = $this->getDoctrine()->getManager();
@@ -192,7 +192,7 @@ class PartController extends AbstractWorkflowBasedController {
 
 	/**
 	 * @Route("/{id}/parts", requirements={"id" = "\d+"}, name="core_workflow_part_list")
-	 * @Template("Workflow:Part/list-xhr.html.twig")
+	 * @Template("Workflow/Part/list-xhr.html.twig")
 	 */
 	public function list(Request $request, $id) {
 
