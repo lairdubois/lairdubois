@@ -58,3 +58,9 @@ services:
 
   memcached:
     image: memcached
+
+  maildev:
+    image: maildev/maildev
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    ports:
+      - 1080:80
