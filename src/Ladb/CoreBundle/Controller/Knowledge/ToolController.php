@@ -250,6 +250,13 @@ class ToolController extends AbstractController {
 
 						break;
 
+					case 'with-manual':
+
+						$filter = new \Elastica\Query\Range('manualCount', array( 'gt' => 0 ));
+						$filters[] = $filter;
+
+						break;
+
 					case 'with-review':
 
 						$filter = new \Elastica\Query\Range('reviewCount', array( 'gt' => 0 ));

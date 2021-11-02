@@ -1,0 +1,38 @@
+{% extends '::base.html.twig' %}
+
+{% set fieldLabel = knowledge is defined ? (('knowledge.'~knowledge.strippedName~'.field.'~field)|trans()) : '' %}
+{% set pageTitle = fieldLabel~' - '~knowledge.title %}
+
+{% block headStylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        #content {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 50px;
+        }
+        iframe {
+            border: none;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% embed '::_topbar.part.html.twig' %}
+        {% block topbarLeftContent %}{% endblock %}
+        {% block topbarRightContent %}
+            <li><a href="{{ path('core_knowledge_value_show', { 'id':value.id }) }}"><i class="ladb-icon-remove"></i></a></li>
+        {% endblock %}
+    {% endembed %}
+    <div id="content">
+        <iframe src="/bundles/ladbcore/ladb/pdfjs/web/viewer.html?file={{ pdfPath }}" width="100%" height="100%"></iframe>
+    </div>
+{% endblock %}

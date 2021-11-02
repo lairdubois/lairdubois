@@ -253,7 +253,7 @@ wonder:
     other_from: Autres ateliers de
     similar: Voir aussi
     linked_to: Cet atelier est associé à
-    new_warning: Un <strong>atelier</strong> est un espace de fabrication <strong>artisanale</strong> majoritairement orienté sur le travail du <strong>bois</strong>.
+    new_warning: Un <strong>atelier</strong> est un lieu ou un espace de fabrication <strong>artisanale</strong> majoritairement orienté sur le travail du <strong>bois</strong>.<br>Est attendu ici la présentation du lieu, de son agencement et/ou de sa machinerie.<br>Cette fiche ne se destine pas à présenter une entreprise.
     converttocreation: Convertir en création
     converttohowto: Convertir en pas à pas
     form:
@@ -1219,6 +1219,8 @@ knowledge:
         utilization: ~
     choice:
       entities: '[0,1]outil|]1,Inf]outils'
+      contains_manuals: '[0,1]Cette fiche outil contient %count% notice|]1,Inf]Cette fiche outil contient %count% notices'
+      show_manuals: '[0,1]Consulter la notice|]1,Inf]Consulter les notices'
   finish:
     token:
       help: Saisissez une finition et cliquez sur la flèche pour l'ajouter

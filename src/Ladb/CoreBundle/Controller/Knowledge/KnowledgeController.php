@@ -513,13 +513,46 @@ class KnowledgeController extends AbstractController {
 		$response->headers->set('Content-Type', 'mime/type');
 		$response->headers->set('Content-Length', filesize($resource->getAbsolutePath()));
 		$response->headers->set('Content-Disposition', 'attachment;filename="lairdubois_'.$resource->getFilename().'"');
-		$response->headers->set('Expires', 0);
-		$response->headers->set('Cache-Control', 'no-cache, must-revalidate');
-		$response->headers->set('Pragma', 'no-cache');
+		$response->headers->set('Cache-Control', 'max-age=300');
+		$response->headers->set('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + 30000));
 
 		$response->setContent($content);
 
 		return $response;
+	}
+
+	/**
+	 * @Route("/{entityType}/{entityId}/{field}/{id}/view", requirements={"entityType" = "\d+","entityId" = "\d+", "field" = "\w+","id" = "\d+"}, name="core_knowledge_value_view")
+	 * @Template("LadbCoreBundle:Knowledge:value-view.html.twig")
+	 */
+	public function viewFieldValueAction(Request $request, $entityType, $entityId, $field, $id) {
+		$om = $this->getDoctrine()->getManager();
+
+		// Retrieve related entity
+
+		$entityRepository = $this->_retrieveRelatedEntityRepository($entityType);
+		$entity = $this->_retrieveRelatedEntity($entityRepository, $entityId);
+
+		// Process field
+
+		$fieldDef = $this->_retieveFieldDef($entity, $field);
+
+		$fieldType = $fieldDef[AbstractKnowledge::ATTRIB_TYPE];
+
+		$entityClass = $this->_computeEntityClass($fieldType);
+
+		$valueRepository = $om->getRepository($entityClass::CLASS_NAME);
+		$value = $this->_retrieveValue($valueRepository, $id);
+		if (!$value instanceof Pdf) {
+			throw $this->createNotFoundException('Only Pdf values allowed to view (core_knowledge_value_view)');
+		}
+
+		return array(
+			'knowledge' => $entity,
+			'value' => $value,
+			'field' => $field,
+			'pdfPath' => $this->generateUrl('core_knowledge_value_download', array( 'entityType' => $entityType, 'entityId' => $entityId, 'field' => $field, 'id' => $id )),
+		);
 	}
 
 	/**

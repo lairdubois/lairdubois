@@ -13,7 +13,7 @@
         '@LadbCoreBundle/Resources/assets/less/ladb/component/inputcolor.less'
         '@LadbCoreBundle/Resources/assets/less/ladb/component/inputduration.less'
         '@LadbCoreBundle/Resources/assets/less/ladb/layout/workflow.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen" />
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" media="screen,print" />
     {% endstylesheets %}
 {% endblock %}
 
@@ -126,16 +126,16 @@
                     <div class="ladb-jtk-canvas"></div>
                 </div>
             </div>
-            <div class="ladb-panel-buttons">
+            <div class="ladb-panel-buttons ladb-no-print">
                 <button class="btn btn-default btn-sm ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-left"></i></button>
             </div>
-            <div class="ladb-toolbar">
+            <div class="ladb-toolbar ladb-no-print">
                 <button class="btn btn-default ladb-zoom-all-btn"><i class="ladb-icon-zoom-all ladb-icon-lg"></i></button>
                 <button class="btn btn-default ladb-zoom-in-btn"><i class="ladb-icon-zoomin ladb-icon-lg"></i></button>
                 <button class="btn btn-default ladb-zoom-out-btn"><i class="ladb-icon-zoomout ladb-icon-lg"></i></button>
                 <button class="btn btn-default ladb-zoom-one-btn"><i class="ladb-icon-zoom-one ladb-icon-lg"></i></button>
             </div>
-            <div class="ladb-right-panel">
+            <div class="ladb-right-panel ladb-no-print">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <button class="btn btn-default btn-sm pull-left ladb-toggle-right-panel-btn"><i class="ladb-icon-chevron-right"></i></button>

@@ -255,7 +255,7 @@ class UserController extends AbstractController {
 	 * @Route("/boiseux/{page}", requirements={"page" = "\d+"}, name="core_user_list_page")
 	 * @Route("/boiseux.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson"}, name="core_user_list_geojson")
 	 * @Route("/collectifs", defaults={"family"="team"}, name="core_user_team_list")
-	 * @Route("/collectifs/{page}", defaults={"family"="team"}, requirements={"page" = "\d+"}, name="core_userteam_list_page_")
+	 * @Route("/collectifs/{page}", defaults={"family"="team"}, requirements={"page" = "\d+"}, name="core_user_team_list_page")
 	 * @Route("/collectifs.geojson", defaults={"_format" = "json", "page"=-1, "layout"="geojson", "family"="team"}, name="core_user_team_list_geojson")
 	 * @Template("LadbCoreBundle:Core/User:list.html.twig")
 	 */
@@ -374,7 +374,7 @@ class UserController extends AbstractController {
 			},
 			'fos_elastica.index.ladb.core_user',
 			\Ladb\CoreBundle\Entity\Core\User::CLASS_NAME,
-			$family == 'team' ? 'core_team_list_page' : 'core_user_list_page'
+			$family == 'team' ? 'core_user_team_list_page' : 'core_user_list_page'
 		);
 
 		$parameters = array_merge($searchParameters, array(

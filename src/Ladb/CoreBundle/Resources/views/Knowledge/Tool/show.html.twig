@@ -133,6 +133,13 @@
         </div>
         {% include 'LadbCoreBundle:Core/Vote:_meta-counter.part.html.twig' with { 'entity':tool } %}
         {% include 'LadbCoreBundle:Core/Review:_meta-counter.part.html.twig' with { 'entity':tool } %}
+        {% if tool.manualCount > 0 %}
+            <div class="ladb-btn">
+                <div class="btn-group" style="display: flex;">
+                    <a class="btn btn-primary btn-expand btn-lg" style="flex: 1;" onclick="$('#proposals_modal').modal({ remote:'{{ path('core_knowledge_field_show', { 'entityType':tool.type, 'entityId':tool.id, 'field':constant('FIELD_MANUAL', tool)}) }}' });"><i class="ladb-icon-file"></i> {{ 'knowledge.tool.choice.show_manuals'|transchoice(tool.manualCount) }}...</a>
+                </div>
+            </div>
+        {% endif %}
         {% if tool.docs %}
             <div class="ladb-btn">
                 <div class="btn-group" style="display: flex;">

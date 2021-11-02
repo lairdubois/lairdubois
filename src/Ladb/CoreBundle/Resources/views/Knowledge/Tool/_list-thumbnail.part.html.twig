@@ -24,6 +24,9 @@
         {{ parent() }}
     {% endif %}
     </div>
+    {% if tool.manualCount > 0 %}
+        <div class="ladb-image-overlay" data-tooltip="tooltip" title="{{ 'knowledge.tool.choice.contains_manuals'|transchoice(tool.manualCount, { '%count%':tool.manualCount }) }}"><i class="ladb-icon-file"></i></div>
+    {% endif %}
 {% endblock %}
 
 {% block entityMetas %}
