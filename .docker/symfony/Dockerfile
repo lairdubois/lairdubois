@@ -33,3 +33,8 @@ COPY /.docker/symfony/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 RUN mkdir keys
 RUN openssl genrsa -out keys/private.pem 1024
 RUN openssl rsa -in keys/private.pem -outform PEM -pubout -out keys/public.pem
+
+# Install NodeJS + npm + yarn
+RUN apt-get install -y \
+    nodejs npm \
+RUN npm install --global yarn
