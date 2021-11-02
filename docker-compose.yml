@@ -8,8 +8,6 @@ services:
       dockerfile: .docker/nginx/Dockerfile
     volumes:
       - ./public:/var/www/dev.lairdubois.fr/public
-    ports:
-      - '8000:80'
     links:
       - symfony
 
