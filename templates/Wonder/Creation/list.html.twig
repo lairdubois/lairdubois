@@ -60,7 +60,7 @@
 
 {% block bodyHeaderContainer %}
     {% if homepage and spotlightEntity is defined and spotlightEntity is not null %}
-        {% include (constant('class', spotlightEntity)|slice(11))~'/_spotlight.part.html.twig' with { 'entity':spotlightEntity } %}
+        {% include (ladb_entity_type_stripped_name(spotlightEntity, '/', true))~'/_spotlight.part.html.twig' with { 'entity':spotlightEntity } %}
     {% else %}
         {{ parent() }}
     {% endif %}
@@ -89,7 +89,7 @@
         <div class="ladb-masonry-item ladb-masonry-column">
             <div class="ladb-box">
                 <div style="padding: 10px;">
-                    <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-event"></i> {{ runningEvents|length }} {{ 'find.find.choice.events'|trans({'count': runningEvents|length}) }} aujourd'hui !</div>
+                    <div style="font-size: 120%; font-weight: bold; margin-bottom: 10px;"><i class="ladb-icon-event"></i> {{ runningEvents|length }} {{ 'find.find.choice.events'|transchoice(runningEvents|length) }} aujourd'hui !</div>
                     <ul>
                         {% for runningEvent in runningEvents %}
                          <li><a href="{{ ladb_entity_url_action(runningEvent) }}">{{ runningEvent.title }}</a></li>

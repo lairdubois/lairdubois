@@ -125,32 +125,32 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
 		$interval = $d->diff(new \DateTime());
 		$translator = $this->container->get('translator');
 		if ($interval->y > 0) {
-			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.year', $interval->y, array('%count%' => $interval->y), 'date');
+			$str = $translator->trans('interval.'.($long ? 'long' : 'short').'.year', array('%count%' => $interval->y), 'date');
 			if ($interval->m > 0) {
-				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.month', $interval->m, array('%count%' => $interval->m), 'date');
+				$str .= ' '.$translator->trans('interval.'.($long ? 'long' : 'short').'.month', array('%count%' => $interval->m), 'date');
 			}
 		} else if ($interval->m > 0) {
-			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.month', $interval->m, array('%count%' => $interval->m), 'date');
+			$str = $translator->trans('interval.'.($long ? 'long' : 'short').'.month', array('%count%' => $interval->m), 'date');
 			if ($interval->d > 0) {
-				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.day', $interval->d, array('%count%' => $interval->d), 'date');
+				$str .= ' '.$translator->trans('interval.'.($long ? 'long' : 'short').'.day', array('%count%' => $interval->d), 'date');
 			}
 		} else if ($interval->d > 0) {
-			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.day', $interval->d, array('%count%' => $interval->d), 'date');
+			$str = $translator->trans('interval.'.($long ? 'long' : 'short').'.day', array('%count%' => $interval->d), 'date');
 			if ($interval->h > 0) {
-				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.hour', $interval->h, array('%count%' => $interval->h), 'date');
+				$str .= ' '.$translator->trans('interval.'.($long ? 'long' : 'short').'.hour', array('%count%' => $interval->h), 'date');
 			}
 		} else if ($interval->h > 0) {
-			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.hour', $interval->h, array('%count%' => $interval->h), 'date');
+			$str = $translator->trans('interval.'.($long ? 'long' : 'short').'.hour', array('%count%' => $interval->h), 'date');
 			if ($interval->i > 0) {
-				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.minute', $interval->i, array('%count%' => $interval->i), 'date');
+				$str .= ' '.$translator->trans('interval.'.($long ? 'long' : 'short').'.minute', array('%count%' => $interval->i), 'date');
 			}
 		} else if ($interval->i > 0) {
-			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.minute', $interval->i, array('%count%' => $interval->i), 'date');
+			$str = $translator->trans('interval.'.($long ? 'long' : 'short').'.minute', array('%count%' => $interval->i), 'date');
 			if ($interval->s > 0) {
-				$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.second', $interval->s, array('%count%' => $interval->s), 'date');
+				$str .= ' '.$translator->trans('interval.'.($long ? 'long' : 'short').'.second', array('%count%' => $interval->s), 'date');
 			}
 		} else if ($interval->s > 0) {
-			$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.second', $interval->s, array('%count%' => $interval->s), 'date');
+			$str = $translator->trans('interval.'.($long ? 'long' : 'short').'.second', array('%count%' => $interval->s), 'date');
 		} else {
 			$str = '';
 		}
@@ -164,12 +164,12 @@ class LadbExtension extends AbstractExtension implements ServiceSubscriberInterf
 			$minutes = floor(($duration / 60) % 60);
 			$translator = $this->container->get('translator');
 			if ($hours > 0) {
-				$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.hour', $hours, array('%count%' => $hours), 'date');
+				$str = $translator->trans('interval.'.($long ? 'long' : 'short').'.hour', array('%count%' => $hours), 'date');
 				if ($minutes > 0) {
-					$str .= ' '.$translator->transChoice('interval.'.($long ? 'long' : 'short').'.minute', $minutes, array('%count%' => $minutes), 'date');
+					$str .= ' '.$translator->trans('interval.'.($long ? 'long' : 'short').'.minute', array('%count%' => $minutes), 'date');
 				}
 			} else if ($minutes > 0) {
-				$str = $translator->transChoice('interval.'.($long ? 'long' : 'short').'.minute', $minutes, array('%count%' => $minutes), 'date');
+				$str = $translator->trans('interval.'.($long ? 'long' : 'short').'.minute', array('%count%' => $minutes), 'date');
 			}
 		}
 		return $str;

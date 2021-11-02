@@ -3,7 +3,6 @@
 namespace App\Topic;
 
 use Gos\Bundle\WebSocketBundle\Router\WampRequest;
-use App\Entity\User;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\Topic;
 use App\Entity\Workflow\Workflow;
