@@ -36,5 +36,5 @@ RUN openssl rsa -in keys/private.pem -outform PEM -pubout -out keys/public.pem
 
 # Install NodeJS + npm + yarn
 RUN apt-get install -y \
-    nodejs npm \
+    nodejs npm
 RUN npm install --global yarn
