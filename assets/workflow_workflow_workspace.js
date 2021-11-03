@@ -1,4 +1,4 @@
-import 'jquery.panzoom';
+import 'jquery.panzoom'
 import './js/ladb/jquery.ladb.inputcolor.js'
 import './js/ladb/jquery.ladb.inputduration.js'
 import './js/ladb/jquery.ladb.remotemodal.js'
