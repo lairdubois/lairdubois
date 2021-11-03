@@ -10,6 +10,8 @@ clean.all: ## Kill containers and remove volumes
 	@docker-compose down --remove-orphans --volumes
 
 install: ## Initialize project & start all containers
+	@cp docker-compose.override.yml.dist docker-compose.override.yml						# Copy default custom docker composer configuration
+	@cp .env .env.local																		# Copy default custom symfony environment vars
 	@docker-compose up -d --build --force-recreate
 	@docker-compose exec symfony composer install -o -n										# Install symfony components
 	@docker-compose exec symfony bin/console doctrine:database:create --if-not-exists		# Create database
