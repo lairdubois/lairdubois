@@ -97,12 +97,15 @@ class UserManager extends AbstractManager {
         /////
 
         // Log registration
-        $registration = new Registration();
-        $registration->setUser($user);
-        $registration->setClientIp4($globalUtils->getRequest()->getClientIp());
-        $registration->setClientUserAgent($globalUtils->getRequest()->server->get('HTTP_USER_AGENT'));
+        if ($globalUtils->getRequest()) {
 
-        $om->persist($registration);
+            $registration = new Registration();
+            $registration->setUser($user);
+            $registration->setClientIp4($globalUtils->getRequest()->getClientIp());
+            $registration->setClientUserAgent($globalUtils->getRequest()->server->get('HTTP_USER_AGENT'));
+
+            $om->persist($registration);
+        }
 
         /////
 

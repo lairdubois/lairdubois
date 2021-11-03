@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: .docker/nginx/Dockerfile
     volumes:
-      - ./public:/var/www/dev.lairdubois.fr/public
+      - ./public:/var/www/lairdubois.fr/public
     links:
       - symfony
 
@@ -15,7 +15,7 @@ services:
     build:
       context: .
       dockerfile: .docker/symfony/Dockerfile
-    working_dir: /var/www/dev.lairdubois.fr
+    working_dir: /var/www/lairdubois.fr
     depends_on:
       - mariadb
       - elasticsearch
@@ -23,12 +23,12 @@ services:
       - memcached
       - maildev
     volumes:
-      - ./:/var/www/dev.lairdubois.fr
+      - ./:/var/www/lairdubois.fr
 
   mariadb:
     image: mariadb:10.3.27
     environment:
-      MYSQL_DATABASE: db_fr_lairdubois_www
+      MYSQL_DATABASE: db_lairdubois
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./docs/database:/docker-entrypoint-initdb.d
