@@ -5,6 +5,9 @@
 /keys
 /uploads
 !/uploads/empty*
+
+docker-compose.override.yml
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

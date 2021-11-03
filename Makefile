@@ -20,3 +20,6 @@ install: ## Initialize project & start all containers
 
 start: ## Starts dev stack
 	@docker-compose up -d
+
+stop: ## Stops dev stack
+	@docker-compose down

@@ -8,8 +8,6 @@ services:
       dockerfile: .docker/nginx/Dockerfile
     volumes:
       - ./public:/var/www/dev.lairdubois.fr/public
-    ports:
-      - 80:80
     links:
       - symfony
 
@@ -34,8 +32,6 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./docs/database:/docker-entrypoint-initdb.d
-    ports:
-      - 3306:3306
 
   elasticsearch:
     image: elasticsearch:7.14.2
@@ -48,14 +44,9 @@ services:
       memlock:
         soft: -1
         hard: -1
-    ports:
-      - 9200:9200
 
   rabbitmq:
     image: rabbitmq:3-management
-    ports:
-      - 5672:5672
-      - 15672:15672
 
   memcached:
     image: memcached
@@ -63,5 +54,3 @@ services:
   maildev:
     image: maildev/maildev
     command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
-    ports:
-      - 1080:80
