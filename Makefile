@@ -21,7 +21,7 @@ install: ## Initialize project & start all containers
 	@docker-compose exec symfony yarn encore dev											# Build assets
 
 start: ## Starts dev stack
-	@docker-compose up -d
+	@docker-compose start
 
 stop: ## Stops dev stack
-	@docker-compose down
+	@docker-compose stop
