@@ -2,6 +2,10 @@
 
 {% set entity = provider %}
 
+{% block heading %}
+    {{ parent() }}{% if provider.store is not empty %}&nbsp;<small>({{ provider.store }})</small>{% endif %}
+{% endblock %}
+
 {% block subheading %}
     {{ provider.postalCode }} {{ provider.locality }}
 {% endblock %}
