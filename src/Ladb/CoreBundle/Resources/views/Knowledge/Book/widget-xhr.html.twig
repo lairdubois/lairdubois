@@ -2,6 +2,10 @@
 
 {% set entity = book %}
 
+{% block heading %}
+    {{ parent() }}{% if book.volume is not empty %}&nbsp;<small>({{ book.volume }})</small>{% endif %}
+{% endblock %}
+
 {% block subheading %}
     {{ book.editor }}
 {% endblock %}
