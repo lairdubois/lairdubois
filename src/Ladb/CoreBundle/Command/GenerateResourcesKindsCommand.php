@@ -116,6 +116,11 @@ EOT
 					$kind = Resource::KIND_EDRAWING;
 				}
 
+				// Step
+				if ($fileExtension == 'step') {
+					$kind = Resource::KIND_STEP;
+				}
+
 			}
 			$resource->setKind($kind);
 

@@ -54,6 +54,9 @@ class ResourceUtils {
 				case 'edrawing':
 					return Resource::KIND_EDRAWING;
 
+				case 'step':
+					return Resource::KIND_STEP;
+
 			}
 		}
 		return Resource::KIND_UNKNOW;
