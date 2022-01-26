@@ -279,14 +279,6 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if ($publication instanceof ViewableInterface) {
-
-			// Delete views
-			$viewableUtils = $this->container->get(ViewableUtils::NAME);
-			$viewableUtils->deleteViews($publication);
-
-		}
-
 		if ($publication->getNotificationStrategy() != PublicationInterface::NOTIFICATION_STRATEGY_NONE) {
 
 			// Delete activity
@@ -295,7 +287,15 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-	}
+        if ($publication instanceof ViewableInterface) {
+
+            // Delete views
+            $viewableUtils = $this->container->get(ViewableUtils::NAME);
+            $viewableUtils->deleteViews($publication);
+
+        }
+
+    }
 
 	public function onPublicationLocked(PublicationEvent $event) {
 	}
