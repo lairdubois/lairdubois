@@ -78,7 +78,7 @@ EOT
 			}
 
 			// Delete Offer
-			$offerManager->delete($offer, true, false);
+			$offerManager->delete($offer, false, false);
 
 			if ($verbose) {
 				if ($forced) {

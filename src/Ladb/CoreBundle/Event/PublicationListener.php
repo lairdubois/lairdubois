@@ -279,14 +279,6 @@ class PublicationListener implements EventSubscriberInterface {
 
 		}
 
-		if ($publication->getNotificationStrategy() != PublicationInterface::NOTIFICATION_STRATEGY_NONE) {
-
-			// Delete activity
-			$activityUtils = $this->container->get(ActivityUtils::NAME);
-			$activityUtils->deleteActivitiesByEntityTypeAndEntityId($publication->getType(), $publication->getId());
-
-		}
-
         if ($publication instanceof ViewableInterface) {
 
             // Delete views
@@ -294,6 +286,14 @@ class PublicationListener implements EventSubscriberInterface {
             $viewableUtils->deleteViews($publication);
 
         }
+
+        if ($publication->getNotificationStrategy() != PublicationInterface::NOTIFICATION_STRATEGY_NONE) {
+
+			// Delete activity
+			$activityUtils = $this->container->get(ActivityUtils::NAME);
+			$activityUtils->deleteActivitiesByEntityTypeAndEntityId($publication->getType(), $publication->getId());
+
+		}
 
     }
 
