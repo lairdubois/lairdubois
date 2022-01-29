@@ -27,7 +27,7 @@ var LadbWebPushClient = function LadbWebPushClient(options) {
                 return;
             }
 
-            navigator.serviceWorker.register(this.options.swPath)
+            navigator.serviceWorker.register(this.options.swPath, { scope: '/' })
                 .then(function(serviceWorkerRegistration) {
                     that.worker = serviceWorkerRegistration.active || serviceWorkerRegistration.installing;
                     return serviceWorkerRegistration;
