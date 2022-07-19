@@ -20,7 +20,7 @@ class BookIdentity extends BaseValue {
 	const TYPE_STRIPPED_NAME = 'book-identity';
 
 	/**
-	 * @ORM\Column(type="string", length=100)
+	 * @ORM\Column(type="string", length=200)
 	 */
 	protected $data;
 

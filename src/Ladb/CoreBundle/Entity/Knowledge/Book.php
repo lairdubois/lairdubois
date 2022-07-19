@@ -86,7 +86,7 @@ class Book extends AbstractKnowledge implements ReviewableInterface {
 	private $volume;
 
 	/**
-	 * @ORM\Column(type="string", nullable=true, length=100)
+	 * @ORM\Column(type="string", nullable=true, length=200)
 	 */
 	private $identity;
 
