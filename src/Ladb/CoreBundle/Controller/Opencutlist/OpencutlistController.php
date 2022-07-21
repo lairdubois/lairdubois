@@ -102,7 +102,6 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_DOCS);
 
-		$oclLanguage = $access->getClientOclLanguage();
 		$path = '';
 		switch ($request->get('page', '')) {
 			case 'features.parts.export':
