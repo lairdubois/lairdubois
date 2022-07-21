@@ -104,10 +104,16 @@ class OpencutlistController extends AbstractController {
 
 		$oclLanguage = $access->getClientOclLanguage();
 		$path = '';
-		switch ($oclLanguage) {
-//			case 'fr':
-//				$path = '/v/fr';
-//				break;
+		switch ($request->get('page', '')) {
+			case 'features.parts.export':
+				$path = '/features/parts/export';
+				break;
+			case 'features.parts.report':
+				$path = '/features/parts/report';
+				break;
+			case 'features.parts.parts-list.labels':
+				$path = '/features/parts/parts-list/printing-labels';
+				break;
 		}
 
 		return JsonResponse::fromJsonString('{ "url": "https://docs.opencutlist.org'.$path.'" }');
