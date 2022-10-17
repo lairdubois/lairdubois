@@ -94,7 +94,7 @@ class Comment implements TypableInterface, BasicTimestampableInterface, Authored
 	private $parent;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Comment", mappedBy="parent", cascade={"all"})
+	 * @ORM\OneToMany(targetEntity="Ladb\CoreBundle\Entity\Core\Comment", mappedBy="parent", cascade={"persist"})
 	 * @ORM\OrderBy({"createdAt" = "ASC"})
 	 */
 	private $children;
