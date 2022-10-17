@@ -94,12 +94,14 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 	public function deleteComment(Comment $comment, CommentableInterface $commentable, $om, $flush = false) {
 
-		// Remove children
+        $this->get('logger')->error('comment id='.$comment->getId());
+
+        // Remove children
 		if ($comment->getChildCount() > 0) {
 			$children = $comment->getChildren()->toArray();
 			$comment->resetChildren();
 			foreach ($children as $child) {
-			    $this->get('logger')->error('comment id='.$child->getId());
+			    $this->get('logger')->error(' -> child id='.$child->getId());
 				$this->deleteComment($child, $commentable, $om, false);
 			}
 		}
@@ -137,6 +139,8 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		if ($flush) {
 			$om->flush();
 		}
+
+        $this->get('logger')->error('REMOVED ?');
 
 	}
 
