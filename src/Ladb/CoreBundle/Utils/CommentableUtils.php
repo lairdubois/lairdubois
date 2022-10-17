@@ -83,7 +83,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 		$om = $this->getDoctrine()->getManager();
 		$commentRepository = $om->getRepository(Comment::CLASS_NAME);
 
-		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
+		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId(), false);
 		foreach ($comments as $comment) {
 			$this->deleteComment($comment, $commentable, $om, false);
 		}
