@@ -162,7 +162,7 @@ abstract class AbstractPublicationManager extends AbstractManager {
 		if ($publication instanceof CommentableInterface) {
 			// Delete comments
 			$commentableUtils = $this->get(CommentableUtils::NAME);
-			$commentableUtils->deleteComments($publication, true);
+			$commentableUtils->deleteComments($publication, false);
 		}
 
 		if ($publication instanceof CollectionnableInterface) {
