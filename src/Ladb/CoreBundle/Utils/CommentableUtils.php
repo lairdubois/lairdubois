@@ -99,7 +99,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 			$children = $comment->getChildren()->toArray();
 			$comment->resetChildren();
 			foreach ($children as $child) {
-			    $this->get('logger')->info('comment id='.$child->getId());
+			    $this->get('logger')->error('comment id='.$child->getId());
 				$this->deleteComment($child, $commentable, $om, false);
 			}
 		}
