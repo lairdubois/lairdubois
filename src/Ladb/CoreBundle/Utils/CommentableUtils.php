@@ -85,7 +85,10 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 
 		$comments = $commentRepository->findByEntityTypeAndEntityId($commentable->getType(), $commentable->getId());
 		foreach ($comments as $comment) {
-			$this->deleteComment($comment, $commentable, $om, $flush);
+			$this->deleteComment($comment, $commentable, $om, false);
+		}
+		if ($flush) {
+			$om->flush();
 		}
 	}
 
@@ -96,7 +99,7 @@ class CommentableUtils extends AbstractContainerAwareUtils {
 			$children = $comment->getChildren()->toArray();
 			$comment->resetChildren();
 			foreach ($children as $child) {
-				$this->deleteComment($child, $commentable, $om, false);
+				$this->deleteComment($child, $commentable, $om, true);
 			}
 		}
 
