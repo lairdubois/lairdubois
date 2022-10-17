@@ -25,25 +25,21 @@ class OfferManager extends AbstractAuthoredPublicationManager {
 
 	public function publish(Offer $offer, $flush = true) {
 
+        $offer->getUser()->getMeta()->incrementPrivateOfferCount(-1);
+        $offer->getUser()->getMeta()->incrementPublicOfferCount();
+
         parent::publishPublication($offer, $flush);
-
-		$offer->getUser()->getMeta()->incrementPrivateOfferCount(-1);
-		$offer->getUser()->getMeta()->incrementPublicOfferCount();
-
 	}
 
 	public function unpublish(Offer $offer, $flush = true) {
 
+        $offer->getUser()->getMeta()->incrementPrivateOfferCount();
+        $offer->getUser()->getMeta()->incrementPublicOfferCount(-1);
+
         parent::unpublishPublication($offer, $flush);
-
-		$offer->getUser()->getMeta()->incrementPrivateOfferCount(1);
-		$offer->getUser()->getMeta()->incrementPublicOfferCount(-1);
-
 	}
 
 	public function delete(Offer $offer, $withWitness = true, $flush = true) {
-
-        parent::deletePublication($offer, $withWitness, $flush);
 
 		// Decrement user offer count
 		if ($offer->getIsDraft()) {
@@ -52,6 +48,7 @@ class OfferManager extends AbstractAuthoredPublicationManager {
 			$offer->getUser()->getMeta()->incrementPublicOfferCount(-1);
 		}
 
+        parent::deletePublication($offer, $withWitness, $flush);
 	}
 
 	//////
