@@ -4,7 +4,6 @@ namespace Ladb\CoreBundle\Validator\Constraints;
 
 use Ladb\CoreBundle\Entity\Core\UserWitness;
 use Ladb\CoreBundle\Fos\UserManager;
-use Ladb\CoreBundle\Utils\GlobalUtils;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
