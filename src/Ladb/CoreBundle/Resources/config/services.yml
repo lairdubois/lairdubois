@@ -288,7 +288,6 @@ services:
     class: Ladb\CoreBundle\Validator\Constraints\ValidUserEmailValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_user_email_validator }
-    arguments: ['@service_container']
   ladb_core.self_recipient_validator:
     class: Ladb\CoreBundle\Validator\Constraints\SelfRecipientValidator
     tags:

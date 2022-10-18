@@ -2,22 +2,14 @@
 
 namespace Ladb\CoreBundle\Validator\Constraints;
 
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Ladb\CoreBundle\Entity\Core\User;
 
 class ValidUserEmailValidator extends ConstraintValidator {
 
     const UNAUTHORIZED_EMAIL_DOMAINS = array(
         'simplelogin.com',
     );
-
-    protected $container;
-
-	public function __construct(Container $container) {
-		$this->container = $container;
-	}
 
 	/**
 	 * Checks if the passed value is valid.
@@ -27,19 +19,14 @@ class ValidUserEmailValidator extends ConstraintValidator {
 	 *
 	 * @api
 	 */
-	public function validate($value, Constraint $constraint) {
-		if ($value instanceof User) {
+    public function validate($value, Constraint $constraint) {
 
-		    $emailComponents = explode('@', $value->getEmailCanonical());
-		    $emailDomain = end($emailComponents);
+        $emailComponents = explode('@', strtolower($value));
+        $emailDomain = end($emailComponents);
 
-			if (in_array($emailDomain, ValidUserEmailValidator::UNAUTHORIZED_EMAIL_DOMAINS)) {
-				$this->context->buildViolation('Ce domaine n\'est pas autorisé.')
-					->atPath('email')
-					->addViolation();
-			}
-
-		}
-	}
+        if (in_array($emailDomain, ValidUserEmailValidator::UNAUTHORIZED_EMAIL_DOMAINS)) {
+            $this->context->addViolation('Ce domaine n\'est pas autorisé.');
+        }
+    }
 
 }
