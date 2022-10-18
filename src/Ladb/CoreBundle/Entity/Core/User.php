@@ -19,8 +19,9 @@ use Ladb\CoreBundle\Model\SitemapableTrait;
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Core\UserRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("email")
- * @LadbAssert\ValidUsername()
- * @LadbAssert\ValidDisplayname()
+ * @LadbAssert\ValidUserUsername()
+ * @LadbAssert\ValidUserDisplayname()
+ * @LadbAssert\ValidUserEmail()
  */
 class User extends \FOS\UserBundle\Model\User implements IndexableInterface, SitemapableInterface, LocalisableInterface {
 

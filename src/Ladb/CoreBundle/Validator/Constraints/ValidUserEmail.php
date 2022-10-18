@@ -7,10 +7,10 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class ValidDisplayname extends Constraint {
+class ValidUserEmail extends Constraint {
 
 	public function validatedBy() {
-		return 'ladb_core.valid_displayname_validator';
+		return 'ladb_core.valid_user_email_validator';
 	}
 
 	public function getTargets() {

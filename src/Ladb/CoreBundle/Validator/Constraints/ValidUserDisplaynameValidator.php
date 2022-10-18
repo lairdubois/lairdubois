@@ -2,17 +2,13 @@
 
 namespace Ladb\CoreBundle\Validator\Constraints;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Ladb\CoreBundle\Entity\Core\UserWitness;
 use Ladb\CoreBundle\Fos\DisplaynameCanonicalizer;
-use Ladb\CoreBundle\Fos\UserManager;
-use Ladb\CoreBundle\Utils\GlobalUtils;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Ladb\CoreBundle\Entity\Core\User;
 
-class ValidDisplaynameValidator extends ConstraintValidator {
+class ValidUserDisplaynameValidator extends ConstraintValidator {
 
 	protected $container;
 
@@ -41,7 +37,7 @@ class ValidDisplaynameValidator extends ConstraintValidator {
 				return;
 			}
 
-			if (in_array($displaynameCanonical, ValidUsernameValidator::UNAUTHORIZED_USERNAMES)) {
+			if (in_array($displaynameCanonical, ValidUserUsernameValidator::UNAUTHORIZED_USERNAMES)) {
 				$this->context->buildViolation('Ce nom n\'est pas autorisé.')
 					->atPath('displayname')
 					->addViolation();

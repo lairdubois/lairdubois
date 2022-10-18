@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Validator\Constraints;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Ladb\CoreBundle\Entity\Core\UserWitness;
 use Ladb\CoreBundle\Fos\UserManager;
 use Ladb\CoreBundle\Utils\GlobalUtils;
@@ -11,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Ladb\CoreBundle\Entity\Core\User;
 
-class ValidUsernameValidator extends ConstraintValidator {
+class ValidUserUsernameValidator extends ConstraintValidator {
 
 	const UNAUTHORIZED_USERNAMES = array(
 
