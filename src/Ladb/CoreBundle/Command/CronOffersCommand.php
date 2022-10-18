@@ -58,6 +58,7 @@ EOT
 			->from('LadbCoreBundle:Offer\Offer', 'o')
 			->where('o.publishCount > 0')
 			->andWhere('o.changedAt < :retrieveDate')
+            ->orderBy('o.changedAt', 'ASC')
 			->setParameter('retrieveDate', $retrieveDate)
 		;
 
