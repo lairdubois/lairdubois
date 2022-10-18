@@ -16,6 +16,7 @@
                 <div class="panel-body row">
                     <div class="ladb-register-body col-sm-6 col-xs-12">
                         {{ form_start(form, { 'action':path('fos_user_registration_register'), 'method':'POST' }) }}
+                        {{ form_errors(form) }}
                         <fieldset>
                             <div class="form-group">
                                 {{ form_label(form.username, 'Nom d\'utilisateur') }}
