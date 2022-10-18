@@ -21,6 +21,7 @@ use Ladb\CoreBundle\Model\SitemapableTrait;
  * @UniqueEntity("email")
  * @LadbAssert\ValidUserUsername()
  * @LadbAssert\ValidUserDisplayname()
+ * @LadbAssert\ValidUserEmail()
  */
 class User extends \FOS\UserBundle\Model\User implements IndexableInterface, SitemapableInterface, LocalisableInterface {
 
@@ -66,7 +67,6 @@ class User extends \FOS\UserBundle\Model\User implements IndexableInterface, Sit
 	/**
 	 * @Assert\NotBlank(groups={"settings"})
 	 * @Assert\Email(strict=true, groups={"settings"})
-     * @LadbAssert\ValidUserEmail()
 	 */
 	protected $email;
 

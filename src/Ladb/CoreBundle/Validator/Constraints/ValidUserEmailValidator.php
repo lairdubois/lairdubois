@@ -2,6 +2,7 @@
 
 namespace Ladb\CoreBundle\Validator\Constraints;
 
+use Ladb\CoreBundle\Entity\Core\User;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -20,12 +21,17 @@ class ValidUserEmailValidator extends ConstraintValidator {
 	 * @api
 	 */
     public function validate($value, Constraint $constraint) {
+        if ($value instanceof User) {
 
-        $emailComponents = explode('@', strtolower($value));
-        $emailDomain = end($emailComponents);
+            $emailComponents = explode('@', strtolower($value->getEmail()));
+            $emailDomain = end($emailComponents);
 
-        if (in_array($emailDomain, ValidUserEmailValidator::UNAUTHORIZED_EMAIL_DOMAINS)) {
-            $this->context->addViolation('Ce domaine n\'est pas autorisé.');
+            if (in_array($emailDomain, ValidUserEmailValidator::UNAUTHORIZED_EMAIL_DOMAINS)) {
+                $this->context->buildViolation('Ce domaine n\'est pas autorisé.')
+                    ->atPath('email')
+                    ->addViolation();
+            }
+
         }
     }
 
