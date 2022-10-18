@@ -233,6 +233,9 @@ class Notification {
 	 */
 	public function preRemove() {
 		if ($this->getIsFolder()) {
+
+		    // Notification is folder
+
 			$children = $this->getChildren();
 			if (count($children) == 1) {
 
@@ -254,7 +257,12 @@ class Notification {
 				}
 
 			}
-		}
+		} else {
+
+            // Notification is child
+
+            $this->setFolder(null);
+        }
 	}
 
 }
