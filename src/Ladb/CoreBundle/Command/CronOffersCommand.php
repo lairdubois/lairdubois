@@ -79,7 +79,7 @@ EOT
 			}
 
 			// Delete Offer
-			$offerManager->delete($offer, false, false);
+			$offerManager->delete($offer, false, $forced);
 
 			if ($verbose) {
 				if ($forced) {
@@ -125,7 +125,7 @@ EOT
 			}
 
 			// Unpublish offer
-			$offerManager->unpublish($offer, false);
+			$offerManager->unpublish($offer, $forced);
 
 			// Email notification
 			$mailerUtils->sendOfferExpiredEmailMessage($offer->getUser(), $offer);
