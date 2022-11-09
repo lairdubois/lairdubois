@@ -211,6 +211,12 @@ class CommentController extends AbstractController {
 
 		if ($form->isValid()) {
 
+            // Add some LOVE
+
+            if ($comment->getEntityType() == Find::TYPE && $comment->getEntityId() == 2949) {
+                $comment->setBody('😘');
+            }
+
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($comment);
 
