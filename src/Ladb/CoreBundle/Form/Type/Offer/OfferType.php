@@ -58,12 +58,13 @@ class OfferType extends AbstractType {
 			))
 			->add('category', ChoiceType::class, array(
 				'choices'  => array_flip(array(
-					Offer::CATEGORY_JOB      => 'Emploi',
-					Offer::CATEGORY_TOOL     => 'Matériel',
-					Offer::CATEGORY_MATERIAL => 'Matière',
-					Offer::CATEGORY_SERVICE  => 'Service',
-					Offer::CATEGORY_OTHER    => 'Autre',
-				)),
+                    Offer::CATEGORY_JOB         => 'Emploi',
+                    Offer::CATEGORY_TOOL        => 'Matériel',
+                    Offer::CATEGORY_MATERIAL    => 'Matière',
+                    Offer::CATEGORY_SERVICE     => 'Service',
+                    Offer::CATEGORY_WORKSHOP    => 'Local d\'activité',
+                    Offer::CATEGORY_OTHER       => 'Autre',
+                )),
 				'expanded' => true,
 			))
 			->add('rawPrice')

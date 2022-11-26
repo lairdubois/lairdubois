@@ -73,6 +73,7 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 	const CATEGORY_TOOL = 3;
 	const CATEGORY_MATERIAL = 4;
 	const CATEGORY_SERVICE = 5;
+	const CATEGORY_WORKSHOP = 6;
 
 	/**
 	 * @ORM\Column(type="string", length=100)
@@ -340,8 +341,12 @@ class Offer extends AbstractDraftableAuthoredPublication implements TitledInterf
 		return $this->getCategory() == self::CATEGORY_SERVICE;
 	}
 
+	public function isCategoryBuilding() {
+		return $this->getCategory() == self::CATEGORY_WORKSHOP;
+	}
+
 	public function getCategories() {
-		return array( self::CATEGORY_JOB, self::CATEGORY_TOOL, self::CATEGORY_MATERIAL, self::CATEGORY_SERVICE, self::CATEGORY_OTHER );
+		return array( self::CATEGORY_JOB, self::CATEGORY_TOOL, self::CATEGORY_MATERIAL, self::CATEGORY_SERVICE, self::CATEGORY_WORKSHOP, self::CATEGORY_OTHER );
 	}
 
 	// Price /////

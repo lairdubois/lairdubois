@@ -113,12 +113,6 @@ class CommentController extends AbstractController {
 			$comment->setEntityId($entityId);
 			$comment->setUser($this->getUser());
 
-            // Add some LOVE
-
-            if ($entityType == Find::TYPE && $entityId == 2949) {
-                $comment->setBody('😘');
-            }
-
 			// Retrieve parent
 
 			$parentId = intval($parentId);
@@ -210,12 +204,6 @@ class CommentController extends AbstractController {
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
-
-            // Add some LOVE
-
-            if ($comment->getEntityType() == Find::TYPE && $comment->getEntityId() == 2949) {
-                $comment->setBody('😘');
-            }
 
 			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($comment);
