@@ -279,6 +279,8 @@ EOT
 
 	private function _publishOnTwitter($spotlight, $entity, $forced, $forcedTwitter, $verbose, $output) {
 
+        return false;
+
 		$success = false;
 		$status = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-twitter-status.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
 		$mediaIds = '';
@@ -345,6 +347,8 @@ EOT
 	}
 
 	private function _publishOnFacebook($spotlight, $entity, $forced, $forcedFacebook, $verbose, $output) {
+
+        return false;
 
 		$success = true;
 		$message = $this->getContainer()->get('templating')->render('LadbCoreBundle:Command:_cron-spotlight-facebook-message.txt.twig', array( 'spotlight' => $spotlight, 'entity' => $entity));
