@@ -1382,7 +1382,7 @@ review:
       new_warning: |
         Attention<br>
         - Les propos diffamatoires, insulants, intimidants ou humilants feront l'objet d'une modération sans préavis.<br>
-        - N'utilisez pas cet avis pour régler vos comptes avec ce fournisseur.
+        - N'utilisez pas cet avis pour régler vos comptes avec ce fournisseur.<br>
         - N'utilisez pas cet avis pour poser des questions sur le fournisseur.
       body: Votre avis
     alert:
