@@ -50,6 +50,10 @@ class ReviewController extends AbstractController {
 			throw $this->createNotFoundException('Only XML request allowed (core_review_new)');
 		}
 
+        if ($this->getUser()->getCreatedAt() >= new \DateTime('-7days')) {
+            throw $this->createNotFoundException('User must be more than 7 days old to publish review (core_review_new)');
+        }
+
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);
 		if ($entity instanceof HiddableInterface && $entity->getIsPrivate()) {
 			throw $this->createNotFoundException('Hidden entity could not be reviewed.');
