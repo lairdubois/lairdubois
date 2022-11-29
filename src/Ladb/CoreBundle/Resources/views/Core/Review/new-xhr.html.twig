@@ -13,7 +13,7 @@
                 <h4>A lire avant de publier</h4>
                 <p>{{ ('review.'~i18nPrefix~'.form.new_help')|trans() }} : '<strong>{{ entity.title }}</strong>'.</p>
                 <p style="background-color: #d9534f; padding: 3px 7px; color: #fff;">
-                    <i class="ladb-icon-warning"></i> {{ ('review.'~i18nPrefix~'.form.new_warning')|trans() }}
+                    <i class="ladb-icon-warning"></i> {{ ('review.'~i18nPrefix~'.form.new_warning')|markdown|trans() }}
                 </p>
             </div>
         </div>
