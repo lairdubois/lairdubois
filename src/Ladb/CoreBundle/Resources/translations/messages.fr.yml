@@ -1380,7 +1380,7 @@ review:
     form:
       new_help: Cet avis vous permet d'exprimer votre expérience de client auprès du fournisseur
       new_warning: |
-        - Les propos diffamatoires pourront faire l'objet d'une modération sans préavis.
+        - Les propos diffamatoires pourront faire l'objet d'une modération sans préavis.<br>
         - N'utilisez pas cet avis pour poser des questions sur le fournisseur.
       body: Votre avis
     alert:
