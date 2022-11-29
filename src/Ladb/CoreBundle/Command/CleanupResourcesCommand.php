@@ -101,7 +101,7 @@ EOT
         $queryBuilder = $om->createQueryBuilder();
         $queryBuilder
             ->select(array( 'v', 'd' ))
-            ->from('LadbCoreBundle:Knowledge\Value\Picture', 'v')
+            ->from('LadbCoreBundle:Knowledge\Value\Pdf', 'v')
             ->leftJoin('v.data', 'd')
         ;
 
