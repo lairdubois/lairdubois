@@ -1378,10 +1378,10 @@ review:
     none: Ce fournisseur ne possède pour l'instant aucun avis.<br>Soyez le premier à ajouter le votre !
     your_review: votre avis
     form:
-      new_help: Cet avis vous permet d'exprimer votre expérience de client auprès du fournisseur
+      new_help: Cet avis vous permet d'exprimer objectivement votre avis de client du fournisseur
       new_warning: |
         Attention<br>
-        - Les propos diffamatoires pourront faire l'objet d'une modération sans préavis.<br>
+        - Les propos diffamatoires feront l'objet d'une modération sans préavis.<br>
         - N'utilisez pas cet avis pour poser des questions sur le fournisseur.
       body: Votre avis
     alert:
