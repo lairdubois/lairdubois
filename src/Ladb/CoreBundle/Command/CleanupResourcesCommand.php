@@ -94,6 +94,31 @@ EOT
 		}
 		unset($graphics);
 
+        // Check Knowledge/Value/Pdf /////
+
+        $output->writeln('<info>Checking knowledge value pdf...</info>');
+
+        $queryBuilder = $om->createQueryBuilder();
+        $queryBuilder
+            ->select(array( 'v', 'd' ))
+            ->from('LadbCoreBundle:Knowledge\Value\Picture', 'v')
+            ->leftJoin('v.data', 'd')
+        ;
+
+        try {
+            $values = $queryBuilder->getQuery()->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            $values = array();
+        }
+
+        foreach ($values as $value) {
+            $content = $value->getData();
+            if (!is_null($content)) {
+                $resourceCounters[$content->getId()][1]++;
+            }
+        }
+        unset($values);
+
 		// Cleanup /////
 
 		$forced = $input->getOption('force');
