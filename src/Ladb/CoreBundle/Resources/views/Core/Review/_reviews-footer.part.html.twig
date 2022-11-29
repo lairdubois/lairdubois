@@ -16,7 +16,9 @@
         {% endif %}
         <div class="ladb-btns-bar">
             {% if is_granted("ROLE_USER") %}
-                <a href="{{ path('core_review_new', { 'entityType':entity.type, 'entityId':entity.id }) }}" id="ladb_review_btn" class="btn btn-primary btn-lg" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ ('review.'~i18nPrefix~'.new')|trans() }}</a>
+                {% if date(app.user.createdAt) < date('-7days') %}
+                    <a href="{{ path('core_review_new', { 'entityType':entity.type, 'entityId':entity.id }) }}" id="ladb_review_btn" class="btn btn-primary btn-lg" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ ('review.'~i18nPrefix~'.new')|trans() }}</a>
+                {% endif %}
             {% else %}
                 <a href="{{ path('core_smartlogin') }}" rel="nofollow"><i class="ladb-icon-lock"></i> Connectez-vous</a> pour ajouter {{ ('review.'~i18nPrefix~'.your_review')|trans() }}.
             {% endif %}
