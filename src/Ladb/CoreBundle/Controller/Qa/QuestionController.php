@@ -538,11 +538,13 @@ class QuestionController extends AbstractController {
 			},
 			function(&$filters) {
 
-//                if (is_null($this->getUser())) {
-//                    $boolQuery = new BoolQuery();
-//                    $boolQuery->addMustNot(new Term(array('_id', 9865)));
-//                    $filters[] = $boolQuery;
-//                }
+                if (is_null($this->getUser())) {
+                    $boolQuery = new BoolQuery();
+                    $termQuery = new Term();
+                    $termQuery->setTerm('_id', 9865);
+                    $boolQuery->addMustNot($termQuery);
+                    $filters[] = $boolQuery;
+                }
 
 				$this->pushGlobalVisibilityFilter($filters, true, true);
 
