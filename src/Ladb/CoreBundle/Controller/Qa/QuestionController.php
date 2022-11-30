@@ -538,6 +538,7 @@ class QuestionController extends AbstractController {
 			},
 			function(&$filters) {
 
+                // Mister hide
                 if (is_null($this->getUser())) {
                     $boolQuery = new BoolQuery();
                     $termQuery = new Term();
@@ -730,6 +731,7 @@ class QuestionController extends AbstractController {
 		}
 		$this->assertShowable($question);
 
+        // Mister hide
         if ($id == 9865 && is_null($this->getUser())) {
             throw $this->createNotFoundException('Mister hide.');
         }
