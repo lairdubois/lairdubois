@@ -2,6 +2,8 @@
 
 namespace Ladb\CoreBundle\Controller\Qa;
 
+use Elastica\Query\BoolQuery;
+use Elastica\Query\Term;
 use Ladb\CoreBundle\Controller\AbstractController;
 use Ladb\CoreBundle\Controller\PublicationControllerTrait;
 use Ladb\CoreBundle\Entity\Core\Tip;
@@ -535,6 +537,12 @@ class QuestionController extends AbstractController {
 
 			},
 			function(&$filters) {
+
+                if (is_null($this->getUser())) {
+                    $boolQuery = new BoolQuery();
+                    $boolQuery->addMustNot(new Term(array('_id', 9865)));
+                    $filters[] = $boolQuery;
+                }
 
 				$this->pushGlobalVisibilityFilter($filters, true, true);
 
