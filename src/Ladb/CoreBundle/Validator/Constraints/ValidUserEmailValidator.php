@@ -10,6 +10,7 @@ class ValidUserEmailValidator extends ConstraintValidator {
 
     const UNAUTHORIZED_EMAIL_DOMAINS = array(
         'simplelogin.com',
+        'mathieulebert.fr',
     );
 
 	/**
