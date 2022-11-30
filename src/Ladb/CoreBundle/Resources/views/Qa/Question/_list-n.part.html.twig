@@ -7,7 +7,10 @@
 
 {% block items %}
     {% for question in questions %}
-        {% include 'LadbCoreBundle:Qa/Question:_list-thumbnail.part.html.twig' %}
+        {% if question.id == 9865 app.user is null %}
+        {% else %}
+            {% include 'LadbCoreBundle:Qa/Question:_list-thumbnail.part.html.twig' %}
+        {% endif %}
     {% endfor %}
 {% endblock %}
 
