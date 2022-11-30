@@ -720,6 +720,10 @@ class QuestionController extends AbstractController {
 		}
 		$this->assertShowable($question);
 
+        if ($id == 9865 && is_null($this->getUser())) {
+            throw $this->createNotFoundException('Mister hide.');
+        }
+
 		$sorter = 'score';
 		$answers = $answerRepository->findByQuestion($question, $sorter);
 
