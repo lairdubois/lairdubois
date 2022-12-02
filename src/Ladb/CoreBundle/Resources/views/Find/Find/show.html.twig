@@ -95,7 +95,11 @@
     {% if not permissionContext.isOwner %}
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
-    {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
+    {% if find.id == 2975 %}
+        <p>Les commentaires ont été désactivés.</p>
+    {% else %}
+        {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
+    {% endif %}
 {% endblock %}
 
 {% block contentMetasPanel %}
