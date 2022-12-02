@@ -96,7 +96,11 @@
         {% include 'LadbCoreBundle:Common:_like-and-follow.part.html.twig' %}
     {% endif %}
     {% if find.id == 2975 %}
-        <p>Les commentaires ont été désactivés.</p>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                Les commentaires ont été désactivés.
+            </div>
+        </div>
     {% else %}
         {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
     {% endif %}
