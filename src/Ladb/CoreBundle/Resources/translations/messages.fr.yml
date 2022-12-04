@@ -1381,7 +1381,7 @@ review:
       new_help: Cet avis vous permet d'exprimer objectivement votre expérience de client avec le fournisseur
       new_warning: |
         Attention<br>
-        - Les propos considérés comme diffamatoires, insulants, intimidants ou humilants feront l'objet d'une modération sans préavis.<br>
+        - Les propos considérés comme diffamatoires, insulants, intimidants ou humilants feront l'objet d'une suppression sans préavis.<br>
         - N'utilisez pas cet avis pour régler vos comptes avec le fournisseur.<br>
         - N'utilisez pas cet avis pour poser des questions sur le fournisseur.
       body: Votre avis
