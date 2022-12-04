@@ -423,7 +423,7 @@ class QuestionController extends AbstractController {
 			},
 			function(&$filters) {
 
-				$this->pushGlobalVisibilityFilter($filters, true, false);
+				$this->pushGlobalVisibilityFilter($filters, true, true);
 
 			},
 			'fos_elastica.index.ladb.faq_question',
