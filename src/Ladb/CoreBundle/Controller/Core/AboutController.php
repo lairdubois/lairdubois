@@ -36,6 +36,13 @@ class AboutController extends AbstractController {
 	}
 
 	/**
+	 * @Route("/cgu.html", name="core_about_cgu")
+	 */
+	public function cguAction() {
+        return $this->redirect($this->generateUrl('core_faq_question_show', array( 'id' => 'quelles-sont-les-conditions-generales-dutilisation-de-lair-du-bois' )));
+	}
+
+	/**
 	 * @Route("/credits.html", name="core_about_credits")
 	 * @Template("LadbCoreBundle:Core/About:credits.html.twig")
 	 */
