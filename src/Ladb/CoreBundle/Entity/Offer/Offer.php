@@ -32,7 +32,6 @@ use Ladb\CoreBundle\Model\TaggableTrait;
 use Ladb\CoreBundle\Model\TitledTrait;
 use Ladb\CoreBundle\Model\ViewableTrait;
 use Ladb\CoreBundle\Model\WatchableTrait;
-use Ladb\CoreBundle\Model\JoinableInterface;
 use Ladb\CoreBundle\Model\ScrapableInterface;
 use Ladb\CoreBundle\Model\IndexableInterface;
 use Ladb\CoreBundle\Model\TitledInterface;
@@ -44,12 +43,12 @@ use Ladb\CoreBundle\Model\CommentableInterface;
 use Ladb\CoreBundle\Model\ReportableInterface;
 use Ladb\CoreBundle\Model\TaggableInterface;
 use Ladb\CoreBundle\Model\ExplorableInterface;
-use Ladb\CoreBundle\Entity\Find\Content\Event;
 
 /**
  * @ORM\Table("tbl_offer")
  * @ORM\Entity(repositoryClass="Ladb\CoreBundle\Repository\Offer\OfferRepository")
  * @LadbAssert\BodyBlocks()
+ * @LadbAssert\ValidOffer()
  */
 class Offer extends AbstractDraftableAuthoredPublication implements TitledInterface, SluggedInterface, PicturedInterface, MultiPicturedInterface, BlockBodiedInterface, RepublishableInterface, IndexableInterface, SitemapableInterface, TaggableInterface, ViewableInterface, ScrapableInterface, LikableInterface, WatchableInterface, CommentableInterface, CollectionnableInterface, ReportableInterface, ExplorableInterface, LocalisableInterface, LocalisableExtendedInterface {
 
