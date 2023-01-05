@@ -578,7 +578,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/location.geojson", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_location", defaults={"_format" = "json"})
+	 * @Route("/@{username}/location.geojson", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_location", defaults={"_format" = "json"})
 	 * @Template("LadbCoreBundle:Core/User:location.geojson.twig")
 	 */
 	public function locationAction(Request $request, $username) {
@@ -606,7 +606,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/card.xhr", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_card")
+	 * @Route("/@{username}/card.xhr", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_card")
 	 * @Template("LadbCoreBundle:Core/User:card-xhr.html.twig")
 	 */
 	public function cardAction(Request $request, $username) {
@@ -625,14 +625,14 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/a-propos", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_about_old")
+	 * @Route("/{username}/a-propos", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_about_old")
 	 */
 	public function oldShowAboutAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_about', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/a-propos", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_about")
+	 * @Route("/@{username}/a-propos", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_about")
 	 * @Template("LadbCoreBundle:Core/User:showAbout.html.twig")
 	 */
 	public function showAboutAction($username) {
@@ -654,16 +654,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/coups-de-coeur", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_likes_old")
+	 * @Route("/{username}/coups-de-coeur", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_likes_old")
 	 */
 	public function oldShowLikesAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_likes', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/coups-de-coeur", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_likes")
-	 * @Route("/@{username}/coups-de-coeur/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "sent|recieved"}, name="core_user_show_likes_filter")
-	 * @Route("/@{username}/coups-de-coeur/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_likes_filter_page")
+	 * @Route("/@{username}/coups-de-coeur", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_likes")
+	 * @Route("/@{username}/coups-de-coeur/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "sent|recieved"}, name="core_user_show_likes_filter")
+	 * @Route("/@{username}/coups-de-coeur/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_likes_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showLikes.html.twig")
 	 */
 	public function showLikesAction(Request $request, $username, $filter = "sent", $page = 0) {
@@ -698,15 +698,15 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/commentaires", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_comments_old")
+	 * @Route("/{username}/commentaires", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_comments_old")
 	 */
 	public function oldShowCommentsAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_comments', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/commentaires", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_comments")
-	 * @Route("/@{username}/commentaires/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "page" = "\d+"}, name="core_user_show_comments_page")
+	 * @Route("/@{username}/commentaires", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_comments")
+	 * @Route("/@{username}/commentaires/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "page" = "\d+"}, name="core_user_show_comments_page")
 	 * @Template("LadbCoreBundle:Core/User:showComments.html.twig")
 	 */
 	public function showCommentsAction(Request $request, $username, $page = 0) {
@@ -740,16 +740,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/votes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_votes_old")
+	 * @Route("/{username}/votes", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_votes_old")
 	 */
 	public function oldShowVotesAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_votes', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/votes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_votes")
-	 * @Route("/@{username}/votes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "positive|negative"}, name="core_user_show_votes_filter")
-	 * @Route("/@{username}/votes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "positive|negative", "page" = "\d+"}, name="core_user_show_votes_filter_page")
+	 * @Route("/@{username}/votes", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_votes")
+	 * @Route("/@{username}/votes/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "positive|negative"}, name="core_user_show_votes_filter")
+	 * @Route("/@{username}/votes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "positive|negative", "page" = "\d+"}, name="core_user_show_votes_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showVotes.html.twig")
 	 */
 	public function showVotesAction(Request $request, $username, $filter = 'positive', $page = 0) {
@@ -784,16 +784,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/reviews", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_reviews_old")
+	 * @Route("/{username}/reviews", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_reviews_old")
 	 */
 	public function oldShowReviewsAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_reviews', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/reviews", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_reviews")
-	 * @Route("/@{username}/reviews/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_reviews_filter")
-	 * @Route("/@{username}/reviews/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_reviews_filter_page")
+	 * @Route("/@{username}/reviews", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_reviews")
+	 * @Route("/@{username}/reviews/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_reviews_filter")
+	 * @Route("/@{username}/reviews/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_reviews_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showReviews.html.twig")
 	 */
 	public function showReviewsAction(Request $request, $username, $filter = 'recent', $page = 0) {
@@ -828,16 +828,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/feedbacks", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_feedbacks_old")
+	 * @Route("/{username}/feedbacks", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_feedbacks_old")
 	 */
 	public function oldShowFeedbacksAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_feedbacks', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/feedbacks", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_feedbacks")
-	 * @Route("/@{username}/feedbacks/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_feedbacks_filter")
-	 * @Route("/@{username}/feedbacks/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_feedbacks_filter_page")
+	 * @Route("/@{username}/feedbacks", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_feedbacks")
+	 * @Route("/@{username}/feedbacks/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_feedbacks_filter")
+	 * @Route("/@{username}/feedbacks/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_feedbacks_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showFeedbacks.html.twig")
 	 */
 	public function showFeedbacksAction(Request $request, $username, $filter = "recent", $page = 0) {
@@ -874,16 +874,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/creations", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_creations_old")
+	 * @Route("/{username}/creations", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_creations_old")
 	 */
 	public function oldShowCreationsAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_creations', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/creations", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_creations")
-	 * @Route("/@{username}/creations/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_creations_filter")
-	 * @Route("/@{username}/creations/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_creations_filter_page")
+	 * @Route("/@{username}/creations", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_creations")
+	 * @Route("/@{username}/creations/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_creations_filter")
+	 * @Route("/@{username}/creations/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_creations_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showCreations.html.twig")
 	 */
 	public function showCreationsAction(Request $request, $username, $filter = null, $page = 0) {
@@ -932,16 +932,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/ateliers", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workshops_old")
+	 * @Route("/{username}/ateliers", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_workshops_old")
 	 */
 	public function oldShowWorkshopsAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_workshops', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/ateliers", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workshops")
-	 * @Route("/@{username}/ateliers/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workshops_filter")
-	 * @Route("/@{username}/ateliers/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workshops_filter_page")
+	 * @Route("/@{username}/ateliers", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_workshops")
+	 * @Route("/@{username}/ateliers/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workshops_filter")
+	 * @Route("/@{username}/ateliers/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workshops_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showWorkshops.html.twig")
 	 */
 	public function showWorkshopsAction(Request $request, $username, $filter = null, $page = 0) {
@@ -992,16 +992,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/plans", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_plans_old")
+	 * @Route("/{username}/plans", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_plans_old")
 	 */
 	public function oldShowPlansAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_plans', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/plans", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_plans")
-	 * @Route("/@{username}/plans/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_plans_filter")
-	 * @Route("/@{username}/plans/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_plans_filter_page")
+	 * @Route("/@{username}/plans", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_plans")
+	 * @Route("/@{username}/plans/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_plans_filter")
+	 * @Route("/@{username}/plans/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_plans_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showPlans.html.twig")
 	 */
 	public function showPlansAction(Request $request, $username, $filter = null, $page = 0) {
@@ -1050,16 +1050,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/pas-a-pas", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_howtos_old")
+	 * @Route("/{username}/pas-a-pas", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_howtos_old")
 	 */
 	public function showOldHowtosAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_howtos', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/pas-a-pas", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_howtos")
-	 * @Route("/@{username}/pas-a-pas/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_howtos_filter")
-	 * @Route("/@{username}/pas-a-pas/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_howtos_filter_page")
+	 * @Route("/@{username}/pas-a-pas", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_howtos")
+	 * @Route("/@{username}/pas-a-pas/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_howtos_filter")
+	 * @Route("/@{username}/pas-a-pas/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_howtos_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showHowtos.html.twig")
 	 */
 	public function showHowtosAction(Request $request, $username, $filter = null, $page = 0) {
@@ -1108,16 +1108,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/trouvailles", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_finds_old")
+	 * @Route("/{username}/trouvailles", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_finds_old")
 	 */
 	public function showOldFindsAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_finds', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/trouvailles", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_finds")
-	 * @Route("/@{username}/trouvailles/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_finds_filter")
-	 * @Route("/@{username}/trouvailles/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_finds_filter_page")
+	 * @Route("/@{username}/trouvailles", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_finds")
+	 * @Route("/@{username}/trouvailles/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_finds_filter")
+	 * @Route("/@{username}/trouvailles/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_finds_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showFinds.html.twig")
 	 */
 	public function showFindsAction(Request $request, $username, $filter = null, $page = 0) {
@@ -1166,16 +1166,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/questions", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_questions_old")
+	 * @Route("/{username}/questions", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_questions_old")
 	 */
 	public function showOldQuestionsAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_questions', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/questions", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_questions")
-	 * @Route("/@{username}/questions/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_questions_filter")
-	 * @Route("/@{username}/questions/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_questions_filter_page")
+	 * @Route("/@{username}/questions", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_questions")
+	 * @Route("/@{username}/questions/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_questions_filter")
+	 * @Route("/@{username}/questions/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_questions_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showQuestions.html.twig")
 	 */
 	public function showQuestionsAction(Request $request, $username, $filter = null, $page = 0) {
@@ -1224,16 +1224,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/reponses", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_answers_old")
+	 * @Route("/{username}/reponses", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_answers_old")
 	 */
 	public function showOldAnswersAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_answers', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/reponses", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_answers")
-	 * @Route("/@{username}/reponses/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_answers_filter")
-	 * @Route("/@{username}/reponses/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_answers_filter_page")
+	 * @Route("/@{username}/reponses", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_answers")
+	 * @Route("/@{username}/reponses/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_answers_filter")
+	 * @Route("/@{username}/reponses/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_answers_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showAnswers.html.twig")
 	 */
 	public function showAnswersAction(Request $request, $username, $filter = "recent", $page = 0) {
@@ -1270,16 +1270,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/graphismes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_graphics_old")
+	 * @Route("/{username}/graphismes", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_graphics_old")
 	 */
 	public function showOldGraphicsAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_graphics', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/graphismes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_graphics")
-	 * @Route("/@{username}/graphismes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_graphics_filter")
-	 * @Route("/@{username}/graphismes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_graphics_filter_page")
+	 * @Route("/@{username}/graphismes", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_graphics")
+	 * @Route("/@{username}/graphismes/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_graphics_filter")
+	 * @Route("/@{username}/graphismes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_graphics_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showGraphics.html.twig")
 	 */
 	public function showGraphicsAction(Request $request, $username, $filter = null, $page = 0) {
@@ -1328,16 +1328,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/processus", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workflows_old")
+	 * @Route("/{username}/processus", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_workflows_old")
 	 */
 	public function showOldWorkflowsAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_workflows', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/processus", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_workflows")
-	 * @Route("/@{username}/processus/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workflows_filter")
-	 * @Route("/@{username}/processus/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workflows_filter_page")
+	 * @Route("/@{username}/processus", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_workflows")
+	 * @Route("/@{username}/processus/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_workflows_filter")
+	 * @Route("/@{username}/processus/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_workflows_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showWorkflows.html.twig")
 	 */
 	public function showWorkflowsAction(Request $request, $username, $filter = null, $page = 0) {
@@ -1388,16 +1388,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/annonces", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_offers_old")
+	 * @Route("/{username}/annonces", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_offers_old")
 	 */
 	public function showOldOffersAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_offers', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/annonces", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_offers")
-	 * @Route("/@{username}/annonces/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_offers_filter")
-	 * @Route("/@{username}/annonces/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_offers_filter_page")
+	 * @Route("/@{username}/annonces", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_offers")
+	 * @Route("/@{username}/annonces/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_offers_filter")
+	 * @Route("/@{username}/annonces/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_offers_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showOffers.html.twig")
 	 */
 	public function showOffersAction(Request $request, $username, $filter = null, $page = 0) {
@@ -1446,16 +1446,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/abonnements", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_following_old")
+	 * @Route("/{username}/abonnements", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_following_old")
 	 */
 	public function showOldFollowingAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_following', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/abonnements", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_following")
-	 * @Route("/@{username}/abonnements/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_following_filter")
-	 * @Route("/@{username}/abonnements/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_following_filter_page")
+	 * @Route("/@{username}/abonnements", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_following")
+	 * @Route("/@{username}/abonnements/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_following_filter")
+	 * @Route("/@{username}/abonnements/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_following_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showFollowing.html.twig")
 	 */
 	public function showFollowingAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
@@ -1494,16 +1494,16 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}/abonnes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_followers_old")
+	 * @Route("/{username}/abonnes", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_followers_old")
 	 */
 	public function showOldFollowersAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show_followers', array( 'username' => $username )));
 	}
 
 	/**
-	 * @Route("/@{username}/abonnes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_followers")
-	 * @Route("/@{username}/abonnes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_followers_filter")
-	 * @Route("/@{username}/abonnes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_followers_filter_page")
+	 * @Route("/@{username}/abonnes", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_followers")
+	 * @Route("/@{username}/abonnes/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_followers_filter")
+	 * @Route("/@{username}/abonnes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_followers_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showFollowers.html.twig")
 	 */
 	public function showFollowersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
@@ -1543,9 +1543,9 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/membres", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_members")
-	 * @Route("/@{username}/membres/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_members_filter")
-	 * @Route("/@{username}/membres/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_members_filter_page")
+	 * @Route("/@{username}/membres", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_members")
+	 * @Route("/@{username}/membres/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_members_filter")
+	 * @Route("/@{username}/membres/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_members_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showMembers.html.twig")
 	 */
 	public function showMembersAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
@@ -1582,9 +1582,9 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/invitations", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_invitations")
-	 * @Route("/@{username}/invitations/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_invitations_filter")
-	 * @Route("/@{username}/invitations/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_invitations_filter_page")
+	 * @Route("/@{username}/invitations", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_invitations")
+	 * @Route("/@{username}/invitations/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_invitations_filter")
+	 * @Route("/@{username}/invitations/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_invitations_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showInvitations.html.twig")
 	 */
 	public function showInvitationsAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
@@ -1630,9 +1630,9 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/demandes", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_requests")
-	 * @Route("/@{username}/demandes/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_requests_filter")
-	 * @Route("/@{username}/demandes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_requests_filter_page")
+	 * @Route("/@{username}/demandes", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_requests")
+	 * @Route("/@{username}/demandes/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_requests_filter")
+	 * @Route("/@{username}/demandes/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_requests_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showRequests.html.twig")
 	 */
 	public function showRequestsAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
@@ -1678,9 +1678,9 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/collectifs", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_teams")
-	 * @Route("/@{username}/collectifs/{filter}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_teams_filter")
-	 * @Route("/@{username}/collectifs/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_teams_filter_page")
+	 * @Route("/@{username}/collectifs", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_teams")
+	 * @Route("/@{username}/collectifs/{filter}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+"}, name="core_user_show_teams_filter")
+	 * @Route("/@{username}/collectifs/{filter}/{page}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$", "filter" = "[a-z-]+", "page" = "\d+"}, name="core_user_show_teams_filter_page")
 	 * @Template("LadbCoreBundle:Core/User:showTeams.html.twig")
 	 */
 	public function showTeamsAction(Request $request, $username, $filter = "popular-followers", $page = 0) {
@@ -1726,7 +1726,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/{username}", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_old")
+	 * @Route("/{username}", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_old")
 	 */
 	public function oldShowAction($username) {
 		return $this->redirect($this->generateUrl('core_user_show', array( 'username' => $username )));
@@ -1876,7 +1876,7 @@ class UserController extends AbstractController {
 	// Admin /////
 
 	/**
-	 * @Route("/@{username}/admin", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_show_admin")
+	 * @Route("/@{username}/admin", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_show_admin")
 	 * @Template("LadbCoreBundle:Core/User:showAdmin.html.twig")
 	 */
 	public function showAdminAction($username) {
@@ -1902,7 +1902,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/admin/converttoteam", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_converttoteam")
+	 * @Route("/@{username}/admin/converttoteam", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_admin_converttoteam")
 	 */
 	public function adminConvertToTeamAction($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -1963,7 +1963,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/admin/activate", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_activate")
+	 * @Route("/@{username}/admin/activate", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_admin_activate")
 	 */
 	public function adminActivateAction($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -1991,7 +1991,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/admin/deactivate", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_deactivate")
+	 * @Route("/@{username}/admin/deactivate", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_admin_deactivate")
 	 */
 	public function adminDeactivateAction($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -2019,7 +2019,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/admin/empty", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_empty")
+	 * @Route("/@{username}/admin/empty", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_admin_empty")
 	 */
 	public function adminEmptyAction($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -2058,7 +2058,7 @@ class UserController extends AbstractController {
 	}
 
 	/**
-	 * @Route("/@{username}/admin/delete", requirements={"username" = "^[a-zA-Z0-9]{3,25}$"}, name="core_user_admin_delete")
+	 * @Route("/@{username}/admin/delete", requirements={"username" = "^[a-zA-Z0-9.]{3,25}$"}, name="core_user_admin_delete")
 	 */
 	public function adminDeleteAction($username) {
 		if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
