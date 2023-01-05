@@ -372,7 +372,7 @@ services:
       - { name: validator.constraint_validator, alias: ladb_core.valid_event_validator }
     arguments: ['@validator']
   ladb_core.valid_offer_validator:
-    class: Ladb\CoreBundle\Validator\Constraints\ValidEventValidator
+    class: Ladb\CoreBundle\Validator\Constraints\ValidOfferValidator
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_offer_validator }
     arguments: ['@validator']
