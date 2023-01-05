@@ -371,6 +371,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: ladb_core.valid_event_validator }
     arguments: ['@validator']
+  ladb_core.valid_offer_validator:
+    class: Ladb\CoreBundle\Validator\Constraints\ValidEventValidator
+    tags:
+      - { name: validator.constraint_validator, alias: ladb_core.valid_offer_validator }
+    arguments: ['@validator']
   ladb_core.article_body_validator:
     class: Ladb\CoreBundle\Validator\Constraints\ArticleBodyValidator
     tags:
