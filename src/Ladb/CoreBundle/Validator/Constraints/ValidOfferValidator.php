@@ -18,7 +18,7 @@ class ValidOfferValidator extends ConstraintValidator {
 	 * @api
 	 */
 	public function validate($value, Constraint $constraint) {
-		if ($value instanceof Offer && $value->getKind() == Offer::KIND_OFFER) {
+		if ($value instanceof Offer && $value->getKind() == Offer::KIND_OFFER && $value->getCategory() != Offer::CATEGORY_JOB) {
             $blocks = $value->getBodyBlocks();
             foreach ($blocks as $block) {
                 if ($block instanceof Text && preg_match('/faire\s*(?:une|1)*\s*off*re/mi', $block->getBody())) {
