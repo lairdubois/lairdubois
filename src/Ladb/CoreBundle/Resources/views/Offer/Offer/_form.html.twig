@@ -60,10 +60,11 @@
                 {{ form_widget(form.category) }}
             </div>
             <div id="{{ form.rawPrice.vars.id }}_container" class="row" style="display: none;">
-                <div class="col-12">
+                <div class="col-xs-12">
                     <p class="help-block ladb-color-danger">
-                        <i class="ladb-icon-warning"></i>&nbsp;Vous ne pouvez pas publier une annonce sans y mettre de proposition de prix représentant l'intégralité de ce que présente l'annonce. Ou alors, c'est que ce que vous proposez est réellement un don <strong>gratuit</strong>.
-                        Les abus pourront faire l'objet de modération.
+                        <i class="ladb-icon-warning"></i>&nbsp;Vous ne pouvez pas publier une annonce sans y mettre une proposition de prix représentant l'intégralité de ce que présente l'annonce.<br>
+                        Si le prix annoncé est à 0€, c'est que ce que vous proposez est réellement un don <strong>gratuit</strong>.<br>
+                        <em>Les abus pourront faire l'objet d'une suppression de l'annonce.</em>
                     </p>
                 </div>
                 <div class="form-group col-xs-4">
