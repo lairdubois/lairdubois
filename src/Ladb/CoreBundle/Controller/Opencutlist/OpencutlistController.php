@@ -17,6 +17,9 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
  */
 class OpencutlistController extends AbstractController {
 
+    const BRANCHE_PROD = 'master';
+    const BRANCHE_DEV = '5.0.0';
+
 	private function _createAccess(Request $request, $env, $kind) {
 		$om = $this->getDoctrine()->getManager();
 
@@ -66,7 +69,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/master/dist/manifest'.($access->getIsEnvDev() ? '-dev' : '').'.json');
+		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCHE_DEV : self::BRANCHE_PROD).'/dist/manifest'.($access->getIsEnvDev() ? '-dev' : '').'.json');
 		return $response;
 	}
 
@@ -78,7 +81,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_DOWNLOAD);
 
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/master/dist/ladb_opencutlist'.($access->getIsEnvDev() ? '-dev' : '').'.rbz');
+		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCHE_DEV : self::BRANCHE_PROD).'/dist/ladb_opencutlist'.($access->getIsEnvDev() ? '-dev' : '').'.rbz');
 		return $response;
 	}
 
@@ -90,7 +93,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_TUTORIALS);
 
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/master/docs/json/tutorials.json');
+		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCHE_DEV : self::BRANCHE_PROD).'/docs/json/tutorials.json');
 		return $response;
 	}
 
