@@ -69,7 +69,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCHE_DEV : self::BRANCHE_PROD).'/dist/manifest'.($access->getIsEnvDev() ? '-dev' : '').'.json');
+		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCHE_DEV : self::BRANCHE_PROD).'/dist/manifest.json');
 		return $response;
 	}
 
@@ -81,7 +81,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_DOWNLOAD);
 
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCHE_DEV : self::BRANCHE_PROD).'/dist/ladb_opencutlist'.($access->getIsEnvDev() ? '-dev' : '').'.rbz');
+		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCHE_DEV : self::BRANCHE_PROD).'/dist/ladb_opencutlist.rbz');
 		return $response;
 	}
 
