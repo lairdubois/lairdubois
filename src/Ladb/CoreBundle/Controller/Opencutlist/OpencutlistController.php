@@ -121,7 +121,19 @@ class OpencutlistController extends AbstractController {
 		return JsonResponse::fromJsonString('{ "url": "https://docs.opencutlist.org'.$path.'" }');
 	}
 
-	/**
+    /**
+     * @Route("/changelog", name="core_opencutlist_changelog")
+     * @Route("/changelog-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_changelog_env")
+     */
+    public function changelogAction(Request $request, $env = 'prod') {
+
+        $access = $this->_createAccess($request, $env, Access::KIND_CHANGELOG);
+
+        $response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCHE_DEV : self::BRANCHE_PROD).'/CHANGELOG');
+        return $response;
+    }
+
+    /**
 	 * @Route("/stats", name="core_opencutlist_stats")
 	 * @Route("/stats/{page}", requirements={"page" = "\d+"}, name="core_opencutlist_stats_page")
 	 * @Template("LadbCoreBundle:Opencutlist:stats.html.twig")
@@ -147,7 +159,8 @@ class OpencutlistController extends AbstractController {
 		$downloadsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOWNLOAD, $env, $days, $continent, $language, $locale);
 		$manifestsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_MANIFEST, $env, $days, $continent, $language, $locale);
 		$tutorialsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_TUTORIALS, $env, $days, $continent, $language, $locale);
-		$docssByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOCS, $env, $days, $continent, $language, $locale);
+		$docsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_DOCS, $env, $days, $continent, $language, $locale);
+		$changelogsByDay = $accessRepository->countUniqueGroupByDay(Access::KIND_CHANGELOG, $env, $days, $continent, $language, $locale);
 
 		$downloadsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_DOWNLOAD, $env, $days, $continent, $language, $locale);
 		$downloadsByCountry = array();
@@ -197,6 +210,18 @@ class OpencutlistController extends AbstractController {
 			$docsCount += $row['count'];
 		}
 
+		$changelogsByCountryCode = $accessRepository->countUniqueGroupByCountryCode(Access::KIND_CHANGELOG, $env, $days, $continent, $language, $locale);
+		$changelogsByCountry = array();
+		$changelogsCount = 0;
+		foreach ($changelogsByCountryCode as $row) {
+			$changelogsByCountry[] = array(
+				'count' => $row['count'],
+				'countryCode' => $row['countryCode'],
+				'country' => \Locale::getDisplayRegion('-'.$row['countryCode'], 'fr'),
+			);
+			$changelogsCount += $row['count'];
+		}
+
 		$parameters = array(
 			'env'                => $env,
 			'days'               => $days,
@@ -209,15 +234,18 @@ class OpencutlistController extends AbstractController {
 			'downloadsByDay'     => $downloadsByDay,
 			'manifestsByDay'     => $manifestsByDay,
 			'tutorialsByDay'     => $tutorialsByDay,
-			'docsByDay'     	 => $docssByDay,
+			'docsByDay'     	 => $docsByDay,
+			'changelogsByDay'    => $changelogsByDay,
 			'downloadsByCountry' => $downloadsByCountry,
 			'manifestsByCountry' => $manifestsByCountry,
 			'tutorialsByCountry' => $tutorialsByCountry,
 			'docsByCountry' 	 => $docsByCountry,
+			'changelogsByCountry'=> $changelogsByCountry,
 			'downloadsCount'     => $downloadsCount,
 			'manifestsCount'     => $manifestsCount,
 			'tutorialsCount'     => $tutorialsCount,
 			'docsCount'     	 => $docsCount,
+			'changelogsCount'    => $changelogsCount,
 		);
 
 		if ($request->isXmlHttpRequest()) {
