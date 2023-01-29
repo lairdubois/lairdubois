@@ -107,6 +107,9 @@ class OpencutlistController extends AbstractController {
 
 		$path = '';
 		switch ($request->get('page', '')) {
+            case 'core.upgrade':
+                $path = '/getting-started/updating';
+                break;
             case 'settings':
                 $path = '/getting-started/installing/preferences';
                 break;
@@ -114,11 +117,7 @@ class OpencutlistController extends AbstractController {
                 $path = '/features/applying-materials';
                 break;
             case 'materials.new':
-                $path = '/features/applying-materials';
-                break;
             case 'materials.edit':
-                $path = '/features/applying-materials';
-                break;
             case 'features.parts.export':       // BC <= 4.x
 			case 'cutlist.export':
 				$path = '/features/parts/export';
