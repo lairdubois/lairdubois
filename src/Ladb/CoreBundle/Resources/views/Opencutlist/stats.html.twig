@@ -70,6 +70,20 @@
                     borderColor: '#FED06E',
                     fill: false,
                     lineTension: 0
+                },{
+                    label: 'Changelogs',
+                    data: [
+                        {% for row in changelogsByDay %}
+                            {
+                                t: new Date('{{ row.day }} 00:00'),
+                                y: {{ row.count }}
+                            }{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: '#AAAAAA',
+                    borderColor: '#AAAAAA',
+                    fill: false,
+                    lineTension: 0
                 }]
             },
             options: {
