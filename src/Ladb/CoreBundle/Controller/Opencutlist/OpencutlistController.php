@@ -113,6 +113,18 @@ class OpencutlistController extends AbstractController {
 			case 'features.parts.report':
 				$path = '/features/parts/report';
 				break;
+			case 'features.parts.options':
+				$path = '/features/parts/options';
+				break;
+			case 'features.parts.parts-list.edit-part':
+				$path = '/features/parts/parts-list/edit-part';
+				break;
+			case 'features.parts.parts-list.cuttingdiagram1d':
+				$path = '/features/parts/parts-list/cutting-diagrams/dimensional';
+				break;
+			case 'features.parts.parts-list.cuttingdiagram2d':
+				$path = '/features/parts/parts-list/cutting-diagrams/sheet-goods';
+				break;
 			case 'features.parts.parts-list.labels':
 				$path = '/features/parts/parts-list/printing-labels';
 				break;
