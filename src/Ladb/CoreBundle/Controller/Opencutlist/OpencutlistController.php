@@ -107,26 +107,45 @@ class OpencutlistController extends AbstractController {
 
 		$path = '';
 		switch ($request->get('page', '')) {
-			case 'features.parts.export':
+            case 'settings':
+                $path = '/getting-started/installing/preferences';
+                break;
+            case 'materials.options':
+                $path = '/features/applying-materials';
+                break;
+            case 'materials.new':
+                $path = '/features/applying-materials';
+                break;
+            case 'materials.edit':
+                $path = '/features/applying-materials';
+                break;
+            case 'features.parts.export':       // BC <= 4.x
+			case 'cutlist.export':
 				$path = '/features/parts/export';
 				break;
-			case 'features.parts.report':
+            case 'features.parts.report':       // BC <= 4.x
+			case 'cutlist.report':
 				$path = '/features/parts/report';
 				break;
-			case 'features.parts.options':
+			case 'cutlist.options':
 				$path = '/features/parts/options';
 				break;
-			case 'features.parts.parts-list.edit-part':
+			case 'cutlist.part':
 				$path = '/features/parts/parts-list/edit-part';
 				break;
-			case 'features.parts.parts-list.cuttingdiagram1d':
+			case 'cutlist.cuttingdiagram1d':
 				$path = '/features/parts/parts-list/cutting-diagrams/dimensional';
 				break;
-			case 'features.parts.parts-list.cuttingdiagram2d':
+			case 'cutlist.cuttingdiagram2d':
 				$path = '/features/parts/parts-list/cutting-diagrams/sheet-goods';
 				break;
-			case 'features.parts.parts-list.labels':
+            case 'features.parts.parts-list.labels':    // BC <= 4.x
+			case 'cutlist.labels':
 				$path = '/features/parts/parts-list/printing-labels';
+				break;
+			case 'importer.load':
+			case 'importer.import':
+				$path = '/features/import';
 				break;
 		}
 
