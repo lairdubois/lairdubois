@@ -678,3 +678,16 @@ COMMIT
     $ sudo service netfilter-persistent restart
 ```
 
+#### Post-it
+
+Ban an IP
+
+``` bash
+    $ sudo iptables -I INPUT -s 1.1.1.1 -j DROP
+```
+
+Unban an IP
+
+``` bash
+    $ sudo iptables -D INPUT -s 1.1.1.1 -j DROP
+```
