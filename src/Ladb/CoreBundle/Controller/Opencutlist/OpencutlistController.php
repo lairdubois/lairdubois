@@ -120,10 +120,14 @@ class OpencutlistController extends AbstractController {
             case 'settings.presets':
                 $path = '/getting-started/installing/preferences';
                 break;
+            case 'materials':
             case 'materials.options':
             case 'materials.new':
             case 'materials.edit':
                 $path = '/features/applying-materials';
+                break;
+            case 'cutlist':
+                $path = '/';    // TODO
                 break;
             case 'features.parts.export':       // BC <= 4.x
 			case 'cutlist.export':
@@ -152,6 +156,7 @@ class OpencutlistController extends AbstractController {
 			case 'cutlist.layout':
 				$path = '/';    // TODO
 				break;
+			case 'importer':
 			case 'importer.load':
 			case 'importer.import':
 				$path = '/features/import';
