@@ -116,6 +116,12 @@ class OpencutlistController extends AbstractController {
             case 'core.upgrade':
                 $path = '/getting-started/updating';
                 break;
+            case 'tool.smart-paint':
+                $path = '/features/smartpaint-tool';
+                break;
+            case 'tool.smart-axes':
+                $path = '/';    // TODO
+                break;
             case 'settings':
             case 'settings.presets':
                 $path = '/getting-started/installing/preferences';
@@ -130,37 +136,37 @@ class OpencutlistController extends AbstractController {
                 $path = '/';    // TODO
                 break;
             case 'features.parts.export':       // BC <= 4.x
-			case 'cutlist.export':
-				$path = '/features/parts/export';
-				break;
+            case 'cutlist.export':
+                $path = '/features/parts/export';
+                break;
             case 'features.parts.report':       // BC <= 4.x
-			case 'cutlist.report':
-				$path = '/features/parts/report';
-				break;
-			case 'cutlist.options':
-				$path = '/features/parts/options';
-				break;
-			case 'cutlist.part':
-				$path = '/features/parts/parts-list/edit-part';
-				break;
-			case 'cutlist.cuttingdiagram1d':
-				$path = '/features/parts/parts-list/cutting-diagrams/dimensional';
-				break;
-			case 'cutlist.cuttingdiagram2d':
-				$path = '/features/parts/parts-list/cutting-diagrams/sheet-goods';
-				break;
+            case 'cutlist.report':
+                $path = '/features/parts/report';
+                break;
+            case 'cutlist.options':
+                $path = '/features/parts/options';
+                break;
+            case 'cutlist.part':
+                $path = '/features/parts/parts-list/edit-part';
+                break;
+            case 'cutlist.cuttingdiagram1d':
+                $path = '/features/parts/parts-list/cutting-diagrams/dimensional';
+                break;
+            case 'cutlist.cuttingdiagram2d':
+                $path = '/features/parts/parts-list/cutting-diagrams/sheet-goods';
+                break;
             case 'features.parts.parts-list.labels':    // BC <= 4.x
-			case 'cutlist.labels':
-				$path = '/features/parts/parts-list/printing-labels';
-				break;
-			case 'cutlist.layout':
-				$path = '/';    // TODO
-				break;
-			case 'importer':
-			case 'importer.load':
-			case 'importer.import':
-				$path = '/features/import';
-				break;
+            case 'cutlist.labels':
+                $path = '/features/parts/parts-list/printing-labels';
+                break;
+            case 'cutlist.layout':
+                $path = '/';    // TODO
+                break;
+            case 'importer':
+            case 'importer.load':
+            case 'importer.import':
+                $path = '/features/import';
+                break;
 		}
 
 		return JsonResponse::fromJsonString('{ "url": "https://docs.opencutlist.org'.$path.'" }');
