@@ -123,8 +123,10 @@ class OpencutlistController extends AbstractController {
                 $path = '/';    // TODO
                 break;
             case 'settings':
-            case 'settings.presets':
                 $path = '/getting-started/installing/preferences';
+                break;
+            case 'settings.presets':
+                $path = '/getting-started/installing/presets';
                 break;
             case 'materials':
             case 'materials.options':
