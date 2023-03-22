@@ -117,7 +117,7 @@ class OpencutlistController extends AbstractController {
                 $path = '/getting-started/updating';
                 break;
             case 'tool.smart-paint':
-                $path = '/features/smartpaint-tool';
+                $path = '/features/paint-parts-tool';
                 break;
             case 'tool.smart-axes':
                 $path = '/';    // TODO
@@ -135,7 +135,7 @@ class OpencutlistController extends AbstractController {
                 $path = '/features/applying-materials';
                 break;
             case 'cutlist':
-                $path = '/';    // TODO
+                $path = '/features/parts';
                 break;
             case 'features.parts.export':       // BC <= 4.x
             case 'cutlist.export':
