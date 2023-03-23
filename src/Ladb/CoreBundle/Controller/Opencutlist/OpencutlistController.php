@@ -126,6 +126,8 @@ class OpencutlistController extends AbstractController {
                 $path = '/getting-started/installing/preferences';
                 break;
             case 'settings.presets':
+            case 'settings.presets.export':
+            case 'settings.presets.import':
                 $path = '/getting-started/installing/presets';
                 break;
             case 'materials':
