@@ -57,8 +57,7 @@ class OpencutlistController extends AbstractController {
 	 * @Route("/", name="core_opencutlist_ew")
 	 */
 	public function ewAction() {
-		$response = $this->redirect('https://extensions.sketchup.com/extension/00f0bf69-7a42-4295-9e1c-226080814e3e/open-cut-list');
-		return $response;
+		return $this->redirect('https://extensions.sketchup.com/extension/00f0bf69-7a42-4295-9e1c-226080814e3e/open-cut-list');
 	}
 
 	/**
@@ -75,8 +74,7 @@ class OpencutlistController extends AbstractController {
             $branch = self::BRANCH_PROD;
         }
 
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.$branch.'/dist/manifest.json');
-		return $response;
+		return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.$branch.'/dist/manifest.json');
 	}
 
 	/**
@@ -87,8 +85,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_DOWNLOAD);
 
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/dist/ladb_opencutlist.rbz');
-		return $response;
+		return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/dist/ladb_opencutlist.rbz');
 	}
 
 	/**
@@ -99,8 +96,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_TUTORIALS);
 
-		$response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/docs/json/tutorials.json');
-		return $response;
+		return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/docs/json/tutorials.json');
 	}
 
 	/**
@@ -173,7 +169,12 @@ class OpencutlistController extends AbstractController {
                 break;
 		}
 
-		return JsonResponse::fromJsonString('{ "url": "https://docs.opencutlist.org'.$path.'" }');
+        $url = 'https://docs.opencutlist.org'.$path;
+
+        if ($request->get('redirect', false)) {
+            return $this->redirect($url);
+        }
+		return JsonResponse::fromJsonString('{ "url": "'.$url.'" }');
 	}
 
     /**
@@ -184,8 +185,7 @@ class OpencutlistController extends AbstractController {
 
         $access = $this->_createAccess($request, $env, Access::KIND_CHANGELOG);
 
-        $response = $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/CHANGELOG.md');
-        return $response;
+        return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/CHANGELOG.md');
     }
 
     /**
