@@ -12,6 +12,7 @@ class ValidUserEmailValidator extends ConstraintValidator {
         'simplelogin.com',
         'mathieulebert.fr',
         'allpapersforyou.com',
+        'marykayjf.com'
     );
 
 	/**
