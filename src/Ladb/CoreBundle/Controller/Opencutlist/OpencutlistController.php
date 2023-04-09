@@ -113,10 +113,10 @@ class OpencutlistController extends AbstractController {
                 $path = '/getting-started/updating';
                 break;
             case 'tool.smart-paint':
-                $path = '/features/paint-parts-tool';
+                $path = '/features/smart-paint-tool';
                 break;
             case 'tool.smart-axes':
-                $path = '/';    // TODO
+                $path = '/features/smart-axes-tool';
                 break;
             case 'settings':
                 $path = '/getting-started/installing/preferences';
