@@ -64,9 +64,9 @@ class ThreadController extends AbstractThreadController {
 	 * @Template("LadbCoreBundle:Message:newThread.html.twig")
 	 */
 	public function createAction(Request $request) {
-		if (!is_null($this->getUser()) && $this->getUser()->getIsTeam()) {
-			throw $this->createNotFoundException('Team not allowed (core_message_thread_create)');
-		}
+//		if (!is_null($this->getUser()) && $this->getUser()->getIsTeam()) {
+//			throw $this->createNotFoundException('Team not allowed (core_message_thread_create)');
+//		}
 
 		$this->createLock('core_message_thread_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
