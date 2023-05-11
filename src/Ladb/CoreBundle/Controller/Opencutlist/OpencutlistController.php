@@ -69,7 +69,8 @@ class OpencutlistController extends AbstractController {
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
         if ($access->getIsEnvDev() && $access->getClientOclVersion() == '5.0.0-dev'/* && $access->getClientSketchupLocale() == 'fr'*/) {
-            $branch = self::BRANCH_DEV;
+//            $branch = self::BRANCH_DEV;
+            $branch = self::BRANCH_PROD;
         } else {
             $branch = self::BRANCH_PROD;
         }
