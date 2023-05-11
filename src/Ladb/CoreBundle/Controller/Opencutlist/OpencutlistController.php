@@ -161,7 +161,7 @@ class OpencutlistController extends AbstractController {
                 $path = '/features/parts/parts-list/printing-labels';
                 break;
             case 'cutlist.layout':
-                $path = '/features/parts/draw';
+                $path = '/features/parts/layout';
                 break;
             case 'importer':
             case 'importer.load':
