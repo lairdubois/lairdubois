@@ -48,6 +48,7 @@ class LadbMarkdown extends Parser {
 	}
 	use \cebe\markdown\inline\StrikeoutTrait;
 	use \cebe\markdown\inline\UrlLinkTrait;
+	use \cebe\markdown\inline\CodeTrait;
 	use Inline\MentionTrait;
 
 	/**
