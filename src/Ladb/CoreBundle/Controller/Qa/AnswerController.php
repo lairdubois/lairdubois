@@ -62,8 +62,11 @@ class AnswerController extends AbstractController {
 		if (!$request->isXmlHttpRequest()) {
 			throw $this->createNotFoundException('Only XML request allowed (core_qa_answer_create)');
 		}
+        if (!$this->getUser()->getEmailConfirmed()) {
+            throw $this->createNotFoundException('Not emailConfirmed (core_qa_answer_create)');
+        }
 
-		$this->createLock('core_qa_answer_create', false, self::LOCK_TTL_CREATE_ACTION, false);
+        $this->createLock('core_qa_answer_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$question = $this->retrievePublication($id, Question::CLASS_NAME);
 
