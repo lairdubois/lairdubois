@@ -2,7 +2,6 @@
 
 namespace Ladb\CoreBundle\Controller\Core;
 
-use Ladb\CoreBundle\Entity\Find\Find;
 use Ladb\CoreBundle\Entity\Qa\Question;
 use Ladb\CoreBundle\Manager\Core\CommentManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,7 +112,13 @@ class CommentController extends AbstractController {
 			$comment->setEntityId($entityId);
 			$comment->setUser($this->getUser());
 
-			// Retrieve parent
+            // Add some LOVE
+
+            if ($entityType == \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE && $entityId == 23325) {
+                $comment->setBody('😘');
+            }
+
+            // Retrieve parent
 
 			$parentId = intval($parentId);
 			if ($parentId > 0) {
