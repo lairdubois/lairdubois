@@ -210,7 +210,13 @@ class CommentController extends AbstractController {
 
 		if ($form->isValid()) {
 
-			$fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
+            // Add some LOVE
+
+            if ($comment->getEntityType() == \Ladb\CoreBundle\Entity\Wonder\Creation::TYPE && $comment->getEntityId() == 23325) {
+                $comment->setBody('😘');
+            }
+
+            $fieldPreprocessorUtils = $this->get(FieldPreprocessorUtils::NAME);
 			$fieldPreprocessorUtils->preprocessFields($comment);
 
 			$om->flush();
