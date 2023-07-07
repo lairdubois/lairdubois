@@ -13,7 +13,7 @@ framework:
     validation:      { enable_annotations: true }
     trusted_hosts: ['^(dev|www)\.lairdubois\.fr$']
     assets:
-        version:    "20210529"
+        version:    "20230707"
         version_format: '%%s?v=%%s'
         base_urls:  ["%router.request_context.scheme%://%router.request_context.host%"]
         packages:
