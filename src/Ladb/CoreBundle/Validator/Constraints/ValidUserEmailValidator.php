@@ -9,6 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class ValidUserEmailValidator extends ConstraintValidator {
 
     const UNAUTHORIZED_EMAIL_DOMAINS = array(
+        'mozmail.com',
         'simplelogin.com',
         'mathieulebert.fr',
         'allpapersforyou.com',
