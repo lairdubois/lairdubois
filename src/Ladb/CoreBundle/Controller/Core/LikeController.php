@@ -49,6 +49,11 @@ class LikeController extends AbstractController {
 
 		$this->createLock('core_like_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
+        // Exclude like if user is not email confirmed
+        if (!$this->getUser()->getEmailConfirmed()) {
+            throw $this->createNotFoundException('Not allowed - User email not confirmed (core_like_create)');
+        }
+
 		// Retrieve related entity
 
 		$entity = $this->_retrieveRelatedEntity($entityType, $entityId);

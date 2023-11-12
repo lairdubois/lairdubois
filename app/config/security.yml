@@ -35,7 +35,7 @@ security:
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connexion$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/rejoindre$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/salut$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         - { path: ^/media/cache/resolve/, role: IS_AUTHENTICATED_ANONYMOUSLY }
