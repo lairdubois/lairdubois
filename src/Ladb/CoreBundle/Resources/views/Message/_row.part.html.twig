@@ -2,7 +2,7 @@
     <div id="ladb_message_{{ message.id }}" class="ladb-message">
         {% if not message.sender.enabled and message.sender != app.user %}
             <div class="alert alert-danger">
-                <i class="ladb-icon-warning"></i> Le compte <strong>{{ message.sender.displayName }}</strong> a été désactivé pour utilisation abusive de la plateforme.
+                <i class="ladb-icon-warning"></i> Le compte <strong>{{ message.sender.displayName }}</strong> a été supprimé.
             </div>
         {% endif %}
         {% include 'LadbCoreBundle:Core/User:_avatar-link.part.html.twig' with { 'user':message.sender, 'linkClasses':'pull-left' } %}
