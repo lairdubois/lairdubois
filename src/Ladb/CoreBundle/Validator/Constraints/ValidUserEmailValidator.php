@@ -31,7 +31,7 @@ class ValidUserEmailValidator extends ConstraintValidator {
             $emailDomain = end($emailComponents);
 
             if (in_array($emailDomain, ValidUserEmailValidator::UNAUTHORIZED_EMAIL_DOMAINS)) {
-                $this->context->buildViolation('Ce domaine n\'est pas autorisé.')
+                $this->context->buildViolation('Ce domaine n\'est pas pris en charge.')
                     ->atPath('email')
                     ->addViolation();
             }
