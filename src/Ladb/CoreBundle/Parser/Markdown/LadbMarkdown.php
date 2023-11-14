@@ -32,6 +32,7 @@ class LadbMarkdown extends Parser {
 		consumeUl as protected consumeBUl;
 	}
 	use \cebe\markdown\block\QuoteTrait;
+	use \cebe\markdown\block\FencedCodeTrait;
 	use \cebe\markdown\block\RuleTrait {
 		// Check Hr before checking lists
 		identifyHr as private;
