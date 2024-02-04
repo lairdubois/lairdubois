@@ -118,7 +118,7 @@ class OpencutlistController extends AbstractController {
             case 'tool.smart-axes':
                 $path = '/features/smart-axes-tool';
                 break;
-            case 'tool.export-axes':
+            case 'tool.smart-export':
                 $path = '/features/smart-export-tool';
                 break;
             case 'settings':
