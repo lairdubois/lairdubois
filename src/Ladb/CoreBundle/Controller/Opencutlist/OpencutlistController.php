@@ -153,9 +153,11 @@ class OpencutlistController extends AbstractController {
                 $path = '/features/parts/parts-list/edit-part';
                 break;
             case 'cutlist.cuttingdiagram1d':
+            case 'cutlist.cuttingdiagram1d.write':
                 $path = '/features/parts/parts-list/cutting-diagrams/dimensional';
                 break;
             case 'cutlist.cuttingdiagram2d':
+            case 'cutlist.cuttingdiagram2d.write':
                 $path = '/features/parts/parts-list/cutting-diagrams/sheet-goods';
                 break;
             case 'features.parts.parts-list.labels':    // BC <= 4.x
@@ -164,6 +166,12 @@ class OpencutlistController extends AbstractController {
                 break;
             case 'cutlist.layout':
                 $path = '/features/parts/layout';
+                break;
+            case 'cutlist.write2d':
+                $path = '/features/parts/export-part-drawing/2d-projection';
+                break;
+            case 'cutlist.write3d':
+                $path = '/features/parts/export-part-drawing/3d-geometry';
                 break;
             case 'importer':
             case 'importer.load':
