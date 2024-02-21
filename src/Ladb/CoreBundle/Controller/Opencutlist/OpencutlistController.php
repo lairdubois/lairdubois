@@ -18,7 +18,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 class OpencutlistController extends AbstractController {
 
     const BRANCH_PROD = 'master';
-    const BRANCH_DEV = '6.0.0';
+    const BRANCH_DEV = '6.1.0';
 
 	private function _createAccess(Request $request, $env, $kind) {
 		$om = $this->getDoctrine()->getManager();
@@ -68,11 +68,11 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
-//        if ($access->getIsEnvDev() && $access->getClientOclVersion() == '6.0.0-dev'/* && in_array($access->getClientSketchupLocale(), [ 'fr', 'de', 'en' ]) */) {
-//            $branch = self::BRANCH_DEV;
-//        } else {
+        if ($access->getIsEnvDev() && $access->getClientOclVersion() == '6.1.0-dev'/* && in_array($access->getClientSketchupLocale(), [ 'fr', 'de', 'en' ]) */) {
+            $branch = self::BRANCH_DEV;
+        } else {
             $branch = self::BRANCH_PROD;
-//        }
+        }
 
 		return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.$branch.'/dist/manifest.json');
 	}
