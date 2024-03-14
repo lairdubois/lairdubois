@@ -18,7 +18,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 class OpencutlistController extends AbstractController {
 
     const BRANCH_PROD = 'master';
-    const BRANCH_DEV = '6.2.0';
+    const BRANCH_DEV = '6.1.1';
 
 	private function _createAccess(Request $request, $env, $kind) {
 		$om = $this->getDoctrine()->getManager();
@@ -68,7 +68,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
-        if ($access->getIsEnvDev() && $access->getClientOclVersion() == '6.2.0-dev' && in_array($access->getClientSketchupLocale(), [ 'fr' ])) {
+        if ($access->getIsEnvDev() && $access->getClientOclVersion() == '6.1.1-dev' && in_array($access->getClientSketchupLocale(), [ 'fr', 'zh' ])) {
             $branch = self::BRANCH_DEV;
         } else {
             $branch = self::BRANCH_PROD;
