@@ -106,11 +106,11 @@ class PictureUploadHandler extends \UploadHandler {
 
 			// Check image size
 			if ($img_width < $minSize) {
-				$file->error = "L'image est trop petite. La largeur de l'image doit être suppérieure à ".$minSize." pixels.";
+				$file->error = "L'image est trop petite. La largeur de l'image doit être supérieure à ".$minSize." pixels.";
 				return false;
 			}
 			if ($img_height < $minSize) {
-				$file->error = "L'image est trop petite. La hauteur de l'image doit être suppérieure à ".$minSize." pixels.";
+				$file->error = "L'image est trop petite. La hauteur de l'image doit être supérieure à ".$minSize." pixels.";
 				return false;
 			}
 
