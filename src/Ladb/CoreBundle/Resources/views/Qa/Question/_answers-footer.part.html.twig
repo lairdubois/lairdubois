@@ -17,7 +17,7 @@
                     {% if question.user == app.user and question.answerCount >= 1 %}
                         <button class="btn btn-primary btn-lg ladb-btn-thanks" data-thanks-msg="Merci à tous pour vos réponses !"><i class="ladb-icon-comment"></i> Remercier</button>
                     {% endif %}
-                    {% if app.user.emailConfirmed %}
+                    {% if app.user.emailConfirmed and not question.isLocked %}
                         <button id="ladb_answer_btn" class="btn btn-{% if question.user == app.user %}default{% else %}primary{% endif %} btn-lg" data-loading-text="{{ 'default.loading'|trans() }}"><i class="ladb-icon-plus"></i> {{ 'qa.answer.new'|trans() }}</button>
                     {% endif %}
                 {% else %}

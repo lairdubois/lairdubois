@@ -44,7 +44,11 @@ class AnswerController extends AbstractController {
 
 		$question = $this->retrievePublication($id, Question::CLASS_NAME);
 
-		$answer = new Answer();
+        if ($question->getIsLocked()) {
+            throw $this->createNotFoundException('Can\'t create answer on locked question (id='.$id.', core_qa_answer_new).');
+        }
+
+        $answer = new Answer();
 		$answer->addBodyBlock(new \Ladb\CoreBundle\Entity\Core\Block\Text());	// Add a default Text body block
 		$form = $this->createForm(AnswerType::class, $answer);
 
@@ -69,6 +73,10 @@ class AnswerController extends AbstractController {
         $this->createLock('core_qa_answer_create', false, self::LOCK_TTL_CREATE_ACTION, false);
 
 		$question = $this->retrievePublication($id, Question::CLASS_NAME);
+
+		if ($question->getIsLocked()) {
+			throw $this->createNotFoundException('Can\'t create answer on locked question (id='.$id.', core_qa_answer_create).');
+		}
 
 		$om = $this->getDoctrine()->getManager();
 		$answerRepository = $om->getRepository(Answer::CLASS_NAME);
