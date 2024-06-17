@@ -1572,6 +1572,7 @@ resource:
     collada: Collada
     edrawing: eDrawing
     step: Step
+    openscad: OpenSCAD
   form:
     choice:
       mandatory: "[0,1]Ce fichier est obligatoire.|]1,Inf]Il est obligatoire d'avoir au moins un fichier."
