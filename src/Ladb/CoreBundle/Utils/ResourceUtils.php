@@ -57,6 +57,9 @@ class ResourceUtils {
 				case 'step':
 					return Resource::KIND_STEP;
 
+				case 'scad':
+					return Resource::KIND_OPENSCAD;
+
 			}
 		}
 		return Resource::KIND_UNKNOW;

@@ -121,6 +121,11 @@ EOT
 					$kind = Resource::KIND_STEP;
 				}
 
+				// OpenSCAD
+				if ($fileExtension == 'scad') {
+					$kind = Resource::KIND_OPENSCAD;
+				}
+
 			}
 			$resource->setKind($kind);
 
