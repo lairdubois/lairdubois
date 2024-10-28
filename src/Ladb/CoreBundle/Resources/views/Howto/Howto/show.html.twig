@@ -334,13 +334,13 @@
         {% if howto.referralCount > 0 %}
             {% include 'LadbCoreBundle:Core/Referer:_widget.part.html.twig' with { 'referrals':howto.referrals } %}
         {% endif %}
-        {% if howto.id == 237 %} {# Workround to prevent OutOfMemory a a specific Howto #}
-            <div class="panel panel-default ladb-margin-top">
-                <div class="panel-body text-center"><i class="ladb-icon-warning"></i> Les commentaires sont temporairement désactivés pour ce pas à pas.</div>
-            </div>
-        {% else %}
+{#        {% if howto.id == 237 %} #}{# Workround to prevent OutOfMemory a a specific Howto #}
+{#            <div class="panel panel-default ladb-margin-top">#}
+{#                <div class="panel-body text-center"><i class="ladb-icon-warning"></i> Les commentaires sont temporairement désactivés pour ce pas à pas.</div>#}
+{#            </div>#}
+{#        {% else %}#}
             {% include 'LadbCoreBundle:Core/Comment:_widget.part.html.twig' %}
-        {% endif %}
+{#        {% endif %}#}
     </div>
 {% endblock %}
 
