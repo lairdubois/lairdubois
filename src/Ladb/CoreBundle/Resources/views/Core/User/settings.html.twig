@@ -75,11 +75,13 @@
                 {{ form_label(form.displayname, 'Nom affiché') }}
                 {{ form_errors(form.displayname) }}
                 {{ form_widget(form.displayname, { 'attr': { 'class':'form-control' } }) }}
+                <p class="help-block"><em>Ce nom est utilisé pour la plupart des contributions sur le site.</em></p>
             </div>
             <div class="form-group">
                 {{ form_label(form.fullname, 'Nom complet') }}
                 {{ form_errors(form.fullname) }}
                 {{ form_widget(form.fullname, { 'attr': { 'class':'form-control' } }) }}
+                <p class="help-block"><em>Ce nom est affiché publiquement sur votre page de profil.</em></p>
             </div>
             {% if not user.isTeam %}
                 <div class="form-group{% if user.isTeam %} hidden{% endif %}">
