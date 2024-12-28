@@ -13,8 +13,8 @@
                 <h4>A lire avant de publier</h4>
                 <p>Merci de contribuer à une réponse !</p>
                 <ul>
-                    <li>S'il vous plait, <strong>n'utilisez pas ce champ pour posez pas une nouvelle question</strong>. <a href="{{ path('core_qa_question_new') }}">Cliquez-ici/</a></li>
-                    <li>Soyez certain que votre réponse apporte une <u>réponse directe</u> à la question "<strong>{{ question.title }}</strong>".</li>
+                    <li>Pour poser une nouvelle question, veuillez <a href="{{ path('core_qa_question_new') }}" class="alert-link">cliquer ici/</a>.</li>
+                    <li>S'il vous plait, soyez certain que votre réponse apporte une <u>réponse directe</u> à la question "<strong>{{ question.title }}</strong>".</li>
                     {% if question.answerCount > 0 %}
                         <li>Vérifiez que votre réponse apporte une <u>nouveauté</u> par rapport aux réponses précédentes. Sinon validez la-les réponse-s qui vous correspond-ent.</li>
                         <li>Si vous souhaitez <u>compléter</u> une des réponses ci-dessus, utilisez les <strong>commentaires</strong> qui lui sont associés.</li>
