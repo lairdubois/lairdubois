@@ -69,7 +69,8 @@ class OpencutlistController extends AbstractController {
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
         if ($access->getIsEnvDev() && $access->getClientOclVersion() == '7.0.0-dev' && in_array($access->getClientSketchupLocale(), [ 'fr' ])) {
-            $branch = self::BRANCH_DEV;
+//            $branch = self::BRANCH_DEV;
+            return $this->redirect('http://opencutlist.lairdubois.fr/manifest.json');
         } else {
             $branch = self::BRANCH_PROD;
         }
@@ -85,7 +86,14 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_DOWNLOAD);
 
-		return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/dist/ladb_opencutlist.rbz');
+        if ($access->getIsEnvDev() && $access->getClientOclVersion() == '7.0.0-dev' && in_array($access->getClientSketchupLocale(), [ 'fr' ])) {
+//            $branch = self::BRANCH_DEV;
+            return $this->redirect('http://opencutlist.lairdubois.fr/ladb_opencutlist.rbz');
+        } else {
+            $branch = self::BRANCH_PROD;
+        }
+
+        return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.$branch.'/dist/ladb_opencutlist.rbz');
 	}
 
 	/**
