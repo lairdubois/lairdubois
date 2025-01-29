@@ -217,6 +217,8 @@ class OpencutlistController extends AbstractController {
 	 */
 	public function statsAction(Request $request, $page = 0) {
 
+        set_time_limit(600); // Et time limit to 10 min
+
 		$env = $request->get('env', 'prod');
 		$days = intval($request->get('days', '28'));
 		$continent = $request->get('continent', null);
