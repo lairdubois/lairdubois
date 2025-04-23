@@ -78,6 +78,9 @@
             {% include 'LadbCoreBundle:Wonder/Creation:_list-topbar.part.html.twig' %}
         </div>
     {% endif %}
+    <div class="panel panel-default">
+        Blop
+    </div>
     {{ parent() }}
     {%  if highlightedPost is defined and highlightedPost is not null %}
         {% include 'LadbCoreBundle:Blog/Post:_corner-slider-thumbnail.part.html.twig' with { 'post':highlightedPost } %}
