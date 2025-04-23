@@ -78,11 +78,6 @@
             {% include 'LadbCoreBundle:Wonder/Creation:_list-topbar.part.html.twig' %}
         </div>
     {% endif %}
-    <div class="panel panel-default ladb-margin-top">
-        <div class="panel-body">
-            Découvrez ou redécouvrez l'<a href="/creations/?q=@author:%22sylvainlefrancomtois%22%20@sort-popular-likes:desc">incroyable contribution</a> de <a href="/@sylvainlefrancomtois" >Sylvain</a> à L'Air du Bois !
-        </div>
-    </div>
     {{ parent() }}
     {%  if highlightedPost is defined and highlightedPost is not null %}
         {% include 'LadbCoreBundle:Blog/Post:_corner-slider-thumbnail.part.html.twig' with { 'post':highlightedPost } %}
@@ -90,6 +85,11 @@
 {% endblock %}
 
 {% block autopagerContainerInner %}
+    <div class="panel panel-default ladb-margin-top">
+        <div class="panel-body">
+            Découvrez ou redécouvrez l'<a href="/creations/?q=@author:%22sylvainlefrancomtois%22%20@sort-popular-likes:desc">incroyable contribution</a> de <a href="/@sylvainlefrancomtois" >Sylvain</a> à L'Air du Bois !
+        </div>
+    </div>
     {% if homepage and runningEvents and runningEvents is not empty %}
         <div class="ladb-masonry-item ladb-masonry-column">
             <div class="ladb-box">
