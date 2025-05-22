@@ -68,7 +68,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
-        if ($access->getIsEnvDev() && $access->getClientOclVersion() == '7.0.0-dev' && in_array($access->getClientSketchupLocale(), [ 'fr' ])) {
+        if ($access->getIsEnvDev() && $access->getClientOclVersion() == '7.0.0-dev' && in_array($access->getClientSketchupLocale(), [ 'fr', 'ru', 'uk' ])) {
 //            $branch = self::BRANCH_DEV;
             return $this->redirect('http://opencutlist.lairdubois.fr/manifest.json');
         } else {
@@ -217,7 +217,7 @@ class OpencutlistController extends AbstractController {
 	 */
 	public function statsAction(Request $request, $page = 0) {
 
-        set_time_limit(600); // Et time limit to 10 min
+        set_time_limit(300); // Et time limit to 5 min
 
 		$env = $request->get('env', 'prod');
 		$days = intval($request->get('days', '28'));
