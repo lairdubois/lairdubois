@@ -122,6 +122,12 @@ class OpencutlistController extends AbstractController {
             case 'core.upgrade':
                 $path = '/getting-started/updating';
                 break;
+            case 'tool.smart-draw':
+                $path = '/features/smart-draw-tool';
+                break;
+            case 'tool.smart-handle':
+                $path = '/features/smart-handle-tool';
+                break;
             case 'tool.smart-paint':
                 $path = '/features/smart-paint-tool';
                 break;
@@ -172,6 +178,9 @@ class OpencutlistController extends AbstractController {
             case 'cutlist.cuttingdiagram2d.write':
                 $path = '/features/parts/parts-list/cutting-diagrams/export';
                 break;
+            case 'cutlist.packing':
+                $path = '/features/parts/parts-list/packing';
+                break;
             case 'features.parts.parts-list.labels':    // BC <= 4.x
             case 'cutlist.labels':
                 $path = '/features/parts/parts-list/printing-labels';
@@ -184,6 +193,9 @@ class OpencutlistController extends AbstractController {
                 break;
             case 'cutlist.write3d':
                 $path = '/features/parts/export-part-drawing/3d-geometry';
+                break;
+            case 'outliner':
+                $path = '/features/outliner';
                 break;
             case 'importer':
             case 'importer.load':
