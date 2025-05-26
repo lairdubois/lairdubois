@@ -195,6 +195,8 @@ class OpencutlistController extends AbstractController {
                 $path = '/features/parts/export-part-drawing/3d-geometry';
                 break;
             case 'outliner':
+            case 'outliner.options':
+            case 'outliner.edit':
                 $path = '/features/outliner';
                 break;
             case 'importer':
