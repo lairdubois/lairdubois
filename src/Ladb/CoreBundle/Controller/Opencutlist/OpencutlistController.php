@@ -227,9 +227,9 @@ class OpencutlistController extends AbstractController {
     }
 
     /**
-     * @Route("/go-beta", name="core_opencutlist_go_beta")
+     * @Route("/try-beta", name="core_opencutlist_go_beta")
      */
-    public function goBetaAction(Request $request) {
+    public function tryBetaAction(Request $request) {
         return $this->redirect('https://opencollective.com/lairdubois-opencutlist-sketchup-extension/updates/opencutlist-7-0-entering-beta-stage');
     }
 
