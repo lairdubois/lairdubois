@@ -179,7 +179,8 @@ class OpencutlistController extends AbstractController {
                 $path = '/features/parts/parts-list/cutting-diagrams/export';
                 break;
             case 'cutlist.packing':
-                $path = '/features/parts/parts-list/packing';
+            case 'cutlist.packing.write':
+                $path = '/features/parts/packing';
                 break;
             case 'features.parts.parts-list.labels':    // BC <= 4.x
             case 'cutlist.labels':
@@ -223,6 +224,13 @@ class OpencutlistController extends AbstractController {
         $access = $this->_createAccess($request, $env, Access::KIND_CHANGELOG);
 
         return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/CHANGELOG.md');
+    }
+
+    /**
+     * @Route("/go-beta", name="core_opencutlist_go_beta")
+     */
+    public function goBetaAction(Request $request) {
+        return $this->redirect('https://opencollective.com/lairdubois-opencutlist-sketchup-extension/updates/opencutlist-7-0-entering-beta-stage');
     }
 
     /**
