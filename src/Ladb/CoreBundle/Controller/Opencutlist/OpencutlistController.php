@@ -205,6 +205,9 @@ class OpencutlistController extends AbstractController {
             case 'importer.import':
                 $path = '/features/import';
                 break;
+            case 'i18n':
+                $path = '/for-translators/general';
+                break;
 		}
 
         $url = 'https://docs.opencutlist.org'.$path;
