@@ -179,8 +179,10 @@ class OpencutlistController extends AbstractController {
                 $path = '/features/parts/parts-list/cutting-diagrams/export';
                 break;
             case 'cutlist.packing':
+                $path = '/features/parts/parts-lit/packing';
+                break;
             case 'cutlist.packing.write':
-                $path = '/features/parts/packing';
+                $path = '/features/parts/parts-lit/packing/export';
                 break;
             case 'features.parts.parts-list.labels':    // BC <= 4.x
             case 'cutlist.labels':
