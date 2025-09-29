@@ -18,7 +18,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 class OpencutlistController extends AbstractController {
 
     const BRANCH_PROD = 'master';
-    const BRANCH_DEV = '7.0.1';
+    const BRANCH_DEV = '7.1.0';
 
     const DEV_LANGUAGES = [ 'fr' ];
 
