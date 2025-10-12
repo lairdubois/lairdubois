@@ -70,7 +70,7 @@ class OpencutlistController extends AbstractController {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
-        if ($access->getIsEnvDev() && $access->getClientOclVersion() == self::BRANCH_DEV.'-dev') { //} && in_array($access->getClientSketchupLocale(), self::DEV_LANGUAGES)) {
+        if ($access->getIsEnvDev()) { // && $access->getClientOclVersion() == self::BRANCH_DEV.'-dev') { //} && in_array($access->getClientSketchupLocale(), self::DEV_LANGUAGES)) {
             $branch = self::BRANCH_DEV;
 //            return $this->redirect('http://opencutlist.lairdubois.fr/manifest.json');
         } else {
