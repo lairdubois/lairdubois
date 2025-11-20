@@ -237,7 +237,17 @@ class OpencutlistController extends AbstractController {
 
         $access = $this->_createAccess($request, $env, Access::KIND_CHANGELOG);
 
-        return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.($access->getIsEnvDev() ? self::BRANCH_DEV : self::BRANCH_PROD).'/CHANGELOG.md');
+        if ($access->getIsEnvDev()) {
+            if ($access->getClientOclVersion() == self::BRANCH_DEV2.'-dev') {
+                $branch = self::BRANCH_DEV2;
+            } else {
+                $branch = self::BRANCH_DEV;
+            }
+        } else {
+            $branch = self::BRANCH_PROD;
+        }
+
+        return $this->redirect('https://raw.githubusercontent.com/lairdubois/lairdubois-opencutlist-sketchup-extension/'.$branch.'/CHANGELOG.md');
     }
 
     /**
