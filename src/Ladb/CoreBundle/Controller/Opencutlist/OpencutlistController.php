@@ -18,8 +18,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 class OpencutlistController extends AbstractController {
 
     const BRANCH_PROD = 'master';
-    const BRANCH_DEV = '7.1.0';
-    const BRANCH_DEV2 = '8.0.0';
+    const BRANCH_DEV = '8.0.0';
 
     const DEV_LANGUAGES = [ 'fr' ];
 
@@ -72,11 +71,7 @@ class OpencutlistController extends AbstractController {
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
         if ($access->getIsEnvDev()) { // && $access->getClientOclVersion() == self::BRANCH_DEV.'-dev') { //} && in_array($access->getClientSketchupLocale(), self::DEV_LANGUAGES)) {
-            if ($access->getClientOclVersion() == self::BRANCH_DEV2.'-dev') {
-                $branch = self::BRANCH_DEV2;
-            } else {
-                $branch = self::BRANCH_DEV;
-            }
+            $branch = self::BRANCH_DEV;
 //            return $this->redirect('http://opencutlist.lairdubois.fr/manifest.json');
         } else {
             $branch = self::BRANCH_PROD;
@@ -94,11 +89,7 @@ class OpencutlistController extends AbstractController {
 		$access = $this->_createAccess($request, $env, Access::KIND_DOWNLOAD);
 
         if ($access->getIsEnvDev()) {// && $access->getClientOclVersion() == '7.0.0-dev') { // && in_array($access->getClientSketchupLocale(), self::DEV_LANGUAGES)) {
-            if ($access->getClientOclVersion() == self::BRANCH_DEV2.'-dev') {
-                $branch = self::BRANCH_DEV2;
-            } else {
-                $branch = self::BRANCH_DEV;
-            }
+            $branch = self::BRANCH_DEV;
 //            return $this->redirect('http://opencutlist.lairdubois.fr/ladb_opencutlist.rbz');
         } else {
             $branch = self::BRANCH_PROD;
@@ -116,11 +107,7 @@ class OpencutlistController extends AbstractController {
 		$access = $this->_createAccess($request, $env, Access::KIND_TUTORIALS);
 
         if ($access->getIsEnvDev()) {
-            if ($access->getClientOclVersion() == self::BRANCH_DEV2.'-dev') {
-                $branch = self::BRANCH_DEV2;
-            } else {
-                $branch = self::BRANCH_DEV;
-            }
+            $branch = self::BRANCH_DEV;
         } else {
             $branch = self::BRANCH_PROD;
         }
@@ -248,11 +235,7 @@ class OpencutlistController extends AbstractController {
         $access = $this->_createAccess($request, $env, Access::KIND_CHANGELOG);
 
         if ($access->getIsEnvDev()) {
-            if ($access->getClientOclVersion() == self::BRANCH_DEV2.'-dev') {
-                $branch = self::BRANCH_DEV2;
-            } else {
-                $branch = self::BRANCH_DEV;
-            }
+            $branch = self::BRANCH_DEV;
         } else {
             $branch = self::BRANCH_PROD;
         }
