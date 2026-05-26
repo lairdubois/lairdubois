@@ -126,6 +126,16 @@ EOT
 					$kind = Resource::KIND_OPENSCAD;
 				}
 
+                // Rhino3D
+                if ($fileExtension == '3dm') {
+                    $kind = Resource::KIND_RHINO3D;
+                }
+
+                // Grasshopper
+                if ($fileExtension == 'gh') {
+                    $kind = Resource::KIND_GRASSHOPPER;
+                }
+
 			}
 			$resource->setKind($kind);
 
