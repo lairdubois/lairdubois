@@ -52,7 +52,6 @@ class FindUtils extends AbstractContainerAwareUtils {
 					if (is_null($mainPicture)) {
                         // TODO : Capture no longer works
 						// $mainPicture = $webScreenshotUtils->captureToPicture($website->getUrl(), 1280, 1024, 1280, 1024);
-
                         $pictureManager = $this->get(PictureManager::NAME);
                         $mainPicture = $pictureManager->createEmpty();
 					}
