@@ -1573,7 +1573,7 @@ resource:
     edrawing: eDrawing
     step: Step
     openscad: OpenSCAD
-    rhino34: Rhino3 D
+    rhino3d: Rhino3 D
     grasshopper: Grasshopper
   form:
     choice:
