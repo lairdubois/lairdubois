@@ -18,7 +18,7 @@ use Ladb\CoreBundle\Utils\PaginatorUtils;
 class OpencutlistController extends AbstractController {
 
     const BRANCH_PROD = 'master';
-    const BRANCH_DEV = '8.0.0';
+    const BRANCH_LAB = '8.0.0';
 
     const DEV_LANGUAGES = [ 'fr' ];
 
@@ -64,14 +64,14 @@ class OpencutlistController extends AbstractController {
 
 	/**
 	 * @Route("/manifest", name="core_opencutlist_manifest")
-	 * @Route("/manifest-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_manifest_env")
+	 * @Route("/manifest-{env}", requirements={"env" = "dev|lab|prod"}, name="core_opencutlist_manifest_env")
 	 */
 	public function manifestAction(Request $request, $env = 'prod') {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_MANIFEST);
 
         if ($access->getIsEnvDev()) { // && $access->getClientOclVersion() == self::BRANCH_DEV.'-dev') { //} && in_array($access->getClientSketchupLocale(), self::DEV_LANGUAGES)) {
-            $branch = self::BRANCH_DEV;
+            $branch = self::BRANCH_LAB;
 //            return $this->redirect('http://opencutlist.lairdubois.fr/manifest.json');
         } else {
             $branch = self::BRANCH_PROD;
@@ -82,14 +82,14 @@ class OpencutlistController extends AbstractController {
 
 	/**
 	 * @Route("/download", name="core_opencutlist_download")
-	 * @Route("/download-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_download_env")
+	 * @Route("/download-{env}", requirements={"env" = "dev|lab|prod"}, name="core_opencutlist_download_env")
 	 */
 	public function downloadAction(Request $request, $env = 'prod') {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_DOWNLOAD);
 
         if ($access->getIsEnvDev()) {// && $access->getClientOclVersion() == '7.0.0-dev') { // && in_array($access->getClientSketchupLocale(), self::DEV_LANGUAGES)) {
-            $branch = self::BRANCH_DEV;
+            $branch = self::BRANCH_LAB;
 //            return $this->redirect('http://opencutlist.lairdubois.fr/ladb_opencutlist.rbz');
         } else {
             $branch = self::BRANCH_PROD;
@@ -100,14 +100,14 @@ class OpencutlistController extends AbstractController {
 
 	/**
 	 * @Route("/tutorials", name="core_opencutlist_tutorials")
-	 * @Route("/tutorials-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_tutorials_env")
+	 * @Route("/tutorials-{env}", requirements={"env" = "dev|lab|prod"}, name="core_opencutlist_tutorials_env")
 	 */
 	public function tutorialsAction(Request $request, $env = 'prod') {
 
 		$access = $this->_createAccess($request, $env, Access::KIND_TUTORIALS);
 
         if ($access->getIsEnvDev()) {
-            $branch = self::BRANCH_DEV;
+            $branch = self::BRANCH_LAB;
         } else {
             $branch = self::BRANCH_PROD;
         }
@@ -117,7 +117,7 @@ class OpencutlistController extends AbstractController {
 
 	/**
 	 * @Route("/docs", name="core_opencutlist_docs")
-	 * @Route("/docs-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_docs_env")
+	 * @Route("/docs-{env}", requirements={"env" = "dev|lab|prod"}, name="core_opencutlist_docs_env")
 	 */
 	public function docsAction(Request $request, $env = 'prod') {
 
@@ -228,14 +228,14 @@ class OpencutlistController extends AbstractController {
 
     /**
      * @Route("/changelog", name="core_opencutlist_changelog")
-     * @Route("/changelog-{env}", requirements={"env" = "dev|prod"}, name="core_opencutlist_changelog_env")
+     * @Route("/changelog-{env}", requirements={"env" = "dev|lab|prod"}, name="core_opencutlist_changelog_env")
      */
     public function changelogAction(Request $request, $env = 'prod') {
 
         $access = $this->_createAccess($request, $env, Access::KIND_CHANGELOG);
 
         if ($access->getIsEnvDev()) {
-            $branch = self::BRANCH_DEV;
+            $branch = self::BRANCH_LAB;
         } else {
             $branch = self::BRANCH_PROD;
         }
@@ -247,7 +247,7 @@ class OpencutlistController extends AbstractController {
      * @Route("/try-beta", name="core_opencutlist_go_beta")
      */
     public function tryBetaAction(Request $request) {
-        return $this->redirect('https://opencollective.com/lairdubois-opencutlist-sketchup-extension/updates/opencutlist-7-0-entering-beta-stage');
+        return $this->redirect('https://www.opencutlist.org/lab');
     }
 
     /**

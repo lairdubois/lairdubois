@@ -219,6 +219,7 @@ class Access implements LocalisableInterface {
 		if (is_string($env)) {
 			switch ($env) {
 				case 'dev':
+				case 'lab':
 					return self::ENV_DEV;
 				case 'prod':
 					return self::ENV_PROD;
