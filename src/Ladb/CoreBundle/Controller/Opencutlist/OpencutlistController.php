@@ -131,8 +131,14 @@ class OpencutlistController extends AbstractController {
             case 'tool.smart-draw':
                 $path = '/features/smart-draw-tool';
                 break;
+            case 'tool.smart-build':
+                $path = '/features/smart-build-tool';
+                break;
             case 'tool.smart-handle':
                 $path = '/features/smart-handle-tool';
+                break;
+            case 'tool.smart-reshape':
+                $path = '/features/smart-reshape-tool';
                 break;
             case 'tool.smart-paint':
                 $path = '/features/smart-paint-tool';
